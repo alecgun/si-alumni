@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
             RoleAndPermissionSeeder::class,
             UserSeeder::class,
             CallPermissionSeeder::class,
+            AlumniSeeder::class,
+            KerjaSeeder::class,
+            KuliahSeeder::class,
         ]);
     }
 }
