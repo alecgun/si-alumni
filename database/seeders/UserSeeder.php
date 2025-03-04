@@ -24,6 +24,16 @@ class UserSeeder extends Seeder
                 'email' => 'user@gmail.com',
                 'password' => bcrypt('password'),
             ],
+            [
+                'name' => 'John Doe',
+                'email' => 'user3@gmail.com',
+                'password' => bcrypt('password'),
+            ],
+            [
+                'name' => 'Jane Smith',
+                'email' => 'user4@gmail.com',
+                'password' => bcrypt('password'),
+            ],
         ];
 
         foreach ($users as $user) {
@@ -33,6 +43,10 @@ class UserSeeder extends Seeder
         $user = User::find(1);
         $user->assignRole('admin');
         $user = User::find(2);
+        $user->assignRole('user');
+        $user = User::find(3);
+        $user->assignRole('user');
+        $user = User::find(4);
         $user->assignRole('user');
     }
 }

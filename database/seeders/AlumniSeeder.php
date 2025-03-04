@@ -17,6 +17,7 @@ class AlumniSeeder extends Seeder
     {
         DB::table('alumni')->insert([
             [
+                'user_id' => 3,
                 'nis' => '123456',
                 'nama' => 'John Doe',
                 'kelas' => 'XII IPA 1',
@@ -28,6 +29,7 @@ class AlumniSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
+                'user_id' => 4,
                 'nis' => '789012',
                 'nama' => 'Jane Smith',
                 'kelas' => 'XII IPS 2',
