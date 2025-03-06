@@ -12,8 +12,12 @@ class Kuliah extends Model
     // Define the table name
     protected $table = 'kuliah';
 
+    // Define the primary key
+    protected $primaryKey = 'id';
+
     // Define the fillable attributes for mass assignment
     protected $fillable = [
+        'id',
         'alumni_id',
         'jenjang',
         'jalur_masuk',

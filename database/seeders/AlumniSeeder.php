@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\Alumni;
 
 class AlumniSeeder extends Seeder
 {
@@ -15,9 +16,8 @@ class AlumniSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('alumni')->insert([
+        $alumnis = [
             [
-                'user_id' => 3,
                 'nis' => '123456',
                 'nama' => 'John Doe',
                 'kelas' => 'XII IPA 1',
@@ -29,7 +29,6 @@ class AlumniSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
-                'user_id' => 4,
                 'nis' => '789012',
                 'nama' => 'Jane Smith',
                 'kelas' => 'XII IPS 2',
@@ -40,6 +39,10 @@ class AlumniSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]
-        ]);
+        ];
+
+        foreach ($alumnis as $alumni) {
+            Alumni::create($alumni);
+        }
     }
 }

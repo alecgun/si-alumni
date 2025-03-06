@@ -12,8 +12,12 @@ class Kerja extends Model
     // Define the table name
     protected $table = 'kerja';
 
+    // Define the primary key
+    protected $primaryKey = 'id';
+
     // Define the fillable attributes for mass assignment
     protected $fillable = [
+        'id',
         'alumni_id',
         'posisi_kerja',
         'tempat_kerja',

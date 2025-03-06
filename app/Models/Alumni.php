@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Kuliah;
+use App\Models\Kerja;
+use App\Models\User;
 
 class Alumni extends Model
 {
@@ -12,8 +16,12 @@ class Alumni extends Model
     // Define the table name
     protected $table = 'alumni';
 
+    // Define the primary key
+    protected $primaryKey = 'id';
+
     // Define the fillable attributes for mass assignment
     protected $fillable = [
+        'id',
         'nis',
         'nama',
         'kelas',
@@ -21,6 +29,8 @@ class Alumni extends Model
         'tahun_lulus',
         'instagram',
         'sosmed_lain',
+        'created_at',
+        'updated_at',
     ];
 
     // Define the relationship with the Kuliah model
@@ -34,4 +44,5 @@ class Alumni extends Model
     {
         return $this->hasMany(Kerja::class);
     }
+
 }

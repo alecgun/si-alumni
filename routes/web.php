@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AlumniController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -22,6 +23,10 @@ Route::group(['middleware' => ['guest']], function () {
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     //make route prefix setting
+    Route::prefix('alumni')->group(function () {
+        Route::resource('alumni', AlumniController::class);
+    });
+
     Route::prefix('setting')->group(function () {
         Route::resource('user', UserController::class);
         Route::resource('role', RoleController::class);

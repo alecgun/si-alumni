@@ -9,7 +9,7 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">User
+                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Alumni
                     </h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
@@ -25,7 +25,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">User</li>
+                        <li class="breadcrumb-item text-muted">Alumni</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -51,8 +51,8 @@
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>
-                                <input type="text" id="user_search" data-kt-user-table-filter="search"
-                                    class="form-control form-control-solid w-250px ps-13" placeholder="Cari user" />
+                                <input type="text" id="alumni_search" data-kt-alumni-table-filter="search"
+                                    class="form-control form-control-solid w-250px ps-13" placeholder="Cari alumni" />
                             </div>
                             <!--end::Search-->
                         </div>
@@ -60,15 +60,15 @@
                         <!--begin::Card toolbar-->
                         <div class="card-toolbar">
                             <!--begin::Toolbar-->
-                            <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-                                <!--begin::Add user-->
-                                @can('user.create')
+                            <div class="d-flex justify-content-end" data-kt-alumni-table-toolbar="base">
+                                <!--begin::Add alumni-->
+                                @can('alumni.create')
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#kt_modal_add_user">
-                                        <i class="ki-duotone ki-plus fs-2"></i> Tambah User
+                                        data-bs-target="#kt_modal_add_alumni">
+                                        <i class="ki-duotone ki-plus fs-2"></i> Tambah Alumni
                                     </button>
                                 @endcan
-                                <!--end::Add user-->
+                                <!--end::Add alumni-->
                             </div>
                             <!--end::Toolbar-->
                         </div>
@@ -78,8 +78,8 @@
                     <!--begin::Card body-->
                     <div class="card-body py-4">
                         <!--begin::Table-->
-                        <div id="user_table">
-                            @include('backend.user.table')
+                        <div id="alumni_table">
+                            @include('backend.alumni.table')
                         </div>
                         <!--end::Table-->
                     </div>
@@ -92,11 +92,11 @@
         <!--end::Content-->
     </div>
     <!--end::Content wrapper-->
-    @can('user.create')
-        @include('backend.user.create')
+    @can('alumni.create')
+        @include('backend.alumni.create')
     @endcan
-    @can('user.edit')
-        @include('backend.user.edit')
+    @can('alumni.edit')
+        @include('backend.alumni.edit')
     @endcan
 @endsection
 
@@ -106,6 +106,7 @@
 
             // ============================ Start Load data form ==============================
             function loadRoles(selector, selectedRoleId = null) {
+                console.log(selectedRoleId);
                 $.ajax({
                     url: '{{ route('role.data') }}',
                     type: 'GET',
@@ -124,19 +125,19 @@
                 });
             }
 
-            $('#kt_modal_add_user').on('show.bs.modal', function() {
+            $('#kt_modal_add_alumni').on('show.bs.modal', function() {
                 loadRoles('#role');
             });
             // ============================ End Load data form ==============================
 
             // ============================ Start DataTable ==============================
-            var table = $('#kt_table_users').DataTable({
+            var table = $('#kt_table_alumnis').DataTable({
                 processing: true,
                 serverSide: true,
                 order: [
                     [4, 'desc']
                 ],
-                ajax: '{{ route('user.index') }}',
+                ajax: '{{ route('alumni.index') }}',
                 columns: [{
                         data: 'iteration',
                         name: 'iteration',
@@ -144,16 +145,28 @@
                         searchable: false
                     },
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'nis',
+                        name: 'nis'
                     },
                     {
-                        data: 'role',
-                        name: 'role'
+                        data: 'nama',
+                        name: 'nama'
                     },
                     {
-                        data: 'email',
-                        name: 'email'
+                        data: 'kelas',
+                        name: 'kelas'
+                    },
+                    {
+                        data: 'tahun_masuk',
+                        name: 'tahun_masuk'
+                    },
+                    {
+                        data: 'tahun_lulus',
+                        name: 'tahun_lulus'
+                    },
+                    {
+                        data: 'instagram',
+                        name: 'instagram'
                     },
                     {
                         data: 'created_at',
@@ -172,7 +185,7 @@
                 ]
             });
 
-            $('#user_search').on('keyup', function() {
+            $('#alumni_search').on('keyup', function() {
                 table.search(this.value).draw();
             });
             // ============================ End DataTable ==============================
@@ -180,7 +193,7 @@
             // ============================ Start Reset Form ==============================
             function resetForm(form) {
                 $(form)[0].reset();
-                $(form).find('input[name="id_user"]').val('');
+                $(form).find('input[name="id_alumni"]').val('');
                 $(form).find('select').val('').trigger('change');
                 $('.is-invalid').removeClass('is-invalid');
                 $('.text-danger').remove();
@@ -209,18 +222,18 @@
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#kt_modal_add_user').modal('hide');
-                        resetForm('#kt_modal_add_user_form');
+                        $('#kt_modal_add_alumni').modal('hide');
+                        resetForm('#kt_modal_add_alumni_form');
                     }
                 });
             });
             // ============================ End Action Cancel Add ==============================
 
 
-            // ============================ Start Tambah User ==============================
-            $('#kt_modal_add_user_form').on('submit', function(e) {
+            // ============================ Start Tambah Alumni ==============================
+            $('#kt_modal_add_alumni_form').on('submit', function(e) {
                 e.preventDefault();
-                var url = '{{ route('user.store') }}';
+                var url = '{{ route('alumni.store') }}';
                 let form = $(this);
                 var formData = new FormData(this);
 
@@ -251,9 +264,9 @@
                                     title: 'Berhasil!',
                                     text: response.message
                                 });
-                                $('#kt_modal_add_user').modal('hide');
+                                $('#kt_modal_add_alumni').modal('hide');
                                 table.ajax.reload();
-                                resetForm('#kt_modal_add_user_form');
+                                resetForm('#kt_modal_add_alumni_form');
                             },
                             error: function(xhr) {
                                 if (xhr.status === 422) {
@@ -297,25 +310,25 @@
                     }
                 });
             });
-            // ============================ End Tambah User ==============================
+            // ============================ End Tambah Alumni ==============================
 
             // ============================ Start Show Modal Edit ==============================
             $(document).on('click', '.edit-button', function() {
                 var id = $(this).data('id');
-                var editUrl = '{{ route('user.edit', ':id') }}'.replace(':id', id);
+                var editUrl = '{{ route('alumni.edit', ':id') }}'.replace(':id', id);
 
                 $.ajax({
                     type: 'GET',
                     url: editUrl,
                     success: function(response) {
-                        console.log(response);
-                        $('#edit_id_user').val(response.id);
-                        $('#edit_name').val(response.name);
-                        $('#edit_email').val(response.email);
-                        $('#kt_modal_edit_user_form').attr('action',
-                            '{{ route('user.update', ':id') }}'.replace(':id', response.id));
+                        $('#edit_id_alumni').val(response.id);
+                        $('#edit_nama').val(response.nama);
+                        $('#edit_nis').val(response.nis);
+                        $('#kt_modal_edit_alumni_form').attr('action',
+                            '{{ route('alumni.update', ':id') }}'.replace(':id', response
+                                .id));
                         loadRoles('#edit_role', response.role_id);
-                        $('#kt_modal_edit_user').modal('show');
+                        $('#kt_modal_edit_alumni').modal('show');
                     },
                     error: function(xhr) {
                         Swal.fire({
@@ -344,18 +357,18 @@
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#kt_modal_edit_user').modal('hide');
-                        resetForm('#kt_modal_edit_user_form');
+                        $('#kt_modal_edit_alumni').modal('hide');
+                        resetForm('#kt_modal_edit_alumni_form');
                     }
                 });
             });
             // ============================ End Cancel Edit ==============================
 
-            // ============================ Start Edit User ==============================
-            $('#kt_modal_edit_user_form').on('submit', function(e) {
+            // ============================ Start Edit Alumni ==============================
+            $('#kt_modal_edit_alumni_form').on('submit', function(e) {
                 e.preventDefault();
-                var id_user = $('#edit_id_user').val();
-                var url = '{{ route('user.update', ':id') }}'.replace(':id', id_user);
+                var id_alumni = $('#edit_id_alumni').val();
+                var url = '{{ route('alumni.update', ':id') }}'.replace(':id', id_alumni);
                 let form = $(this);
                 var formData = new FormData(this);
 
@@ -386,9 +399,9 @@
                                     title: 'Berhasil!',
                                     text: response.message
                                 });
-                                $('#kt_modal_edit_user').modal('hide');
+                                $('#kt_modal_edit_alumni').modal('hide');
                                 table.ajax.reload();
-                                resetForm('#kt_modal_edit_user_form');
+                                resetForm('#kt_modal_edit_alumni_form');
                             },
                             error: function(xhr) {
                                 if (xhr.status === 422) {
@@ -432,9 +445,9 @@
                     }
                 });
             });
-            // ============================ End Edit User ==============================
+            // ============================ End Edit Alumni ==============================
 
-            // ============================ Start Delete User ==============================
+            // ============================ Start Delete Alumni ==============================
             $(document).on('click', '.delete-button', function() {
                 var id = $(this).data('id');
 
@@ -453,7 +466,7 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             type: 'DELETE',
-                            url: '{{ route('user.destroy', ':id') }}'.replace(':id', id),
+                            url: '{{ route('alumni.destroy', ':id') }}'.replace(':id', id),
                             data: {
                                 _token: '{{ csrf_token() }}'
                             },
@@ -476,8 +489,7 @@
                     }
                 });
             });
-            // ============================ End Delete User ==============================
+            // ============================ End Delete Alumni ==============================
         });
     </script>
 @endpush
-

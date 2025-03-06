@@ -13,12 +13,19 @@ class MenuGroupSeeder extends Seeder
     {
         // Create permissions for MenuGroups
         $dashboardPermission = Permission::where('name', 'dashboard')->first();
+        $alumniPermission = Permission::where('name', 'alumni')->first();
         $settingPermission = Permission::where('name', 'setting')->first();
 
         MenuGroup::create([
             'nama_menu_group' => 'Dashboard',
             'icon_menu_group' => 'fas fa-tachometer-alt',
             'id_permission_menu_group' => $dashboardPermission->id,
+        ]);
+
+        MenuGroup::create([
+            'nama_menu_group' => 'Alumni',
+            'icon_menu_group' => 'fas fa-graduation-cap',
+            'id_permission_menu_group' => $alumniPermission->id,
         ]);
 
         MenuGroup::create([

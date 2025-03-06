@@ -12,6 +12,11 @@ class MenuItemSeeder extends Seeder
     public function run()
     {
         $settingGroup = MenuGroup::where('nama_menu_group', 'Setting')->first();
+        $alumniGroup = MenuGroup::where('nama_menu_group', 'Alumni')->first();
+
+        $this->createMenuItem('Alumni', $alumniGroup, [
+            'alumni.index', 'alumni.create', 'alumni.edit', 'alumni.delete'
+        ], 'alumni.index');
 
         $this->createMenuItem('User', $settingGroup, [
             'user.index', 'user.create', 'user.edit', 'user.delete', 'user.show', 'user.export'
