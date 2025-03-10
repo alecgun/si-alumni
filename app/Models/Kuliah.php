@@ -19,6 +19,7 @@ class Kuliah extends Model
     protected $fillable = [
         'id',
         'alumni_id',
+        'nama_universitas',
         'jenjang',
         'jalur_masuk',
         'tahun_masuk',

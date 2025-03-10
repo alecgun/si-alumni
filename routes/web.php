@@ -6,6 +6,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AlumniController;
+use App\Http\Controllers\KuliahController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -25,6 +26,13 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     //make route prefix setting
     Route::prefix('alumni')->group(function () {
         Route::resource('alumni', AlumniController::class);
+
+        Route::get('/alumni/{alumnus}/kuliah', [KuliahController::class, 'index'])->name('kuliah.index');
+        Route::get('/alumni/{alumnus}/kuliah/get-data', [KuliahController::class, 'getDataByAlumni'])->name('kuliah.data');
+        Route::post('/alumni/{alumnus}/kuliah', [KuliahController::class, 'store'])->name('kuliah.store');
+        Route::get('/alumni/{alumnus}/kuliah/{kuliah}/edit', [KuliahController::class, 'edit'])->name('kuliah.edit');
+        Route::put('/alumni/{alumnus}/kuliah/{kuliah}', [KuliahController::class, 'update'])->name('kuliah.update');
+        Route::delete('/alumni/{alumnus}/kuliah/{kuliah}', [KuliahController::class, 'destroy'])->name('kuliah.destroy');
     });
 
     Route::prefix('setting')->group(function () {

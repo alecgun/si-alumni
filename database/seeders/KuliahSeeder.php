@@ -18,6 +18,7 @@ class KuliahSeeder extends Seeder
         DB::table('kuliah')->insert([
             [
                 'alumni_id' => 1,
+                'nama_universitas' => 'Universitas Indonesia',
                 'jenjang' => 'S1',
                 'jalur_masuk' => 'SNMPTN',
                 'tahun_masuk' => 2022,
@@ -26,7 +27,18 @@ class KuliahSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
+                'alumni_id' => 1,
+                'nama_universitas' => 'Universitas Brawijaya',
+                'jenjang' => 'S2',
+                'jalur_masuk' => 'Mandiri',
+                'tahun_masuk' => 2026,
+                'tahun_lulus' => 2027,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
                 'alumni_id' => 2,
+                'nama_universitas' => 'Universitas Gadjah Mada',
                 'jenjang' => 'S1',
                 'jalur_masuk' => 'SBMPTN',
                 'tahun_masuk' => 2021,

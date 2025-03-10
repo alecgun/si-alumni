@@ -10,11 +10,27 @@ use Illuminate\Database\QueryException;
 
 class KuliahService
 {
-    public function createKuliah($data)
+    public function getKuliahByAlumni($alumniId)
+    {
+        try {
+            return Kuliah::where('alumni_id', $alumniId)->get();
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => 'Gagal mengambil data kuliah: ' . $e->getMessage()];
+        }
+    }
+
+    public function createKuliah($data, $alumniId)
     {
         DB::beginTransaction();
         try {
-            $kuliah = Kuliah::create($data);
+            $kuliah = Kuliah::create([
+                'alumni_id' => $alumniId,
+                'nama_universitas' => $data['nama_universitas'],
+                'jenjang' => $data['jenjang'],
+                'jalur_masuk' => $data['jalur_masuk'],
+                'tahun_masuk' => $data['tahun_masuk'],
+                'tahun_lulus' => $data['tahun_lulus'],
+            ]);
             DB::commit();
             return ['status' => true, 'kuliah' => $kuliah];
         } catch (Exception $e) {
@@ -23,10 +39,18 @@ class KuliahService
         }
     }
 
-    public function updateKuliah(Kuliah $kuliah, $data)
+    public function updateKuliah($data, $alumniId, $kuliahId)
     {
         DB::beginTransaction();
         try {
+            if (!is_array($data)) {
+                throw new Exception('Data yang diberikan tidak valid.');
+            }
+
+            $kuliah = Kuliah::where('id', $kuliahId)->first();
+            if (!$kuliah) {
+                return ['status' => false, 'message' => 'Data kuliah tidak ditemukan'];
+            }
             $kuliah->update($data);
             DB::commit();
             return ['status' => true, 'kuliah' => $kuliah];
@@ -36,10 +60,11 @@ class KuliahService
         }
     }
 
-    public function deleteKuliah(Kuliah $kuliah)
+    public function deleteKuliah($alumniId, $kuliahId)
     {
         DB::beginTransaction();
         try {
+            $kuliah = Kuliah::find($kuliahId);
             $kuliah->delete();
             DB::commit();
             return ['status' => true];
@@ -57,34 +82,35 @@ class KuliahService
         }
     }
 
-    public function editKuliah(Kuliah $kuliah)
+    public function editKuliah($alumniId, $kuliahId)
     {
         try {
+            $kuliah = Kuliah::find($kuliahId);
             return ['status' => true, 'kuliah' => $kuliah];
         } catch (Exception $e) {
-            return ['status' => false, 'message' => 'Gagal mengambil data kuliah: ' . $e->getMessage()];
+            return ['status' => false, 'message' => 'Gagal mengambil data kuliah untuk diedit: ' . $e->getMessage()];
         }
     }
 
-    public function getKuliahQuery()
-    {
-        try {
-            return DB::table('kuliah')
-                ->select(
-                    'kuliah.id',
-                    'kuliah.alumni_id',
-                    'alumni.id',
-                    'kuliah.jenjang',
-                    'kuliah.jalur_masuk',
-                    'kuliah.tahun_masuk',
-                    'kuliah.tahun_lulus',
-                    'kuliah.created_at',
-                    'kuliah.updated_at'
-                );
-        } catch (Exception $e) {
-            return ['status' => false, 'message' => 'Gagal mengambil data kuliah: ' . $e->getMessage()];
-        }
-    }
+    // public function getKuliahQuery()
+    // {
+    //     try {
+    //         return DB::table('kuliah')
+    //             ->select(
+    //                 'kuliah.id',
+    //                 'kuliah.alumni_id',
+    //                 'alumni.id',
+    //                 'kuliah.jenjang',
+    //                 'kuliah.jalur_masuk',
+    //                 'kuliah.tahun_masuk',
+    //                 'kuliah.tahun_lulus',
+    //                 'kuliah.created_at',
+    //                 'kuliah.updated_at'
+    //             );
+    //     } catch (Exception $e) {
+    //         return ['status' => false, 'message' => 'Gagal mengambil data kuliah: ' . $e->getMessage()];
+    //     }
+    // }
 
     public function searchKuliahs($query, $search)
     {

@@ -106,7 +106,6 @@
 
             // ============================ Start Load data form ==============================
             function loadRoles(selector, selectedRoleId = null) {
-                console.log(selectedRoleId);
                 $.ajax({
                     url: '{{ route('role.data') }}',
                     type: 'GET',
@@ -129,6 +128,11 @@
                 loadRoles('#role');
             });
             // ============================ End Load data form ==============================
+
+            $(document).on('click', '.kuliah-button', function() {
+                var alumniId = $(this).data('id');
+                window.location.href = '{{ route('kuliah.index', ':id') }}'.replace(':id', alumniId);
+            });
 
             // ============================ Start DataTable ==============================
             var table = $('#kt_table_alumnis').DataTable({

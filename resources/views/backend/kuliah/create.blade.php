@@ -1,30 +1,30 @@
-<div class="modal fade" id="kt_modal_add_alumni" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="kt_modal_add_kuliah" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah Alumni</h5>
+                <h5 class="modal-title">Tambah Kuliah</h5>
                 <button type="button" class="btn-close" id="close_modal_button" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="kt_modal_add_alumni_form" method="POST" action="">
+                <form id="kt_modal_add_kuliah_form" method="POST" action="">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="name" class="form-label">Nama</label>
-                                <input type="text" class="form-control" id="name" name="name"
-                                    placeholder="Masukkan nama lengkap">
-                                @error('name')
+                                <label for="nama_universitas" class="form-label">Nama Universitas</label>
+                                <input type="text" class="form-control" id="nama_universitas" name="nama_universitas"
+                                    placeholder="Masukkan nama universitas">
+                                @error('nama_universitas')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email"
-                                    placeholder="Masukkan email">
-                                @error('email')
+                                <label for="jenjang" class="form-label">Jenjang</label>
+                                <input type="text" class="form-control" id="jenjang" name="jenjang"
+                                    placeholder="Masukkan jenjang lengkap">
+                                @error('jenjang')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -33,21 +33,32 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password"
-                                    placeholder="Masukkan password">
-                                @error('password')
+                                <label for="jalur_masuk" class="form-label">Jalur Masuk</label>
+                                <input type="text" class="form-control" id="jalur_masuk" name="jalur_masuk"
+                                    placeholder="Masukkan jalur masuk">
+                                @error('jalur_masuk')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="role" class="form-label">Role</label>
-                                <select class="form-select" data-control="select2" data-placeholder="Pilih Role"
-                                    data-hide-search="true" id="role" name="role">
-                                </select>
-                                @error('role')
+                                <label for="tahun_masuk" class="form-label">Tahun Masuk</label>
+                                <input type="text" class="form-control" id="tahun_masuk" name="tahun_masuk"
+                                    placeholder="Masukkan tahun masuk">
+                                @error('tahun_masuk')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="tahun_lulus" class="form-label">Tahun Lulus</label>
+                                <input type="text" class="form-control" id="tahun_lulus" name="tahun_lulus"
+                                    placeholder="Masukkan tahun lulus">
+                                @error('tahun_lulus')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>

@@ -23,10 +23,10 @@ class AlumniRequest extends FormRequest
      */
     public function rules()
     {
-        $alumniId = $this->route('alumni') ? $this->route('alumni')->id : null;
+        $alumniId = $this->route('alumnus') ? $this->route('alumnus')->id : null;
 
-        return [
-            'nis' => 'required|string|max:10|unique:alumni,nis,' . $alumniId,
+        $rules = [
+            'nis' => 'required|string|max:10|unique:alumni,nis,',
             'nama' => 'required|string|max:255',
             'kelas' => 'required|string|max:10',
             'tahun_masuk' => 'required|integer|min:1900|max:' . (date('Y') + 1),
@@ -34,6 +34,12 @@ class AlumniRequest extends FormRequest
             'instagram' => 'nullable|string|max:255',
             'sosmed_lain' => 'nullable|string|max:255',
         ];
+
+        if ($this->isMethod('put')) {
+            $rules['nis'] = 'required|string|unique:alumni,nis,' . $alumniId;
+        }
+
+        return $rules;
     }
 
     /**

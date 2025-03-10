@@ -9,7 +9,8 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Alumni
+                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Data
+                        Kuliah <span id="alumni-nama"></span>
                     </h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
@@ -25,7 +26,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Alumni</li>
+                        <li class="breadcrumb-item text-muted">Kuliah</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -51,8 +52,8 @@
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>
-                                <input type="text" id="alumni_search" data-kt-alumni-table-filter="search"
-                                    class="form-control form-control-solid w-250px ps-13" placeholder="Cari alumni" />
+                                <input type="text" id="kuliah_search" data-kt-kuliah-table-filter="search"
+                                    class="form-control form-control-solid w-250px ps-13" placeholder="Cari kuliah" />
                             </div>
                             <!--end::Search-->
                         </div>
@@ -60,15 +61,15 @@
                         <!--begin::Card toolbar-->
                         <div class="card-toolbar">
                             <!--begin::Toolbar-->
-                            <div class="d-flex justify-content-end" data-kt-alumni-table-toolbar="base">
-                                <!--begin::Add alumni-->
-                                @can('alumni.create')
+                            <div class="d-flex justify-content-end" data-kt-kuliah-table-toolbar="base">
+                                <!--begin::Add kuliah-->
+                                @can('kuliah.create')
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#kt_modal_add_alumni">
-                                        <i class="ki-duotone ki-plus fs-2"></i> Tambah Alumni
+                                        data-bs-target="#kt_modal_add_kuliah">
+                                        <i class="ki-duotone ki-plus fs-2"></i> Tambah Kuliah
                                     </button>
                                 @endcan
-                                <!--end::Add alumni-->
+                                <!--end::Add kuliah-->
                             </div>
                             <!--end::Toolbar-->
                         </div>
@@ -78,8 +79,8 @@
                     <!--begin::Card body-->
                     <div class="card-body py-4">
                         <!--begin::Table-->
-                        <div id="alumni_table">
-                            @include('backend.alumni.table')
+                        <div id="kuliah_table">
+                            @include('backend.kuliah.table')
                         </div>
                         <!--end::Table-->
                     </div>
@@ -92,11 +93,11 @@
         <!--end::Content-->
     </div>
     <!--end::Content wrapper-->
-    @can('alumni.create')
-        @include('backend.alumni.create')
+    @can('kuliah.create')
+        @include('backend.kuliah.create')
     @endcan
-    @can('alumni.edit')
-        @include('backend.alumni.edit')
+    @can('kuliah.edit')
+        @include('backend.kuliah.edit')
     @endcan
 @endsection
 
@@ -106,7 +107,6 @@
 
             // ============================ Start Load data form ==============================
             function loadRoles(selector, selectedRoleId = null) {
-                console.log(selectedRoleId);
                 $.ajax({
                     url: '{{ route('role.data') }}',
                     type: 'GET',
@@ -125,75 +125,121 @@
                 });
             }
 
-            $('#kt_modal_add_alumni').on('show.bs.modal', function() {
+            $('#kt_modal_add_kuliah').on('show.bs.modal', function() {
                 loadRoles('#role');
             });
+
+            loadKuliahData();
             // ============================ End Load data form ==============================
 
             // ============================ Start DataTable ==============================
-            var table = $('#kt_table_alumnis').DataTable({
-                processing: true,
-                serverSide: true,
-                order: [
-                    [4, 'desc']
-                ],
-                ajax: '{{ route('alumni.index') }}',
-                columns: [{
-                        data: 'iteration',
-                        name: 'iteration',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'nis',
-                        name: 'nis'
-                    },
-                    {
-                        data: 'nama',
-                        name: 'nama'
-                    },
-                    {
-                        data: 'kelas',
-                        name: 'kelas'
-                    },
-                    {
-                        data: 'tahun_masuk',
-                        name: 'tahun_masuk'
-                    },
-                    {
-                        data: 'tahun_lulus',
-                        name: 'tahun_lulus'
-                    },
-                    {
-                        data: 'instagram',
-                        name: 'instagram'
-                    },
-                    {
-                        data: 'created_at',
-                        name: 'created_at'
-                    },
-                    {
-                        data: 'updated_at',
-                        name: 'updated_at'
-                    },
-                    {
-                        data: 'actions',
-                        name: 'actions',
-                        orderable: false,
-                        searchable: false
-                    }
-                ]
-            });
+            // var table = $('#kt_table_kuliahs').DataTable({
+            //     processing: true,
+            //     serverSide: true,
+            //     order: [
+            //         [4, 'desc']
+            //     ],
+            //     ajax: '{{ route('kuliah.index', ':id') }}'.replace(':id', id),
+            //     columns: [{
+            //             data: 'iteration',
+            //             name: 'iteration',
+            //             orderable: false,
+            //             searchable: false
+            //         },
+            //         {
+            //             data: 'jenjang',
+            //             name: 'jenjang'
+            //         },
+            //         {
+            //             data: 'jalur_masuk',
+            //             name: 'jalur_masuk'
+            //         },
+            //         {
+            //             data: 'tahun_masuk',
+            //             name: 'tahun_masuk'
+            //         },
+            //         {
+            //             data: 'tahun_lulus',
+            //             name: 'tahun_lulus'
+            //         },
+            //         {
+            //             data: 'created_at',
+            //             name: 'created_at'
+            //         },
+            //         {
+            //             data: 'updated_at',
+            //             name: 'updated_at'
+            //         },
+            //         {
+            //             data: 'actions',
+            //             name: 'actions',
+            //             orderable: false,
+            //             searchable: false
+            //         }
+            //     ]
+            // });
 
-            $('#alumni_search').on('keyup', function() {
-                table.search(this.value).draw();
-            });
+            // $('#kuliah_search').on('keyup', function() {
+            //     table.search(this.value).draw();
+            // });
+
+            function loadKuliahData() {
+                var alumniId = {{ $alumnus }};
+                $.ajax({
+                    url: '{{ route('kuliah.data', ':id') }}'.replace(':id', alumniId),
+                    method: 'GET',
+                    success: function(data) {
+                        var tableBody = $('#kt_table_kuliahs tbody');
+                        tableBody.empty(); // Clear existing data
+
+                        moment.locale('id');
+
+                        if (Array.isArray(data)) {
+                            data.forEach(function(kuliah, index) {
+                                tableBody.append(
+                                    '<tr>' +
+                                    '<td class="text-center">' + (index + 1) +
+                                    '</td>' +
+                                    '<td class="text-center">' + kuliah
+                                    .nama_universitas +
+                                    '</td>' +
+                                    '<td class="text-center">' + kuliah.jenjang +
+                                    '</td>' +
+                                    '<td class="text-center">' + kuliah
+                                    .jalur_masuk +
+                                    '</td>' +
+                                    '<td class="text-center">' + kuliah
+                                    .tahun_masuk +
+                                    '</td>' +
+                                    '<td class="text-center">' + kuliah
+                                    .tahun_lulus +
+                                    '</td>' +
+                                    '<td class="text-center">' +
+                                    '<button class="btn btn-warning btn-sm me-2 edit-button" data-id="' +
+                                    kuliah
+                                    .id + '">Ubah</button>' + // Add edit button
+                                    '<button class="btn btn-danger btn-sm delete-button" data-id="' +
+                                    kuliah
+                                    .id + '">Hapus</button>' + // Add delete button
+                                    '</td>' +
+                                    '</tr>'
+                                );
+                            });
+                        } else {
+                            console.log("Data yang diterima bukan array", data);
+                        }
+                    },
+                    error: function() {
+                        alert('Terjadi kesalahan saat memuat data kuliah.');
+                    }
+                });
+            };
             // ============================ End DataTable ==============================
 
             // ============================ Start Reset Form ==============================
             function resetForm(form) {
                 $(form)[0].reset();
-                $(form).find('input[name="id_alumni"]').val('');
+                $(form).find('input[name="id_kuliah"]').val('');
                 $(form).find('select').val('').trigger('change');
                 $('.is-invalid').removeClass('is-invalid');
                 $('.text-danger').remove();
@@ -222,20 +268,21 @@
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#kt_modal_add_alumni').modal('hide');
-                        resetForm('#kt_modal_add_alumni_form');
+                        $('#kt_modal_add_kuliah').modal('hide');
+                        resetForm('#kt_modal_add_kuliah_form');
                     }
                 });
             });
             // ============================ End Action Cancel Add ==============================
 
-
-            // ============================ Start Tambah Alumni ==============================
-            $('#kt_modal_add_alumni_form').on('submit', function(e) {
+            // ============================ Start Tambah Kuliah ==============================
+            $('#kt_modal_add_kuliah_form').on('submit', function(e) {
                 e.preventDefault();
-                var url = '{{ route('alumni.store') }}';
+                var alumniId = {{ $alumnus }};
+                var url = '{{ route('kuliah.store', ':id') }}'.replace(':id', alumniId);
                 let form = $(this);
                 var formData = new FormData(this);
+                formData.append('alumni_id', alumniId);
 
                 clearValidationErrors(form);
 
@@ -264,9 +311,9 @@
                                     title: 'Berhasil!',
                                     text: response.message
                                 });
-                                $('#kt_modal_add_alumni').modal('hide');
-                                table.ajax.reload();
-                                resetForm('#kt_modal_add_alumni_form');
+                                $('#kt_modal_add_kuliah').modal('hide');
+                                loadKuliahData();
+                                resetForm('#kt_modal_add_kuliah_form');
                             },
                             error: function(xhr) {
                                 if (xhr.status === 422) {
@@ -310,25 +357,35 @@
                     }
                 });
             });
-            // ============================ End Tambah Alumni ==============================
+            // ============================ End Tambah Kuliah ==============================
 
             // ============================ Start Show Modal Edit ==============================
             $(document).on('click', '.edit-button', function() {
                 var id = $(this).data('id');
-                var editUrl = '{{ route('alumni.edit', ':id') }}'.replace(':id', id);
+                var alumniId = {{ $alumnus }};
+                var editUrl = '{{ route('kuliah.edit', [':alumni_id', ':id']) }}'
+                    .replace(':alumni_id', alumniId)
+                    .replace(':id', id);
+
+                console.log(editUrl);
 
                 $.ajax({
                     type: 'GET',
                     url: editUrl,
                     success: function(response) {
-                        $('#edit_id_alumni').val(response.id);
-                        $('#edit_nama').val(response.nama);
-                        $('#edit_nis').val(response.nis);
-                        $('#kt_modal_edit_alumni_form').attr('action',
-                            '{{ route('alumni.update', ':id') }}'.replace(':id', response
-                                .id));
-                        loadRoles('#edit_role', response.role_id);
-                        $('#kt_modal_edit_alumni').modal('show');
+                        console.log(response);
+                        $('#edit_id_kuliah').val(response.id);
+                        $('#edit_alumni_id').val(alumniId);
+                        $('#edit_nama_universitas').val(response.nama_universitas);
+                        $('#edit_jenjang').val(response.jenjang);
+                        $('#edit_jalur_masuk').val(response.jalur_masuk);
+                        $('#edit_tahun_masuk').val(response.tahun_masuk);
+                        $('#edit_tahun_lulus').val(response.tahun_lulus);
+                        $('#kt_modal_edit_kuliah_form').attr('action',
+                            '{{ route('kuliah.update', [':alumni_id', ':id']) }}'
+                            .replace(':alumni_id', alumniId)
+                            .replace(':id', response.id));
+                        $('#kt_modal_edit_kuliah').modal('show');
                     },
                     error: function(xhr) {
                         Swal.fire({
@@ -357,18 +414,21 @@
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#kt_modal_edit_alumni').modal('hide');
-                        resetForm('#kt_modal_edit_alumni_form');
+                        $('#kt_modal_edit_kuliah').modal('hide');
+                        resetForm('#kt_modal_edit_kuliah_form');
                     }
                 });
             });
             // ============================ End Cancel Edit ==============================
 
-            // ============================ Start Edit Alumni ==============================
-            $('#kt_modal_edit_alumni_form').on('submit', function(e) {
+            // ============================ Start Edit Kuliah ==============================
+            $('#kt_modal_edit_kuliah_form').on('submit', function(e) {
                 e.preventDefault();
-                var id_alumni = $('#edit_id_alumni').val();
-                var url = '{{ route('alumni.update', ':id') }}'.replace(':id', id_alumni);
+                var alumniId = {{ $alumnus }};
+                var id = $('#edit_id_kuliah').val();
+                var url = '{{ route('kuliah.update', [':alumni_id', ':id']) }}'
+                    .replace(':alumni_id', alumniId)
+                    .replace(':id', id);
                 let form = $(this);
                 var formData = new FormData(this);
 
@@ -399,9 +459,9 @@
                                     title: 'Berhasil!',
                                     text: response.message
                                 });
-                                $('#kt_modal_edit_alumni').modal('hide');
-                                table.ajax.reload();
-                                resetForm('#kt_modal_edit_alumni_form');
+                                $('#kt_modal_edit_kuliah').modal('hide');
+                                loadKuliahData();
+                                resetForm('#kt_modal_edit_kuliah_form');
                             },
                             error: function(xhr) {
                                 if (xhr.status === 422) {
@@ -445,10 +505,11 @@
                     }
                 });
             });
-            // ============================ End Edit Alumni ==============================
+            // ============================ End Edit Kuliah ==============================
 
-            // ============================ Start Delete Alumni ==============================
+            // ============================ Start Delete Kuliah ==============================
             $(document).on('click', '.delete-button', function() {
+                var alumniId = {{ $alumnus }};
                 var id = $(this).data('id');
 
                 Swal.fire({
@@ -466,7 +527,8 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             type: 'DELETE',
-                            url: '{{ route('alumni.destroy', ':id') }}'.replace(':id', id),
+                            url: '{{ route('kuliah.destroy', [':alumni_id', ':id']) }}'
+                                .replace(':alumni_id', alumniId).replace(':id', id),
                             data: {
                                 _token: '{{ csrf_token() }}'
                             },
@@ -476,7 +538,7 @@
                                     title: 'Berhasil!',
                                     text: response.message
                                 });
-                                table.ajax.reload();
+                                loadKuliahData();
                             },
                             error: function(xhr) {
                                 Swal.fire({
@@ -489,7 +551,7 @@
                     }
                 });
             });
-            // ============================ End Delete Alumni ==============================
+            // ============================ End Delete Kuliah ==============================
         });
     </script>
 @endpush

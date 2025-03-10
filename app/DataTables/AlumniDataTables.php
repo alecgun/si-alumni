@@ -69,8 +69,12 @@ class AlumniDataTables
         $editButton = auth()->user()->can('alumni.edit', $alumni) ? '
             <button class="btn btn-warning btn-sm me-2 edit-button" data-id="' . $alumni->id . '">Ubah</button>' : '';
         $deleteButton = auth()->user()->can('alumni.delete', $alumni) ? '
-            <button class="btn btn-danger btn-sm delete-button" data-id="' . $alumni->id . '">Hapus</button>' : '';
+            <button class="btn btn-danger btn-sm me-2 delete-button" data-id="' . $alumni->id . '">Hapus</button>' : '';
+        $kuliahButton = auth()->user()->can('kuliah.index', $alumni) ? '
+            <button class="btn btn-primary btn-sm me-2 kuliah-button" data-id="' . $alumni->id . '">Kuliah</button>' : '';
+        $kerjaButton = auth()->user()->can('kerja.index', $alumni) ? '
+            <button class="btn btn-primary btn-sm kerja-button" data-id="' . $alumni->id . '">Kerja</button>' : '';
 
-        return '<div class="text-center">' . $editButton . $deleteButton . '</div>';
+        return '<div class="text-center">' . $editButton . $deleteButton . $kuliahButton . $kerjaButton . '</div>';
     }
 }

@@ -15,7 +15,7 @@
                             <div class="mb-3">
                                 <label for="edit_nis" class="form-label">NIS</label>
                                 <input type="text" class="form-control" id="edit_nis" name="nis"
-                                    placeholder="Masukkan NIS" disabled>
+                                    placeholder="Masukkan NIS" readonly>
                                 @error('nis')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

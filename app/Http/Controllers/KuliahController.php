@@ -34,13 +34,16 @@ class KuliahController extends Controller implements HasMiddleware
         $this->kuliahDataTable = $kuliahDataTable;
     }
 
-    public function index(Request $request)
+    public function index($alumnus)
     {
-        if ($request->ajax()) {
-            return response()->json($this->kuliahDataTable->getData($request));
-        }
+        return view('backend.kuliah.index', compact('alumnus'));
+    }
 
-        return view('backend.kuliah.index');
+    public function getDataByAlumni($alumnus)
+    {
+        $kuliah = $this->kuliahService->getKuliahByAlumni($alumnus);
+
+        return response()->json($kuliah);
     }
 
     public function create()
@@ -48,36 +51,36 @@ class KuliahController extends Controller implements HasMiddleware
         // Tidak digunakan
     }
 
-    public function store(KuliahRequest $request)
+    public function store(KuliahRequest $request, $alumnus)
     {
-        $result = $this->kuliahService->createKuliah($request->all());
+        $result = $this->kuliahService->createKuliah($request->all(), $alumnus);
         if ($result['status']) {
             return response()->json(['success' => true, 'message' => 'Data kuliah berhasil dibuat']);
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);
     }
 
-    public function edit(Kuliah $kuliah)
+    public function edit($alumnus, $kuliah)
     {
-        $result = $this->kuliahService->editKuliah($kuliah);
+        $result = $this->kuliahService->editKuliah($alumnus, $kuliah);
         if ($result['status']) {
             return response()->json($result['kuliah']);
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);
     }
 
-    public function update(KuliahRequest $request, Kuliah $kuliah)
+    public function update(KuliahRequest $request, $alumnus, $kuliah)
     {
-        $result = $this->kuliahService->updateKuliah($kuliah, $request->all());
+        $result = $this->kuliahService->updateKuliah($request->all(), $alumnus, $kuliah);
         if ($result['status']) {
             return response()->json(['success' => true, 'message' => 'Data kuliah berhasil diperbarui']);
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);
     }
 
-    public function destroy(Kuliah $kuliah)
+    public function destroy($alumnus, $kuliah)
     {
-        $result = $this->kuliahService->deleteKuliah($kuliah);
+        $result = $this->kuliahService->deleteKuliah($alumnus, $kuliah);
         if ($result['status']) {
             return response()->json(['success' => true, 'message' => 'Data kuliah berhasil dihapus']);
         }

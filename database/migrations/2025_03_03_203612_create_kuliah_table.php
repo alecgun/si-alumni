@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('kuliah', function (Blueprint $table) {
             $table->id();
             $table->foreignId('alumni_id')->constrained('alumni')->restrictOnDelete();
+            $table->string('nama_universitas');
             $table->string('jenjang');
             $table->string('jalur_masuk');
             $table->year('tahun_masuk');
