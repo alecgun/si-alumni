@@ -9,7 +9,8 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Alumni
+                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Data
+                        Kerja <span id="alumni-nama"></span>
                     </h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
@@ -25,7 +26,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Alumni</li>
+                        <li class="breadcrumb-item text-muted">Kerja</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -51,8 +52,8 @@
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>
-                                <input type="text" id="alumni_search" data-kt-alumni-table-filter="search"
-                                    class="form-control form-control-solid w-250px ps-13" placeholder="Cari alumni" />
+                                <input type="text" id="kerja_search" data-kt-kerja-table-filter="search"
+                                    class="form-control form-control-solid w-250px ps-13" placeholder="Cari kerja" />
                             </div>
                             <!--end::Search-->
                         </div>
@@ -60,15 +61,15 @@
                         <!--begin::Card toolbar-->
                         <div class="card-toolbar">
                             <!--begin::Toolbar-->
-                            <div class="d-flex justify-content-end" data-kt-alumni-table-toolbar="base">
-                                <!--begin::Add alumni-->
-                                @can('alumni.create')
+                            <div class="d-flex justify-content-end" data-kt-kerja-table-toolbar="base">
+                                <!--begin::Add kerja-->
+                                @can('kerja.create')
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#kt_modal_add_alumni">
-                                        <i class="ki-duotone ki-plus fs-2"></i> Tambah Alumni
+                                        data-bs-target="#kt_modal_add_kerja">
+                                        <i class="ki-duotone ki-plus fs-2"></i> Tambah Kerja
                                     </button>
                                 @endcan
-                                <!--end::Add alumni-->
+                                <!--end::Add kerja-->
                             </div>
                             <!--end::Toolbar-->
                         </div>
@@ -78,8 +79,8 @@
                     <!--begin::Card body-->
                     <div class="card-body py-4">
                         <!--begin::Table-->
-                        <div id="alumni_table">
-                            @include('backend.alumni.table')
+                        <div id="kerja_table">
+                            @include('backend.kerja.table')
                         </div>
                         <!--end::Table-->
                     </div>
@@ -92,11 +93,11 @@
         <!--end::Content-->
     </div>
     <!--end::Content wrapper-->
-    @can('alumni.create')
-        @include('backend.alumni.create')
+    @can('kerja.create')
+        @include('backend.kerja.create')
     @endcan
-    @can('alumni.edit')
-        @include('backend.alumni.edit')
+    @can('kerja.edit')
+        @include('backend.kerja.edit')
     @endcan
 @endsection
 
@@ -124,87 +125,115 @@
                 });
             }
 
-            $('#kt_modal_add_alumni').on('show.bs.modal', function() {
+            $('#kt_modal_add_kerja').on('show.bs.modal', function() {
                 loadRoles('#role');
             });
+
+            loadKerjaData();
             // ============================ End Load data form ==============================
 
-            // ============================ Start Action Button  ==============================
-            $(document).on('click', '.kuliah-button', function() {
-                var alumniId = $(this).data('id');
-                window.location.href = '{{ route('kuliah.index', ':id') }}'.replace(':id', alumniId);
-            });
-
-            $(document).on('click', '.kerja-button', function() {
-                var alumniId = $(this).data('id');
-                window.location.href = '{{ route('kerja.index', ':id') }}'.replace(':id', alumniId);
-            });
-            // ============================ End Action Button ==============================
-
             // ============================ Start DataTable ==============================
-            var table = $('#kt_table_alumnis').DataTable({
-                processing: true,
-                serverSide: true,
-                order: [
-                    [4, 'desc']
-                ],
-                ajax: '{{ route('alumni.index') }}',
-                columns: [{
-                        data: 'iteration',
-                        name: 'iteration',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'nis',
-                        name: 'nis'
-                    },
-                    {
-                        data: 'nama',
-                        name: 'nama'
-                    },
-                    {
-                        data: 'kelas',
-                        name: 'kelas'
-                    },
-                    {
-                        data: 'tahun_masuk',
-                        name: 'tahun_masuk'
-                    },
-                    {
-                        data: 'tahun_lulus',
-                        name: 'tahun_lulus'
-                    },
-                    {
-                        data: 'instagram',
-                        name: 'instagram'
-                    },
-                    {
-                        data: 'created_at',
-                        name: 'created_at'
-                    },
-                    {
-                        data: 'updated_at',
-                        name: 'updated_at'
-                    },
-                    {
-                        data: 'actions',
-                        name: 'actions',
-                        orderable: false,
-                        searchable: false
-                    }
-                ]
-            });
+            // var table = $('#kt_table_kerjas').DataTable({
+            //     processing: true,
+            //     serverSide: true,
+            //     order: [
+            //         [4, 'desc']
+            //     ],
+            //     ajax: '{{ route('kerja.index', ':id') }}'.replace(':id', id),
+            //     columns: [{
+            //             data: 'iteration',
+            //             name: 'iteration',
+            //             orderable: false,
+            //             searchable: false
+            //         },
+            //         {
+            //             data: 'jenjang',
+            //             name: 'jenjang'
+            //         },
+            //         {
+            //             data: 'jalur_masuk',
+            //             name: 'jalur_masuk'
+            //         },
+            //         {
+            //             data: 'tahun_masuk',
+            //             name: 'tahun_masuk'
+            //         },
+            //         {
+            //             data: 'tahun_lulus',
+            //             name: 'tahun_lulus'
+            //         },
+            //         {
+            //             data: 'created_at',
+            //             name: 'created_at'
+            //         },
+            //         {
+            //             data: 'updated_at',
+            //             name: 'updated_at'
+            //         },
+            //         {
+            //             data: 'actions',
+            //             name: 'actions',
+            //             orderable: false,
+            //             searchable: false
+            //         }
+            //     ]
+            // });
 
-            $('#alumni_search').on('keyup', function() {
-                table.search(this.value).draw();
-            });
+            // $('#kerja_search').on('keyup', function() {
+            //     table.search(this.value).draw();
+            // });
+
+            function loadKerjaData() {
+                var alumniId = {{ $alumnus }};
+                $.ajax({
+                    url: '{{ route('kerja.data', ':id') }}'.replace(':id', alumniId),
+                    method: 'GET',
+                    success: function(data) {
+                        var tableBody = $('#kt_table_kerjas tbody');
+                        tableBody.empty(); // Clear existing data
+
+                        moment.locale('id');
+
+                        if (Array.isArray(data)) {
+                            data.forEach(function(kerja, index) {
+                                tableBody.append(
+                                    '<tr>' +
+                                    '<td class="text-center">' + (index + 1) +
+                                    '</td>' +
+                                    '<td class="text-center">' + kerja
+                                    .posisi_kerja +
+                                    '</td>' +
+                                    '<td class="text-center">' + kerja.tempat_kerja +
+                                    '</td>' +
+                                    '<td class="text-center">' + kerja
+                                    .tahun_masuk +
+                                    '</td>' +
+                                    '<td class="text-center">' +
+                                    '<button class="btn btn-warning btn-sm me-2 edit-button" data-id="' +
+                                    kerja
+                                    .id + '">Ubah</button>' + // Add edit button
+                                    '<button class="btn btn-danger btn-sm delete-button" data-id="' +
+                                    kerja
+                                    .id + '">Hapus</button>' + // Add delete button
+                                    '</td>' +
+                                    '</tr>'
+                                );
+                            });
+                        } else {
+                            console.log("Data yang diterima bukan array", data);
+                        }
+                    },
+                    error: function() {
+                        alert('Terjadi kesalahan saat memuat data kerja.');
+                    }
+                });
+            };
             // ============================ End DataTable ==============================
 
             // ============================ Start Reset Form ==============================
             function resetForm(form) {
                 $(form)[0].reset();
-                $(form).find('input[name="id_alumni"]').val('');
+                $(form).find('input[name="id_kerja"]').val('');
                 $(form).find('select').val('').trigger('change');
                 $('.is-invalid').removeClass('is-invalid');
                 $('.text-danger').remove();
@@ -233,20 +262,21 @@
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#kt_modal_add_alumni').modal('hide');
-                        resetForm('#kt_modal_add_alumni_form');
+                        $('#kt_modal_add_kerja').modal('hide');
+                        resetForm('#kt_modal_add_kerja_form');
                     }
                 });
             });
             // ============================ End Action Cancel Add ==============================
 
-
-            // ============================ Start Tambah Alumni ==============================
-            $('#kt_modal_add_alumni_form').on('submit', function(e) {
+            // ============================ Start Tambah Kerja ==============================
+            $('#kt_modal_add_kerja_form').on('submit', function(e) {
                 e.preventDefault();
-                var url = '{{ route('alumni.store') }}';
+                var alumniId = {{ $alumnus }};
+                var url = '{{ route('kerja.store', ':id') }}'.replace(':id', alumniId);
                 let form = $(this);
                 var formData = new FormData(this);
+                formData.append('alumni_id', alumniId);
 
                 clearValidationErrors(form);
 
@@ -275,9 +305,9 @@
                                     title: 'Berhasil!',
                                     text: response.message
                                 });
-                                $('#kt_modal_add_alumni').modal('hide');
-                                table.ajax.reload();
-                                resetForm('#kt_modal_add_alumni_form');
+                                $('#kt_modal_add_kerja').modal('hide');
+                                loadKerjaData();
+                                resetForm('#kt_modal_add_kerja_form');
                             },
                             error: function(xhr) {
                                 if (xhr.status === 422) {
@@ -321,30 +351,33 @@
                     }
                 });
             });
-            // ============================ End Tambah Alumni ==============================
+            // ============================ End Tambah Kerja ==============================
 
             // ============================ Start Show Modal Edit ==============================
             $(document).on('click', '.edit-button', function() {
                 var id = $(this).data('id');
-                var editUrl = '{{ route('alumni.edit', ':id') }}'.replace(':id', id);
+                var alumniId = {{ $alumnus }};
+                var editUrl = '{{ route('kerja.edit', [':alumni_id', ':id']) }}'
+                    .replace(':alumni_id', alumniId)
+                    .replace(':id', id);
+
+                console.log(editUrl);
 
                 $.ajax({
                     type: 'GET',
                     url: editUrl,
                     success: function(response) {
                         console.log(response);
-                        $('#edit_id_alumni').val(response.id);
-                        $('#edit_nis').val(response.nis);
-                        $('#edit_nama').val(response.nama);
-                        $('#edit_kelas').val(response.kelas);
+                        $('#edit_id_kerja').val(response.id);
+                        $('#edit_alumni_id').val(alumniId);
+                        $('#edit_posisi_kerja').val(response.posisi_kerja);
+                        $('#edit_tempat_kerja').val(response.tempat_kerja);
                         $('#edit_tahun_masuk').val(response.tahun_masuk);
-                        $('#edit_tahun_lulus').val(response.tahun_lulus);
-                        $('#edit_instagram').val(response.instagram);
-                        $('#edit_sosmed_lain').val(response.sosmed_lain);
-                        $('#kt_modal_edit_alumni_form').attr('action',
-                            '{{ route('alumni.update', ':id') }}'.replace(':id', response
-                                .id));
-                        $('#kt_modal_edit_alumni').modal('show');
+                        $('#kt_modal_edit_kerja_form').attr('action',
+                            '{{ route('kerja.update', [':alumni_id', ':id']) }}'
+                            .replace(':alumni_id', alumniId)
+                            .replace(':id', response.id));
+                        $('#kt_modal_edit_kerja').modal('show');
                     },
                     error: function(xhr) {
                         Swal.fire({
@@ -373,18 +406,21 @@
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#kt_modal_edit_alumni').modal('hide');
-                        resetForm('#kt_modal_edit_alumni_form');
+                        $('#kt_modal_edit_kerja').modal('hide');
+                        resetForm('#kt_modal_edit_kerja_form');
                     }
                 });
             });
             // ============================ End Cancel Edit ==============================
 
-            // ============================ Start Edit Alumni ==============================
-            $('#kt_modal_edit_alumni_form').on('submit', function(e) {
+            // ============================ Start Edit Kerja ==============================
+            $('#kt_modal_edit_kerja_form').on('submit', function(e) {
                 e.preventDefault();
-                var id_alumni = $('#edit_id_alumni').val();
-                var url = '{{ route('alumni.update', ':id') }}'.replace(':id', id_alumni);
+                var alumniId = {{ $alumnus }};
+                var id = $('#edit_id_kerja').val();
+                var url = '{{ route('kerja.update', [':alumni_id', ':id']) }}'
+                    .replace(':alumni_id', alumniId)
+                    .replace(':id', id);
                 let form = $(this);
                 var formData = new FormData(this);
 
@@ -415,9 +451,9 @@
                                     title: 'Berhasil!',
                                     text: response.message
                                 });
-                                $('#kt_modal_edit_alumni').modal('hide');
-                                table.ajax.reload();
-                                resetForm('#kt_modal_edit_alumni_form');
+                                $('#kt_modal_edit_kerja').modal('hide');
+                                loadKerjaData();
+                                resetForm('#kt_modal_edit_kerja_form');
                             },
                             error: function(xhr) {
                                 if (xhr.status === 422) {
@@ -461,10 +497,11 @@
                     }
                 });
             });
-            // ============================ End Edit Alumni ==============================
+            // ============================ End Edit Kerja ==============================
 
-            // ============================ Start Delete Alumni ==============================
+            // ============================ Start Delete Kerja ==============================
             $(document).on('click', '.delete-button', function() {
+                var alumniId = {{ $alumnus }};
                 var id = $(this).data('id');
 
                 Swal.fire({
@@ -482,7 +519,8 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             type: 'DELETE',
-                            url: '{{ route('alumni.destroy', ':id') }}'.replace(':id', id),
+                            url: '{{ route('kerja.destroy', [':alumni_id', ':id']) }}'
+                                .replace(':alumni_id', alumniId).replace(':id', id),
                             data: {
                                 _token: '{{ csrf_token() }}'
                             },
@@ -492,7 +530,7 @@
                                     title: 'Berhasil!',
                                     text: response.message
                                 });
-                                table.ajax.reload();
+                                loadKerjaData();
                             },
                             error: function(xhr) {
                                 Swal.fire({
@@ -505,7 +543,7 @@
                     }
                 });
             });
-            // ============================ End Delete Alumni ==============================
+            // ============================ End Delete Kerja ==============================
         });
     </script>
 @endpush

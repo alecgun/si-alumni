@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\KuliahController;
+use App\Http\Controllers\KerjaController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -33,6 +34,13 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('/alumni/{alumnus}/kuliah/{kuliah}/edit', [KuliahController::class, 'edit'])->name('kuliah.edit');
         Route::put('/alumni/{alumnus}/kuliah/{kuliah}', [KuliahController::class, 'update'])->name('kuliah.update');
         Route::delete('/alumni/{alumnus}/kuliah/{kuliah}', [KuliahController::class, 'destroy'])->name('kuliah.destroy');
+
+        Route::get('/alumni/{alumnus}/kerja', [KerjaController::class, 'index'])->name('kerja.index');
+        Route::get('/alumni/{alumnus}/kerja/get-data', [KerjaController::class, 'getDataByAlumni'])->name('kerja.data');
+        Route::post('/alumni/{alumnus}/kerja', [KerjaController::class, 'store'])->name('kerja.store');
+        Route::get('/alumni/{alumnus}/kerja/{kerja}/edit', [KerjaController::class, 'edit'])->name('kerja.edit');
+        Route::put('/alumni/{alumnus}/kerja/{kerja}', [KerjaController::class, 'update'])->name('kerja.update');
+        Route::delete('/alumni/{alumnus}/kerja/{kerja}', [KerjaController::class, 'destroy'])->name('kerja.destroy');
     });
 
     Route::prefix('setting')->group(function () {

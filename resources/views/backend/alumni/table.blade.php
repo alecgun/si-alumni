@@ -10,7 +10,7 @@
             <th class="min-w-125px">Instagram</th>
             <th class="min-w-125px">Dibuat Tanggal</th>
             <th class="min-w-125px">Diubah Tanggal</th>
-            @canany(['alumni.edit', 'alumni.delete', 'kuliah.index'])
+            @canany(['alumni.edit', 'alumni.delete', 'kuliah.index', 'kerja.index'])
                 <th class="text-center min-w-300px">Aksi</th>
             @endcanany
 
