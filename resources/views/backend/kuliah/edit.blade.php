@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="edit_nama_universitas" class="form-label">Nama Universitas</label>
+                                <label for="nama_universitas" class="form-label">Nama Universitas</label>
                                 <input type="text" class="form-control" id="edit_nama_universitas"
                                     name="nama_universitas" placeholder="Masukkan Nama Universitas">
                                 @error('nama_universitas')
@@ -23,7 +23,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="edit_jenjang" class="form-label">Jenjang</label>
+                                <label for="jenjang" class="form-label">Jenjang</label>
                                 <input type="text" class="form-control" id="edit_jenjang" name="jenjang"
                                     placeholder="Masukkan Jenjang">
                                 @error('jenjang')
@@ -35,7 +35,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="edit_jalur_masuk" class="form-label">Jalur Masuk</label>
+                                <label for="jalur_masuk" class="form-label">Jalur Masuk</label>
                                 <input type="text" class="form-control" id="edit_jalur_masuk" name="jalur_masuk"
                                     placeholder="Masukkan Jalur Masuk">
                                 @error('jalur_masuk')
@@ -45,7 +45,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="edit_tahun_masuk" class="form-label">Tahun Masuk</label>
+                                <label for="tahun_masuk" class="form-label">Tahun Masuk</label>
                                 <input type="text" class="form-control" id="edit_tahun_masuk" name="tahun_masuk"
                                     placeholder="Masukkan Tahun Masuk">
                                 @error('tahun_masuk')
@@ -57,7 +57,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="edit_tahun_lulus" class="form-label">Tahun Lulus</label>
+                                <label for="tahun_lulus" class="form-label">Tahun Lulus</label>
                                 <input type="text" class="form-control" id="edit_tahun_lulus" name="tahun_lulus"
                                     placeholder="Masukkan Tahun Lulus">
                                 @error('tahun_lulus')

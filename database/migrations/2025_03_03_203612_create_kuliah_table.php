@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('jenjang');
             $table->string('jalur_masuk');
             $table->year('tahun_masuk');
-            $table->year('tahun_lulus');
+            $table->year('tahun_lulus')->nullable();
             $table->timestamps();
         });
     }

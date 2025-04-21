@@ -29,7 +29,7 @@ class KuliahRequest extends FormRequest
             'jenjang' => 'required|string|max:50',
             'jalur_masuk' => 'required|string|max:50',
             'tahun_masuk' => 'required|integer|min:1900',
-            'tahun_lulus' => 'nullable|integer|min:1900',
+            'tahun_lulus' => 'nullable|integer|min:' . ($this->input('tahun_masuk')),
         ];
     }
 
@@ -52,7 +52,7 @@ class KuliahRequest extends FormRequest
             'tahun_masuk.integer' => 'Tahun masuk harus berupa angka',
             'tahun_masuk.min' => 'Tahun masuk minimal 1900',
             'tahun_lulus.integer' => 'Tahun lulus harus berupa angka',
-            'tahun_lulus.min' => 'Tahun lulus minimal 1900',
+            'tahun_lulus.min' => 'Tahun lulus tidak boleh kurang dari tahun masuk',
         ];
     }
 }

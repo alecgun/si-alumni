@@ -27,6 +27,7 @@ class KerjaService
                 'alumni_id' => $alumniId,
                 'posisi_kerja' => $data['posisi_kerja'],
                 'tempat_kerja' => $data['tempat_kerja'],
+                'alamat_kerja' => $data['alamat_kerja'],
                 'tahun_masuk' => $data['tahun_masuk'],
             ]);
             DB::commit();
@@ -116,6 +117,7 @@ class KerjaService
             return $query->where(function ($q) use ($search) {
                 $q->where('kerja.tempat_kerja', 'like', "%{$search}%")
                     ->orWhere('kerja.posisi_kerja', 'like', "%{$search}%")
+                    ->orWhere('kerja.alamat_kerja', 'like', "%{$search}%")
                     ->orWhere('kerja.tahun_masuk', 'like', "%{$search}%");
             });
         } catch (Exception $e) {

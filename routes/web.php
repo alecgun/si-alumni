@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\KuliahController;
 use App\Http\Controllers\KerjaController;
+use App\Http\Controllers\LandingController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -18,6 +19,8 @@ Route::group(['middleware' => ['guest']], function () {
     Route::get('/', function () {
         return view('frontend.auth.login');
     });
+    Route::get('/home', [LandingController::class, 'index'])->name('landing.home');
+    Route::get('/home/data-alumni', [LandingController::class, 'dataAlumni'])->name('landing.dataAlumni');
     Route::get('/login', [AuthController::class, 'index'])->name('login');
     Route::post('/login-post', [AuthController::class, 'login'])->name('login.post');
 });
@@ -47,7 +50,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::resource('user', UserController::class);
         Route::resource('role', RoleController::class);
     });
-
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile/update-password', [ProfileController::class, 'update'])->name('profile.updatePassword');

@@ -31,6 +31,7 @@ class AlumniRequest extends FormRequest
             'kelas' => 'required|string|max:10',
             'tahun_masuk' => 'required|integer|min:1900|max:' . (date('Y') + 1),
             'tahun_lulus' => 'required|integer|min:1900|max:' . (date('Y') + 1),
+            'tanggal_lahir' => 'nullable|date',
             'instagram' => 'nullable|string|max:255',
             'sosmed_lain' => 'nullable|string|max:255',
         ];
@@ -66,6 +67,7 @@ class AlumniRequest extends FormRequest
             'tahun_lulus.integer' => 'Tahun lulus harus berupa angka',
             'tahun_lulus.min' => 'Tahun lulus minimal 1900',
             'tahun_lulus.max' => 'Tahun lulus maximal ' . (date('Y') + 1),
+            'tanggal_lahir.date' => 'Tanggal lahir harus sah',
             'instagram.string' => 'Instagram harus berupa teks',
             'instagram.max' => 'Instagram maksimal 255 karakter',
             'sosmed_lain.string' => 'Sosmed lain harus berupa teks',

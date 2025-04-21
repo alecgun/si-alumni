@@ -27,6 +27,7 @@ class Alumni extends Model
         'kelas',
         'tahun_masuk',
         'tahun_lulus',
+        'tanggal_lahir',
         'instagram',
         'sosmed_lain',
         'created_at',

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('kelas');
             $table->year('tahun_masuk');
             $table->year('tahun_lulus');
+            $table->date('tanggal_lahir')->nullable();
             $table->string('instagram')->nullable();
             $table->string('sosmed_lain')->nullable();
             $table->timestamps();

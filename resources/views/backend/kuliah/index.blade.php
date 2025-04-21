@@ -198,20 +198,20 @@
                             data.forEach(function(kuliah, index) {
                                 tableBody.append(
                                     '<tr>' +
-                                    '<td class="text-center">' + (index + 1) +
+                                    '<td>' + (index + 1) +
                                     '</td>' +
-                                    '<td class="text-center">' + kuliah
+                                    '<td>' + kuliah
                                     .nama_universitas +
                                     '</td>' +
-                                    '<td class="text-center">' + kuliah.jenjang +
+                                    '<td>' + kuliah.jenjang +
                                     '</td>' +
-                                    '<td class="text-center">' + kuliah
+                                    '<td>' + kuliah
                                     .jalur_masuk +
                                     '</td>' +
-                                    '<td class="text-center">' + kuliah
+                                    '<td>' + kuliah
                                     .tahun_masuk +
                                     '</td>' +
-                                    '<td class="text-center">' + kuliah
+                                    '<td>' + kuliah
                                     .tahun_lulus +
                                     '</td>' +
                                     '<td class="text-center">' +

@@ -53,10 +53,10 @@ class AlumniDataTables
                     'nis' => $alumni->nis,
                     'nama' => $alumni->nama,
                     'kelas' => $alumni->kelas,
+                    'tanggal_lahir' => Carbon::parse($alumni->tanggal_lahir)->translatedFormat('j F Y'),
                     'tahun_masuk' => $alumni->tahun_masuk,
                     'tahun_lulus' => $alumni->tahun_lulus,
                     'instagram' => $alumni->instagram,
-                    'created_at' => Carbon::parse($alumni->created_at)->translatedFormat('j F Y'),
                     'updated_at' => Carbon::parse($alumni->updated_at)->translatedFormat('j F Y'),
                     'actions' => $this->getActions($alumni),
                 ];

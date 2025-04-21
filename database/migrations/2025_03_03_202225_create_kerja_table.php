@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('alumni_id')->constrained('alumni')->restrictOnDelete();
             $table->string('posisi_kerja');
             $table->string('tempat_kerja');
+            $table->string('alamat_kerja');
             $table->year('tahun_masuk');
             $table->timestamps();
         });

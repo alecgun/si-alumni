@@ -21,6 +21,7 @@ class Kerja extends Model
         'alumni_id',
         'posisi_kerja',
         'tempat_kerja',
+        'alamat_kerja',
         'tahun_masuk',
     ];
 

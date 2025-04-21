@@ -198,14 +198,15 @@
                             data.forEach(function(kerja, index) {
                                 tableBody.append(
                                     '<tr>' +
-                                    '<td class="text-center">' + (index + 1) +
+                                    '<td>' + (index + 1) +
                                     '</td>' +
-                                    '<td class="text-center">' + kerja
+                                    '<td>' + kerja
                                     .posisi_kerja +
                                     '</td>' +
-                                    '<td class="text-center">' + kerja.tempat_kerja +
+                                    '<td>' + kerja.tempat_kerja +
                                     '</td>' +
-                                    '<td class="text-center">' + kerja
+                                    '<td>' + kerja.alamat_kerja + '</td>' +
+                                    '<td>' + kerja
                                     .tahun_masuk +
                                     '</td>' +
                                     '<td class="text-center">' +
@@ -372,6 +373,7 @@
                         $('#edit_alumni_id').val(alumniId);
                         $('#edit_posisi_kerja').val(response.posisi_kerja);
                         $('#edit_tempat_kerja').val(response.tempat_kerja);
+                        $('#edit_alamat_kerja').val(response.alamat_kerja);
                         $('#edit_tahun_masuk').val(response.tahun_masuk);
                         $('#kt_modal_edit_kerja_form').attr('action',
                             '{{ route('kerja.update', [':alumni_id', ':id']) }}'

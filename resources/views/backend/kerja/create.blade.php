@@ -33,6 +33,16 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
+                                <label for="alamat_kerja" class="form-label">Alamat Tempat Kerja</label>
+                                <input type="text" class="form-control" id="alamat_kerja" name="alamat_kerja"
+                                    placeholder="Masukkan alamat tempat kerja">
+                                @error('alamat_kerja')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
                                 <label for="tahun_masuk" class="form-label">Tahun Masuk</label>
                                 <input type="text" class="form-control" id="tahun_masuk" name="tahun_masuk"
                                     placeholder="Masukkan tahun masuk">

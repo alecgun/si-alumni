@@ -168,6 +168,10 @@
                         name: 'kelas'
                     },
                     {
+                        data: 'tanggal_lahir',
+                        name: 'tanggal_lahir'
+                    },
+                    {
                         data: 'tahun_masuk',
                         name: 'tahun_masuk'
                     },
@@ -178,10 +182,6 @@
                     {
                         data: 'instagram',
                         name: 'instagram'
-                    },
-                    {
-                        data: 'created_at',
-                        name: 'created_at'
                     },
                     {
                         data: 'updated_at',
@@ -200,6 +200,29 @@
                 table.search(this.value).draw();
             });
             // ============================ End DataTable ==============================
+
+            // ============================ Start Datepicker ==============================
+            $(document).ready(function() {
+                function initializeDatepicker(elementId) {
+                    $("#" + elementId).val('');
+                    $("#" + elementId).daterangepicker({
+                            singleDatePicker: true,
+                            showDropdowns: true,
+                            parentEl: '#kt_modal_app_pasien',
+                            minYear: 1901,
+                            maxYear: parseInt(moment().format("YYYY"), 12),
+                            autoUpdateInput: false
+                        },
+                        function(start, end, label) {
+                            if (start) {
+                                var years = moment().diff(start, "years");
+                                $("#" + elementId).val(start.format('YYYY/MM/DD'));
+                            }
+                        });
+                }
+                initializeDatepicker("tanggal_lahir");
+            });
+            // ============================ End Datepicker ==============================
 
             // ============================ Start Reset Form ==============================
             function resetForm(form) {
@@ -341,6 +364,32 @@
                         $('#edit_tahun_lulus').val(response.tahun_lulus);
                         $('#edit_instagram').val(response.instagram);
                         $('#edit_sosmed_lain').val(response.sosmed_lain);
+
+                        function initializeDatepickerEdit(elementId, response) {
+                            var dateValue = response[elementId];
+                            if (dateValue) {
+                                var formattedDate = moment(dateValue, 'YYYY-MM-DD').format(
+                                    'MM/DD/YYYY');
+                                $("#edit_" + elementId).val(formattedDate);
+                            }
+
+                            $("#edit_" + elementId).daterangepicker({
+                                singleDatePicker: true,
+                                showDropdowns: true,
+                                parentEl: '#kt_modal_edit_pasien',
+                                minYear: 1901,
+                                maxYear: parseInt(moment().format("YYYY"), 12),
+                                autoUpdateInput: false
+                            }, function(start, end, label) {
+                                if (start) {
+                                    $("#edit_" + elementId).val(start.format(
+                                        'MM/DD/YYYY'));
+                                }
+                            });
+                        }
+
+                        initializeDatepickerEdit("tanggal_lahir", response);
+
                         $('#kt_modal_edit_alumni_form').attr('action',
                             '{{ route('alumni.update', ':id') }}'.replace(':id', response
                                 .id));
