@@ -25,6 +25,10 @@ class MenuItemSeeder extends Seeder
         $this->createMenuItem('Role', $settingGroup, [
             'role.index', 'role.create', 'role.edit', 'role.delete'
         ], 'role.index');
+
+        $this->createMenuItem('Activity Log', $settingGroup, [
+            'log.aktivitas.index'
+        ], 'log.aktivitas.index');
     }
 
     private function createMenuItem($name, $group, $permissionNames, $primaryPermissionName)

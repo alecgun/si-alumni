@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\StoreClass\LogAktivitas;
 use App\DataTables\KuliahDataTables;
 use App\Http\Requests\KuliahRequest;
 use App\Models\Kuliah;
@@ -55,6 +56,7 @@ class KuliahController extends Controller implements HasMiddleware
     {
         $result = $this->kuliahService->createKuliah($request->all(), $alumnus);
         if ($result['status']) {
+            LogAktivitas::log('Menambah data alumni', $request->path(), null, $result['alumni'], Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Data kuliah berhasil dibuat']);
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);
@@ -73,6 +75,7 @@ class KuliahController extends Controller implements HasMiddleware
     {
         $result = $this->kuliahService->updateKuliah($request->all(), $alumnus, $kuliah);
         if ($result['status']) {
+            LogAktivitas::log('Mengubah data alumni', $request->path(), $result['alumni'], $request->all(), Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Data kuliah berhasil diperbarui']);
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);
@@ -82,6 +85,7 @@ class KuliahController extends Controller implements HasMiddleware
     {
         $result = $this->kuliahService->deleteKuliah($alumnus, $kuliah);
         if ($result['status']) {
+            LogAktivitas::log('Menghapus data alumni', request()->path(), $alumni, null, Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Data kuliah berhasil dihapus']);
         }
         if (strpos($result['message'], 'Data kuliah ini memiliki data terkait yang tidak dapat dihapus.') !== false) {

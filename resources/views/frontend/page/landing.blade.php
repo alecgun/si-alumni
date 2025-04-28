@@ -12,10 +12,8 @@
                         <h1>Sistem Pendataan Alumni</h1>
                         <p class="home-desc pt-3">Website ini menyediakan sarana bagi alumni untuk memperbarui data
                             lulusan SMAN 1 Blitar yang melanjutkan ke jenjang kuliah maupun kerja.</p>
-                        <p class="home-desc pt-3">Cari Username dan Password tekan tombol Cari akun.</p>
                         <div class="mt-4 pt-3">
-                            <a href="#" class="btn me-2 btn-primary">Login</a>
-                            <a href="#" class="btn btn-primary">Cari Akun</a>
+                            <a href="{{ route('login') }}" class="btn me-2 btn-primary">Login</a>
                         </div>
                     </div>
                 </div>

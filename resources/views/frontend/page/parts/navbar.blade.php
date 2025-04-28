@@ -1,5 +1,5 @@
 <div class="container">
-    <a class="navbar-brand" href="index-6.html">SMAN 1 BLITAR</a>
+    <a class="navbar-brand" href="{{ route('landing.home') }}">SMAN 1 BLITAR</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <i class="mdi mdi-menu text-muted"></i>
@@ -9,10 +9,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('landing.dataAlumni') }}">Data Alumni</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="https://sman1blitar.sch.id/" target="_blank">Main Web Smasa</a>
+            <li class="nav-item align-self-center justify-content-center">
+                <a href="{{ route('login') }}" class="btn btn-primary"
+                    style="height: 40px; display: flex; align-items: center;">Login</a>
             </li>
-            <li class="nav-item dropdown">
+            {{-- <li class="nav-item dropdown">
                 <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     Blog <i class="mdi mdi-chevron-down"></i>
@@ -28,27 +29,7 @@
                         <a class="nav-link" href="blog-details.html">Blog Details</a>
                     </li>
                 </ul>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#contact">Contact</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    User <i class="mdi mdi-chevron-down"></i>
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li>
-                        <a class="nav-link" href="#">Profile</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="#">Settings</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="#">Logout</a>
-                    </li>
-                </ul>
-            </li>
+            </li> --}}
         </ul>
         <!--end navbar-nav-->
     </div>

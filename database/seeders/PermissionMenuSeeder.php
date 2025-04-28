@@ -10,9 +10,9 @@ class PermissionMenuSeeder extends Seeder
     public function run()
     {
         $permissions = [
-            'dashboard', 'setting', 'alumni', 
+            'dashboard', 'setting', 'alumni',
             'user.index', 'user.create', 'user.edit', 'user.delete',
-            'role.index', 'role.create', 'role.edit', 'role.delete',
+            'role.index', 'role.create', 'role.edit', 'role.delete', 'log.aktivitas.index',
             'alumni.index', 'alumni.create', 'alumni.edit', 'alumni.delete',
             'kuliah.index', 'kuliah.create', 'kuliah.edit', 'kuliah.delete',
             'kerja.index', 'kerja.create', 'kerja.edit', 'kerja.delete',

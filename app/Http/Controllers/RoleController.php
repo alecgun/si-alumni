@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\StoreClass\LogAktivitas;
 use App\DataTables\RoleDataTables;
 use App\Http\Requests\RoleRequest;
 use App\Models\MenuGroup;
@@ -56,6 +57,7 @@ class RoleController extends Controller implements HasMiddleware
     {
         $result = $this->roleService->createRole($request->all());
         if ($result['status']) {
+            LogAktivitas::log('Menambah data role', $request->path(), null, $result['role'], Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Role berhasil dibuat']);
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);
@@ -74,6 +76,7 @@ class RoleController extends Controller implements HasMiddleware
     {
         $result = $this->roleService->updateRole($role, $request->all());
         if ($result['status']) {
+            LogAktivitas::log('Mengubah data role', $request->path(), $result['role'], $request->all(), Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Role berhasil diperbarui']);
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);
@@ -83,6 +86,7 @@ class RoleController extends Controller implements HasMiddleware
     {
         $result = $this->roleService->deleteRole($role);
         if ($result['status']) {
+            LogAktivitas::log('Menghapus data role', request()->path(), $role, null, Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Role berhasil dihapus']);
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);

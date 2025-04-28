@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\StoreClass\LogAktivitas;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -60,7 +61,7 @@ class AuthController extends Controller implements HasMiddleware
                 if (!$remember) {
                     config(['session.expire_on_close' => true]);
                 }
-
+                LogAktivitas::log('Login', $request->path(), null, null, Auth::user()->id);
                 return redirect()->intended($this->redirectPath(Auth::user()))->with('success', 'Login berhasil.');
             }
 
@@ -124,7 +125,7 @@ class AuthController extends Controller implements HasMiddleware
                 $user->remember_token = null;
                 $user->save();
             }
-
+            LogAktivitas::log('Logout', $request->path(), null, null, $user->id);
             // Redirect to home page
             return redirect('/');
         } catch (Exception $e) {

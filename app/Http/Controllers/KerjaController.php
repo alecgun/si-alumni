@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\StoreClass\LogAktivitas;
 use App\Http\Requests\KerjaRequest;
 use App\Models\Kerja;
 use App\Services\KerjaService;
@@ -52,6 +53,7 @@ class KerjaController extends Controller implements HasMiddleware
     {
         $result = $this->kerjaService->createKerja($request->all(), $alumnus);
         if ($result['status']) {
+            LogAktivitas::log('Menambah data kerja', $request->path(), null, $result['kerja'], Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Data kerja berhasil dibuat']);
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);
@@ -70,6 +72,7 @@ class KerjaController extends Controller implements HasMiddleware
     {
         $result = $this->kerjaService->updateKerja($request->all(), $alumnus, $kerja);
         if ($result['status']) {
+            LogAktivitas::log('Mengubah data kerja', $request->path(), $result['kerja'], $request->all(), Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Data kerja berhasil diperbarui']);
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);
@@ -79,6 +82,7 @@ class KerjaController extends Controller implements HasMiddleware
     {
         $result = $this->kerjaService->deleteKerja($alumnus, $kerja);
         if ($result['status']) {
+            LogAktivitas::log('Menghapus data kerja', request()->path(), $kerja, null, Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Data kerja berhasil dihapus']);
         }
         if (strpos($result['message'], 'Data kerja ini memiliki data terkait yang tidak dapat dihapus.') !== false) {

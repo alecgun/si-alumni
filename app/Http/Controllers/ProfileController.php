@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\StoreClass\LogAktivitas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -40,6 +41,7 @@ class ProfileController extends Controller
             $user->password = Hash::make($request->new_password);
             $user->save();
             DB::commit();
+            LogAktivitas::log('Password updated', request()->path(), null, null, Auth::user()->id);
 
             return response()->json(['success' => true, 'message' => 'Kata sandi berhasil diperbarui.']);
         } catch (\Exception $e) {

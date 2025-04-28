@@ -25,4 +25,12 @@
     <link href="{{ asset('frontend-assets/css/colors/default.css') }}" rel="stylesheet" type="text/css"
         id="color-opt" />
 
+    <!-- DataTables -->
+    <link href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.2/css/buttons.dataTables.css" type="text.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    @stack('customStyles')
+
 </head>

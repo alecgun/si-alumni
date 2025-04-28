@@ -10,12 +10,17 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use App\DataTables\DataAlumniDataTables;
 
 class LandingController extends Controller implements HasMiddleware
 {
     /**
      * Constructor to apply middleware.
      */
+
+    protected $dataAlumniDataTable;
+
+
     public static function middleware(): array
     {
         return [
@@ -23,24 +28,23 @@ class LandingController extends Controller implements HasMiddleware
         ];
     }
 
+    public function __construct(DataAlumniDataTables $dataAlumniDataTable)
+    {
+        $this->dataAlumniDataTable = $dataAlumniDataTable;
+    }
+
     public function index()
     {
         return view('frontend.page.landing');
     }
 
-    public function dataAlumni()
+    public function dataAlumni(Request $request)
     {
-        $alumniData = DB::table('alumni')
-            ->select(
-                'alumni.nis',
-                'alumni.nama',
-                'alumni.kelas',
-            )->get();
+        if ($request->ajax()) {
+            return response()->json($this->dataAlumniDataTable->getData($request));
+        }
 
-        return view('frontend.page.alumni')
-            ->with([
-                'alumniData' => $alumniData,
-            ]);
+        return view('frontend.page.alumni');
     }
 
 }
