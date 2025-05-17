@@ -15,19 +15,29 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/get-data-role', [RoleController::class, 'data'])->name('role.data');
+Route::get('/', [LandingController::class, 'index'])->name('landing.home');
+Route::get('/data-alumni', [LandingController::class, 'dataAlumni'])->name('landing.dataAlumni');
 
 Route::group(['middleware' => ['guest']], function () {
     Route::get('/login', function () {
         return view('frontend.auth.login');
     });
-    Route::get('/', [LandingController::class, 'index'])->name('landing.home');
-    Route::get('/data-alumni', [LandingController::class, 'dataAlumni'])->name('landing.dataAlumni');
     Route::get('/login', [AuthController::class, 'index'])->name('login');
     Route::post('/login-post', [AuthController::class, 'login'])->name('login.post');
 });
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/biodata', [LandingController::class, 'biodata'])->name('landing.biodata');
+    Route::get('/get-alumni-by-user', [LandingController::class, 'getAlumniByAuthUser'])->name('landing.getAlumniByAuthUser');
+    Route::post('biodata/store-kuliah', [LandingController::class, 'storeKuliah'])->name('landing.storeKuliah');
+    Route::get('biodata/{idAlumni}/edit-kuliah/{idKuliah}/edit', [LandingController::class, 'editKuliah'])->name('landing.editKuliah');
+    Route::put('biodata/{idAlumni}/edit-kuliah/{idKuliah}', [LandingController::class, 'updateKuliah'])->name('landing.updateKuliah');
+    Route::delete('biodata/{idAlumni}/delete-kuliah/{idKuliah}', [LandingController::class, 'deleteKuliah'])->name('landing.deleteKuliah');
+    Route::post('biodata/store-kerja', [LandingController::class, 'storeKerja'])->name('landing.storeKerja');
+    Route::get('biodata/{idAlumni}/edit-kerja/{idKerja}/edit', [LandingController::class, 'editKerja'])->name('landing.editKerja');
+    Route::put('biodata/{idAlumni}/edit-kerja/{idKerja}', [LandingController::class, 'updateKerja'])->name('landing.updateKerja');
+    Route::delete('biodata/{idAlumni}/delete-kerja/{idKerja}', [LandingController::class, 'deleteKerja'])->name('landing.deleteKerja');
     //make route prefix setting
     Route::prefix('alumni')->group(function () {
         Route::resource('alumni', AlumniController::class);

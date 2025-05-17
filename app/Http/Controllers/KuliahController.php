@@ -56,7 +56,7 @@ class KuliahController extends Controller implements HasMiddleware
     {
         $result = $this->kuliahService->createKuliah($request->all(), $alumnus);
         if ($result['status']) {
-            LogAktivitas::log('Menambah data alumni', $request->path(), null, $result['alumni'], Auth::user()->id);
+            LogAktivitas::log('Menambah data kuliah', $request->path(), null, $result['kuliah'], Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Data kuliah berhasil dibuat']);
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);
@@ -75,7 +75,7 @@ class KuliahController extends Controller implements HasMiddleware
     {
         $result = $this->kuliahService->updateKuliah($request->all(), $alumnus, $kuliah);
         if ($result['status']) {
-            LogAktivitas::log('Mengubah data alumni', $request->path(), $result['alumni'], $request->all(), Auth::user()->id);
+            LogAktivitas::log('Mengubah data kuliah', $request->path(), $result['kuliah'], $request->all(), Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Data kuliah berhasil diperbarui']);
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);
@@ -85,7 +85,7 @@ class KuliahController extends Controller implements HasMiddleware
     {
         $result = $this->kuliahService->deleteKuliah($alumnus, $kuliah);
         if ($result['status']) {
-            LogAktivitas::log('Menghapus data alumni', request()->path(), $alumni, null, Auth::user()->id);
+            LogAktivitas::log('Menghapus data kuliah', request()->path(), $kuliah, null, Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Data kuliah berhasil dihapus']);
         }
         if (strpos($result['message'], 'Data kuliah ini memiliki data terkait yang tidak dapat dihapus.') !== false) {

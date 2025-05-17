@@ -13,9 +13,20 @@ class KuliahService
     public function getKuliahByAlumni($alumniId)
     {
         try {
-            return Kuliah::selectRaw('id, alumni_id, COALESCE(nama_universitas, \'-\') as nama_universitas, COALESCE(jenjang, \'-\') as jenjang, COALESCE(jalur_masuk, \'-\') as jalur_masuk, COALESCE(tahun_masuk, \'-\') as tahun_masuk, COALESCE(tahun_lulus, \'-\') as tahun_lulus')
-                ->where('alumni_id', $alumniId)
-                ->get();
+            return Kuliah::selectRaw('
+                id,
+                alumni_id,
+                COALESCE(nama_universitas, \'-\') as nama_universitas,
+                COALESCE(jenjang, \'-\') as jenjang,
+                COALESCE(fakultas, \'-\') as fakultas,
+                COALESCE(program_studi, \'-\') as program_studi,
+                COALESCE(status_kuliah, \'-\') as status_kuliah,
+                COALESCE(jalur_masuk, \'-\') as jalur_masuk,
+                COALESCE(tahun_masuk, \'-\') as tahun_masuk,
+                COALESCE(tahun_lulus, \'-\') as tahun_lulus'
+            )
+            ->where('alumni_id', $alumniId)
+            ->get();
         } catch (Exception $e) {
             return ['status' => false, 'message' => 'Gagal mengambil data kuliah: ' . $e->getMessage()];
         }
@@ -29,7 +40,10 @@ class KuliahService
                 'alumni_id' => $alumniId,
                 'nama_universitas' => $data['nama_universitas'],
                 'jenjang' => $data['jenjang'],
+                'fakultas' => $data['fakultas'],
+                'program_studi' => $data['program_studi'],
                 'jalur_masuk' => $data['jalur_masuk'],
+                'status_kuliah' => $data['status_kuliah'],
                 'tahun_masuk' => $data['tahun_masuk'],
                 'tahun_lulus' => $data['tahun_lulus'],
             ]);

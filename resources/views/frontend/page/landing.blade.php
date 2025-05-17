@@ -1,29 +1,31 @@
 @extends('frontend.page.parts.master')
 @section('content')
     <!-- start-HOME -->
-    <section class="bg-home6 overflow-hidden" id="home"
-        style="background-image: url({{ asset('frontend-assets/images/home/smasa.jpg') }});">
-        <div class="bg-overlay"></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="text-center text-white">
-                        <h6 class="home-subtitle mb-4">SMAN 1 Blitar</h6>
-                        <h1>Sistem Pendataan Alumni</h1>
-                        <p class="home-desc pt-3">Website ini menyediakan sarana bagi alumni untuk memperbarui data
-                            lulusan SMAN 1 Blitar yang melanjutkan ke jenjang kuliah maupun kerja.</p>
-                        <div class="mt-4 pt-3">
-                            <a href="{{ route('login') }}" class="btn me-2 btn-primary">Login</a>
+    @guest
+        <section class="bg-home6 overflow-hidden" id="home"
+            style="background-image: url({{ asset('frontend-assets/images/home/smasa.jpg') }});">
+            <div class="bg-overlay"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-center text-white">
+                            <h6 class="home-subtitle mb-4">SMAN 1 Blitar</h6>
+                            <h1>Sistem Pendataan Alumni</h1>
+                            <p class="home-desc pt-3">Website ini menyediakan sarana bagi alumni untuk memperbarui data
+                                lulusan SMAN 1 Blitar yang melanjutkan ke jenjang kuliah maupun kerja.</p>
+                            <div class="mt-4 pt-3">
+                                <a href="{{ route('login') }}" class="btn me-2 btn-primary">Login</a>
+                            </div>
                         </div>
                     </div>
+                    <!--end col-->
                 </div>
-                <!--end col-->
+                <!--end row-->
             </div>
-            <!--end row-->
-        </div>
-        <!--end container-->
-    </section>
-    <!-- END HOME -->
+            <!--end container-->
+        </section>
+        <!-- END HOME -->
+    @endguest
 
 
     <!-- START FEATURES -->

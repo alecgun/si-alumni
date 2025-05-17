@@ -21,6 +21,28 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
+                                <label for="fakultas" class="form-label">Fakultas</label>
+                                <input type="text" class="form-control" id="fakultas" name="fakultas"
+                                    placeholder="Masukkan fakultas lengkap">
+                                @error('fakultas')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="program_studi" class="form-label">Program Studi</label>
+                                <input type="text" class="form-control" id="program_studi" name="program_studi"
+                                    placeholder="Masukkan program studi">
+                                @error('program_studi')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
                                 <label for="jenjang" class="form-label">Jenjang</label>
                                 <input type="text" class="form-control" id="jenjang" name="jenjang"
                                     placeholder="Masukkan jenjang lengkap">
@@ -43,6 +65,18 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
+                                <label for="status_kuliah" class="form-label">Status Kuliah</label>
+                                <input type="text" class="form-control" id="status_kuliah" name="status_kuliah"
+                                    placeholder="Masukkan status kuliah">
+                                @error('status_kuliah')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
                                 <label for="tahun_masuk" class="form-label">Tahun Masuk</label>
                                 <input type="text" class="form-control" id="tahun_masuk" name="tahun_masuk"
                                     placeholder="Masukkan tahun masuk">
@@ -51,8 +85,6 @@
                                 @enderror
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="tahun_lulus" class="form-label">Tahun Lulus</label>
@@ -68,7 +100,7 @@
                         <button type="submit" class="btn btn-primary mt-3 me-3">
                             Simpan
                         </button>
-                        <button type="button" class="btn btn-secondary mt-3" id="cancel_button">Batal</button>
+                        <button type="button" class="btn btn-danger mt-3" id="cancel_button">Batal</button>
                     </div>
                 </form>
             </div>

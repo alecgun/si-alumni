@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('tanggal_lahir')->nullable();
             $table->string('instagram')->nullable();
             $table->string('sosmed_lain')->nullable();
+            $table->foreignId('id_user')->constrained('users')->restrictOnDelete();
             $table->timestamps();
         });
     }

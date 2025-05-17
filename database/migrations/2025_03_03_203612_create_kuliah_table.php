@@ -17,6 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('alumni_id')->constrained('alumni')->restrictOnDelete();
             $table->string('nama_universitas');
+            $table->string('fakultas');
+            $table->string('program_studi');
+            $table->string('status_kuliah')->default('aktif');
             $table->string('jenjang');
             $table->string('jalur_masuk');
             $table->year('tahun_masuk');

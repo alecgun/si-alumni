@@ -49,6 +49,7 @@ class DataAlumniDataTables
             'data' => $data->map(function ($alumni, $index) use ($start) {
                 Carbon::setLocale('id');
                 return [
+                    'nis' => $alumni->nis,
                     'nama' => $alumni->nama,
                     'kelas' => $alumni->kelas,
                     'tahun_lulus' => $alumni->tahun_lulus,

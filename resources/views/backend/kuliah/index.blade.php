@@ -205,6 +205,12 @@
                                     '</td>' +
                                     '<td>' + kuliah.jenjang +
                                     '</td>' +
+                                    '<td>' + kuliah.fakultas +
+                                    '</td>' +
+                                    '<td>' + kuliah.program_studi +
+                                    '</td>' +
+                                    '<td>' + kuliah.status_kuliah +
+                                    '</td>' +
                                     '<td>' + kuliah
                                     .jalur_masuk +
                                     '</td>' +
@@ -279,6 +285,7 @@
             $('#kt_modal_add_kuliah_form').on('submit', function(e) {
                 e.preventDefault();
                 var alumniId = {{ $alumnus }};
+                console.log(alumniId);
                 var url = '{{ route('kuliah.store', ':id') }}'.replace(':id', alumniId);
                 let form = $(this);
                 var formData = new FormData(this);
@@ -367,8 +374,6 @@
                     .replace(':alumni_id', alumniId)
                     .replace(':id', id);
 
-                console.log(editUrl);
-
                 $.ajax({
                     type: 'GET',
                     url: editUrl,
@@ -378,6 +383,9 @@
                         $('#edit_alumni_id').val(alumniId);
                         $('#edit_nama_universitas').val(response.nama_universitas);
                         $('#edit_jenjang').val(response.jenjang);
+                        $('#edit_fakultas').val(response.fakultas);
+                        $('#edit_program_studi').val(response.program_studi);
+                        $('#edit_status_kuliah').val(response.status_kuliah);
                         $('#edit_jalur_masuk').val(response.jalur_masuk);
                         $('#edit_tahun_masuk').val(response.tahun_masuk);
                         $('#edit_tahun_lulus').val(response.tahun_lulus);

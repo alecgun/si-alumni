@@ -16,6 +16,13 @@ class AlumniSeeder extends Seeder
      */
     public function run()
     {
+
+        $userJohn = DB::table('users')->where('name', 'John Doe')->first();
+        $userJane = DB::table('users')->where('name', 'Jane Smith')->first();
+        $userMichael = DB::table('users')->where('name', 'Michael Johnson')->first();
+        $userEmily = DB::table('users')->where('name', 'Emily Davis')->first();
+        $userDavid = DB::table('users')->where('name', 'David Brown')->first();
+
         $alumnis = [
             [
                 'nis' => '123456',
@@ -26,6 +33,7 @@ class AlumniSeeder extends Seeder
                 'tanggal_lahir' => '1999-01-01',
                 'instagram' => '@johndoe',
                 'sosmed_lain' => 'https://twitter.com/johndoe',
+                'id_user' => $userJohn->id,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
@@ -38,6 +46,7 @@ class AlumniSeeder extends Seeder
                 'tanggal_lahir' => '2000-02-02',
                 'instagram' => '@janesmith',
                 'sosmed_lain' => 'https://facebook.com/janesmith',
+                'id_user' => $userJane->id,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
@@ -50,6 +59,7 @@ class AlumniSeeder extends Seeder
                 'tanggal_lahir' => '1998-03-03',
                 'instagram' => '@michaeljohnson',
                 'sosmed_lain' => 'https://instagram.com/michaeljohnson',
+                'id_user' => $userMichael->id,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
@@ -62,6 +72,7 @@ class AlumniSeeder extends Seeder
                 'tanggal_lahir' => '1997-04-04',
                 'instagram' => '@emilydavis',
                 'sosmed_lain' => 'https://twitter.com/emilydavis',
+                'id_user' => $userEmily->id,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
@@ -74,6 +85,7 @@ class AlumniSeeder extends Seeder
                 'tanggal_lahir' => '1996-05-05',
                 'instagram' => '@davidbrown',
                 'sosmed_lain' => 'https://facebook.com/davidbrown',
+                'id_user' => $userDavid->id,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],

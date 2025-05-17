@@ -21,7 +21,8 @@ class RoleAndPermissionSeeder extends Seeder
         $adminRole->givePermissionTo(Permission::all());
 
         $userRole->givePermissionTo([
-            'dashboard',
+            'dashboard', 'kuliah.create', 'kuliah.edit', 'kuliah.delete',
+            'kerja.create', 'kerja.edit', 'kerja.delete', 'alumni.edit',
         ]);
     }
 }

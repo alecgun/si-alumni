@@ -18,9 +18,10 @@
                 <div class="col-lg-12">
                     <div class="card-body py-4">
                         <div id="data_alumni_table">
-                            <table id="table_data_alumnis" class="table table-bordered" width="100%">
+                            <table id="table_data_alumnis" class="table table-bordered card" width="100%">
                                 <thead>
                                     <tr>
+                                        <th class="text-start">NIS</th>
                                         <th class="text-start">Nama</th>
                                         <th class="text-start">Kelas</th>
                                         <th class="text-start">Tahun Lulus</th>
@@ -52,6 +53,11 @@
                 ajax: '{{ route('landing.dataAlumni') }}',
                 columns: [{
                         class: 'text-start',
+                        data: 'nis',
+                        name: 'nis'
+                    },
+                    {
+                        class: 'text-start',
                         data: 'nama',
                         name: 'nama'
                     },
@@ -74,50 +80,49 @@
                 lengthChange: false,
                 pageLength: 30,
                 layout: {
-                    // topStart: function() {
-                    //     let cardViewButton =
-                    //         '<button class="btn btn-primary" id="cardViewButton">Card View</button>';
-                    //     return cardViewButton;
-                    // },
                     topStart: {
                         buttons: [{
-                            text: 'Card View',
+                            text: 'Table View',
                             className: 'btn btn-primary',
                             attr: {
-                                id: 'cardViewButton'
+                                id: 'viewSwitchButton'
                             },
                             action: function(e, dt, node, config) {
                                 if ($("#table_data_alumnis").hasClass("card")) {
-                                    $("#cardViewButton").text("Card View");
+                                    $("#viewSwitchButton").text("Card View");
                                     $(".colHeader").remove();
                                 } else {
-                                    $("#cardViewButton").text("Table View");
-                                    var labels = [];
-                                    $("#table_data_alumnis thead th").each(function() {
-                                        labels.push($(this).text());
-                                    });
-                                    $("#table_data_alumnis tbody tr").each(function() {
-                                        $(this)
-                                            .find("td")
-                                            .each(function(column) {
-                                                $("<span class='colHeader'>" +
-                                                        labels[column] + ":</span>")
-                                                    .prependTo(
-                                                        $(this)
-                                                    );
-                                            });
-                                    });
+                                    $("#viewSwitchButton").text("Table View");
+                                    addCardLabels();
                                 }
                                 $("#table_data_alumnis").toggleClass("card");
                             }
                         }]
                     },
                 },
+                drawCallback: function(settings) {
+                    if ($("#table_data_alumnis").hasClass("card")) {
+                        addCardLabels();
+                    }
+                },
             });
 
-            $('#table_data_alumnis').on('click', '#cardViewButton', function() {
-                console.log('Card View Button Clicked');
-            });
+            function addCardLabels() {
+                var labels = [];
+                $("#table_data_alumnis thead th").each(function() {
+                    labels.push($(this).text());
+                });
+                $("#table_data_alumnis tbody tr").each(function() {
+                    $(this).find("td").each(function(column) {
+                        if (!$(this).find('.colHeader').length) {
+                            $("<span class='colHeader'>" + labels[column] + ":</span>")
+                                .prependTo($(this));
+                        }
+                    });
+                });
+            }
+
+
         });
     </script>
 @endpush
@@ -141,11 +146,15 @@
             color: white;
         }
 
+        #table_data_alumnis.card {
+            background-color: transparent;
+        }
+
         .form-control#dt-search-0 {
             padding: 6px 10px;
         }
 
-        .btn#cardViewButton {
+        .btn#viewSwitchButton {
             max-height: 40px;
             display: flex;
             align-items: center;
@@ -159,16 +168,67 @@
             display: none;
         }
 
+        .card tbody {
+            display: inline-flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 10px;
+            margin: 5px;
+        }
+
         .card tbody tr {
             float: left;
-            width: 23.75em;
-            margin: 0.5em;
-            border: 1px solid #bfbfbf;
+            width: 24em;
+            border: 0 !important;
+            border-radius: 10px;
+            box-shadow: 0 0px 4px rgba(0, 0, 0, 0.1);
         }
 
         .card tbody tr td {
             display: block;
-            border: 0;
+            padding-inline: 1em;
+            border: 0 !important;
+            border-radius: 10px;
+        }
+
+        .card tbody tr td .colHeader {
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 10px;
+            color: #008cff;
+            display: inline-table;
+            width: 95px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Small devices (portrait tablets and large phones, 600px and up) */
+        @media only screen and (min-width: 600px) {
+            ...
+        }
+
+        /* Large phones (600px - 767px) */
+        @media only screen and (max-width: 767px) {
+            .btn#viewSwitchButton {
+                display: none;
+            }
+        }
+
+        /* Tablets (768px - 991px) */
+        @media only screen and (max-width: 991px) {
+            .card tbody {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin: 5px;
+            }
+
+            .card tbody tr {
+                float: center;
+                width: 24em;
+                margin-block: 5px;
+            }
         }
     </style>
 @endpush

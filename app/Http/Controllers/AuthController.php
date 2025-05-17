@@ -81,7 +81,7 @@ class AuthController extends Controller implements HasMiddleware
     {
         $roleRoutes = [
             'admin' => '/dashboard',
-            'user' => '/dashboard',
+            'user' => '/biodata',
         ];
 
         foreach ($roleRoutes as $role => $route) {

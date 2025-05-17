@@ -1,0 +1,789 @@
+@extends('frontend.page.parts.master')
+@section('content')
+    <!-- START MAIN -->
+    <section class="section bg-light" id="biodata">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1 class="mt-3">Biodata Alumni</h1>
+                    <p class="text-muted">Halaman ini menampilkan biodata anda yang terdata di database SMAN 1 Blitar.</p>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-4">
+            <div class="row justify-content-center align-items-start">
+                <div class="col-md-4 text-center">
+                    <img src="{{ asset('frontend-assets/images/home/messi.png') }}" alt="Alumni Photo"
+                        class="img-fluid rounded" style="height: 150px;">
+                    <h5 class="mt-3">{{ auth()->user()->name }}</h5>
+                    <a href="#" class="btn btn-primary mt-2">Ganti Password</a>
+                </div>
+                <div class="col-md-8 shadow-sm p-4" id="biodata-content">
+                    <div id="data_pribadi">
+                        <div class="d-flex justify-content-between">
+                            <span>
+                                <h5>Data Pribadi</h5>
+                            </span>
+                            <a href="#" class="mdi mdi-pencil"><b> Edit Data Sosmed</b></a>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="me-2 text-muted">NIS</span>
+                            <span id="nis" class="fw-bold"></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="me-2 text-muted">Nama Lengkap</span>
+                            <span id="nama" class="fw-bold"></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="me-2 text-muted">Kelas</span>
+                            <span id="kelas" class="fw-bold"></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="me-2 text-muted">Tanggal Lahir</span>
+                            <span id="tanggal_lahir" class="fw-bold"></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="me-2 text-muted">Tahun Masuk</span>
+                            <span id="tahun_masuk" class="fw-bold"></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="me-2 text-muted">Tahun Lulus</span>
+                            <span id="tahun_lulus" class="fw-bold"></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="me-2 text-muted">Instagram</span>
+                            <span id="instagram" class="fw-bold"></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="me-2 text-muted">Sosmed Lain</span>
+                            <span id="sosmed_lain" class="fw-bold"></span>
+                        </div>
+                    </div>
+                    <br />
+                    <div id="kuliah">
+                        <div class="d-flex justify-content-between">
+                            <span>
+                                <h5>Data Kuliah</h5>
+                            </span>
+                            @can('kuliah.create')
+                                <a href="#" class="mdi mdi-plus-circle" data-bs-toggle="modal"
+                                    data-bs-target="#modal_add_kuliah"><b> Tambah</b></a>
+                            @endcan
+                        </div>
+                        <div id="kuliah-list">
+                            <!-- Data kuliah akan dimasukkan di sini -->
+                        </div>
+                    </div>
+
+                    <div id="kerja">
+                        <div class="d-flex justify-content-between">
+                            <span>
+                                <h5>Data Kerja</h5>
+                            </span>
+                            @can('kerja.create')
+                                <a href="#" class="mdi mdi-plus-circle" data-bs-toggle="modal"
+                                    data-bs-target="#modal_add_kerja"><b> Tambah</b></a>
+                            @endcan
+                        </div>
+                        <div id="kerja-list">
+                            <!-- Data kerja akan dimasukkan di sini -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end row-->
+        </div>
+        <!--end container-->
+    </section>
+    <!-- END MAIN -->
+    @can('kuliah.create')
+        @include('frontend.page.create-kuliah')
+    @endcan
+    @can('kuliah.edit')
+        @include('frontend.page.edit-kuliah')
+    @endcan
+    @can('kerja.create')
+        @include('frontend.page.create-kerja')
+    @endcan
+    @can('kerja.edit')
+        @include('frontend.page.edit-kerja')
+    @endcan
+@endsection
+
+@push('customScripts')
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '{{ route('landing.getAlumniByAuthUser') }}', // pastikan ini rute yang benar
+                method: 'GET',
+                success: function(response) {
+                    // Periksa jika data alumni ditemukan
+                    if (response.alumni) {
+                        // Update data pribadi
+                        $('#nis').text(response.alumni.nis || '-');
+                        $('#nama').text(response.alumni.nama || '-');
+                        $('#kelas').text(response.alumni.kelas || '-');
+                        $('#tanggal_lahir').text(response.alumni.tanggal_lahir ? new Date(response
+                            .alumni
+                            .tanggal_lahir).toLocaleDateString('id-ID', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        }) : '-');
+                        $('#tahun_masuk').text(response.alumni.tahun_masuk || '-');
+                        $('#tahun_lulus').text(response.alumni.tahun_lulus || '-');
+                        $('#instagram').text(response.alumni.instagram || '-');
+                        $('#sosmed_lain').text(response.alumni.sosmed_lain || '-');
+
+                        // Update data kuliah (loop untuk banyak data kuliah)
+                        let kuliahHTML = '';
+                        if (response.kuliah.length > 0) {
+                            response.kuliah.forEach(function(kuliah) {
+                                kuliahHTML += `
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="me-2 text-muted">Nama Universitas</span>
+                                <span class="fw-bold">${kuliah.nama_universitas || '-'}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="me-2 text-muted">Fakultas</span>
+                                <span class="fw-bold">${kuliah.fakultas || '-'}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="me-2 text-muted">Program Studi</span>
+                                <span class="fw-bold">${kuliah.program_studi || '-'}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="me-2 text-muted">Jenjang</span>
+                                <span class="fw-bold">${kuliah.jenjang || '-'}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="me-2 text-muted">Status Kuliah</span>
+                                <span class="fw-bold">${kuliah.status_kuliah || '-'}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="me-2 text-muted">Jalur Masuk</span>
+                                <span class="fw-bold">${kuliah.jalur_masuk || '-'}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="me-2 text-muted">Tahun Masuk</span>
+                                <span class="fw-bold">${kuliah.tahun_masuk || '-'}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="me-2 text-muted">Tahun Lulus</span>
+                                <span class="fw-bold">${kuliah.tahun_lulus || '-'}</span>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <a href="#" class="me-2 mdi mdi-pencil edit-button-kuliah" data-id="${kuliah.id}" data-alumni-id="${kuliah.alumni_id}" data-bs-toggle="modal"
+                                    data-bs-target="#modal_edit_kuliah"><b> Edit</b></a>
+                                <a href="#" class="mdi mdi-delete text-danger delete-button-kerja" data-id="${kuliah.id}" data-alumni-id="${kuliah.alumni_id}"><b> Hapus</b></a>
+                            </div>
+                            <br />
+                        `;
+                            });
+                        } else {
+                            kuliahHTML +=
+                                `<p class="text-muted">Tambahkan data kuliah.</p>`;
+                        }
+                        $('#kuliah-list').html(kuliahHTML);
+
+                        // Update data kerja (loop untuk banyak data kerja)
+                        let kerjaHTML = '';
+                        if (response.kerja.length > 0) {
+                            response.kerja.forEach(function(kerja) {
+                                kerjaHTML += `
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="me-2 text-muted">Tempat Kerja</span>
+                                <span class="fw-bold">${kerja.tempat_kerja || '-'}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="me-2 text-muted">Posisi Kerja</span>
+                                <span class="fw-bold">${kerja.posisi_kerja || '-'}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="me-2 text-muted">Alamat Kerja</span>
+                                <span class="fw-bold">${kerja.alamat_kerja || '-'}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="me-2 text-muted">Tahun Masuk</span>
+                                <span class="fw-bold">${kerja.tahun_masuk || '-'}</span>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <a href="#" class="me-2 mdi mdi-pencil edit-button-kerja" data-id="${kerja.id}" data-alumni-id="${kerja.alumni_id}" data-bs-toggle="modal"
+                                    data-bs-target="#modal_edit_kerja"><b> Edit</b></a>
+                                <a href="#" class="mdi mdi-delete text-danger delete-button-kerja" data-id="${kerja.id}" data-alumni-id="${kerja.alumni_id}"><b> Hapus</b></a>
+                            </div>
+                            <br />
+                        `;
+                            });
+                        } else {
+                            kerjaHTML +=
+                                `<p class="text-muted">Tambahkan data kerja.</p>`;
+                        }
+                        $('#kerja-list').html(kerjaHTML);
+                    } else {
+                        alert('Data alumni tidak ditemukan.');
+                    }
+                },
+                error: function() {
+                    alert('Terjadi kesalahan saat mengambil data.');
+                }
+            });
+
+            // ============================ Start Create Kuliah ==============================
+            $('#modal_add_kuliah_form').on('submit', function(e) {
+                e.preventDefault(); // Mencegah submit langsung
+
+                // Bersihkan error sebelumnya
+                clearErrorFeedback();
+
+                // Tampilkan konfirmasi
+                Swal.fire({
+                    title: 'Konfirmasi',
+                    text: "Anda yakin ingin membuat data kuliah ini?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Buat!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Lakukan AJAX POST
+                        $.ajax({
+                            url: `{{ route('landing.storeKuliah') }}`,
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                _token: `{{ csrf_token() }}`,
+                                nama_universitas: $('#nama_universitas').val(),
+                                fakultas: $('#fakultas').val(),
+                                program_studi: $('#program_studi').val(),
+                                jenjang: $('#jenjang').val(),
+                                status_kuliah: $('#status_kuliah').val(),
+                                jalur_masuk: $('#jalur_masuk').val(),
+                                tahun_masuk: $('#tahun_masuk_kuliah').val(),
+                                tahun_lulus: $('#tahun_lulus_kuliah').val()
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil',
+                                        text: response.message
+                                    }).then(() => {
+                                        window.location.href = "/biodata";
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Gagal',
+                                        text: response.message
+                                    });
+                                }
+                            },
+                            error: function(xhr) {
+                                // Jika validasi gagal (Laravel -> status 422)
+                                if (xhr.status === 422) {
+                                    let errors = xhr.responseJSON.errors;
+                                    showValidationErrors(errors);
+                                } else {
+                                    // Error lain (misal 500)
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Terjadi Kesalahan',
+                                        text: 'Silakan coba lagi'
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+            // ============================ End Create Kuliah ==============================
+
+            // ============================ Start Show Modal Edit Kuliah ==============================
+            $(document).on('click', '.edit-button-kuliah', function() {
+                var id = $(this).data('id');
+                var alumniId = $(this).data('alumni-id');
+                var editUrl = '{{ route('landing.editKuliah', [':alumni_id', ':id']) }}'
+                    .replace(':alumni_id', alumniId)
+                    .replace(':id', id);
+
+                console.log(editUrl);
+
+                $.ajax({
+                    type: 'GET',
+                    url: editUrl,
+                    success: function(response) {
+                        console.log(response);
+                        $('#edit_id_kuliah').val(response.kuliah.id);
+                        $('#edit_alumni_id').val(alumniId);
+                        $('#edit_nama_universitas').val(response.kuliah.nama_universitas);
+                        $('#edit_fakultas').val(response.kuliah.fakultas);
+                        $('#edit_program_studi').val(response.kuliah.program_studi);
+                        $('#edit_jenjang').val(response.kuliah.jenjang);
+                        $('#edit_jalur_masuk').val(response.kuliah.jalur_masuk);
+                        $('#edit_status_kuliah').val(response.kuliah.status_kuliah);
+                        $('#edit_tahun_masuk_kuliah').val(response.kuliah.tahun_masuk);
+                        $('#edit_tahun_lulus_kuliah').val(response.kuliah.tahun_lulus);
+                        $('#modal_edit_kuliah_form').attr('action',
+                            '{{ route('landing.updateKuliah', [':alumni_id', ':id']) }}'
+                            .replace(':alumni_id', alumniId)
+                            .replace(':id', response.kuliah.id));
+                        $('#modal_edit_kuliah').modal('show');
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: xhr.responseJSON.message
+                        });
+                    }
+                });
+            });
+            // ============================ End Show Modal Edit Kuliah ==============================
+
+            // ============================ Start Edit Kuliah ==============================
+            $('#modal_edit_kuliah_form').on('submit', function(e) {
+                e.preventDefault();
+                var alumniId = $(this).data('alumni-id');
+                var id = $('#edit_id_kuliah').val();
+                var url = '{{ route('landing.updateKuliah', [':alumni_id', ':id']) }}'
+                    .replace(':alumni_id', alumniId)
+                    .replace(':id', id);
+                let form = $(this);
+                var formData = new FormData(this);
+
+                clearValidationErrors(form);
+
+                Swal.fire({
+                    title: 'Apakah kamu yakin?',
+                    text: "Data akan disimpan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, simpan!',
+                    cancelButtonText: 'Tidak, batalkan!',
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                        cancelButton: 'btn btn-danger'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: response.message
+                                }).then(() => {
+                                    window.location.href = "/biodata";
+                                });
+                                $('#modal_edit_kuliah').modal('hide');
+                                resetFormKuliah('#modal_edit_kuliah_form');
+                            },
+                            error: function(xhr) {
+                                if (xhr.status === 422) {
+                                    var errors = xhr.responseJSON.errors;
+                                    $('.text-danger').remove();
+
+                                    $.each(errors, function(key, value) {
+                                        var element = form.find('[name="' +
+                                            key + '"]');
+                                        element.addClass('is-invalid');
+
+                                        if (element.is('select')) {
+                                            element.next().after(
+                                                '<div class="text-danger">' +
+                                                value[0] + '</div>');
+                                        } else {
+                                            element.after(
+                                                '<div class="text-danger">' +
+                                                value[0] + '</div>');
+                                        }
+                                    });
+
+                                    var errorMessage = '';
+                                    $.each(errors, function(key, value) {
+                                        errorMessage += value[0] + '<br>';
+                                    });
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Validation Error!',
+                                        html: errorMessage
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'Error terjadi saat menyimpan data.'
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+            // ============================ End Edit Kuliah ==============================
+
+            // ============================ Start Delete Kuliah ==============================
+            $(document).on('click', '.delete-button-kuliah', function() {
+                var alumniId = $(this).data('alumni-id');
+                var id = $(this).data('id');
+
+                Swal.fire({
+                    title: 'Konfirmasi',
+                    text: "Anda yakin ingin menghapus data kuliah ini?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'DELETE',
+                            url: '{{ route('landing.deleteKuliah', [':alumni_id', ':id']) }}'
+                                .replace(':alumni_id', alumniId).replace(':id', id),
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: response.message
+                                }).then(() => {
+                                    window.location.href = "/biodata";
+                                });
+                            },
+                            error: function(xhr) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: 'Error terjadi saat menghapus data.'
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+            // ============================ End Delete Kuliah ==============================
+
+            // ============================ Start Create Kerja ==============================
+            $('#modal_add_kerja_form').on('submit', function(e) {
+                e.preventDefault(); // Mencegah submit langsung
+
+                // Bersihkan error sebelumnya
+                clearErrorFeedback();
+
+                // Tampilkan konfirmasi
+                Swal.fire({
+                    title: 'Konfirmasi',
+                    text: "Anda yakin ingin membuat data kerja ini?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Buat!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Lakukan AJAX POST
+                        $.ajax({
+                            url: `{{ route('landing.storeKerja') }}`,
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                _token: `{{ csrf_token() }}`,
+                                posisi_kerja: $('#posisi_kerja').val(),
+                                tempat_kerja: $('#tempat_kerja').val(),
+                                alamat_kerja: $('#alamat_kerja').val(),
+                                tahun_masuk: $('#tahun_masuk_kerja').val(),
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil',
+                                        text: response.message
+                                    }).then(() => {
+                                        window.location.href = "/biodata";
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Gagal',
+                                        text: response.message
+                                    });
+                                }
+                            },
+                            error: function(xhr) {
+                                // Jika validasi gagal (Laravel -> status 422)
+                                if (xhr.status === 422) {
+                                    let errors = xhr.responseJSON.errors;
+                                    showValidationErrors(errors);
+                                } else {
+                                    // Error lain (misal 500)
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Terjadi Kesalahan',
+                                        text: 'Silakan coba lagi'
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+            // ============================ End Create Kerja ==============================
+
+            // ============================ Start Show Modal Edit Kerja ==============================
+            $(document).on('click', '.edit-button-kerja', function() {
+                var id = $(this).data('id');
+                var alumniId = $(this).data('alumni-id');
+                var editUrl = '{{ route('landing.editKerja', [':alumni_id', ':id']) }}'
+                    .replace(':alumni_id', alumniId)
+                    .replace(':id', id);
+
+                console.log(editUrl);
+
+                $.ajax({
+                    type: 'GET',
+                    url: editUrl,
+                    success: function(response) {
+                        console.log(response);
+                        $('#edit_id_kerja').val(response.kerja.id);
+                        $('#edit_alumni_id').val(alumniId);
+                        $('#edit_posisi_kerja').val(response.kerja.posisi_kerja);
+                        $('#edit_tempat_kerja').val(response.kerja.tempat_kerja);
+                        $('#edit_alamat_kerja').val(response.kerja.alamat_kerja);
+                        $('#edit_tahun_masuk_kerja').val(response.kerja.tahun_masuk);
+                        $('#modal_edit_kerja_form').attr('action',
+                            '{{ route('landing.updateKerja', [':alumni_id', ':id']) }}'
+                            .replace(':alumni_id', alumniId)
+                            .replace(':id', response.kerja.id));
+                        $('#modal_edit_kerja').modal('show');
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: xhr.responseJSON.message
+                        });
+                    }
+                });
+            });
+            // ============================ End Show Modal Edit Kuliah ==============================
+
+            // ============================ Start Edit Kerja ==============================
+            $('#modal_edit_kerja_form').on('submit', function(e) {
+                e.preventDefault();
+                var alumniId = $(this).data('alumni-id');
+                var id = $('#edit_id_kerja').val();
+                var url = '{{ route('landing.updateKerja', [':alumni_id', ':id']) }}'
+                    .replace(':alumni_id', alumniId)
+                    .replace(':id', id);
+                let form = $(this);
+                var formData = new FormData(this);
+
+                clearValidationErrors(form);
+
+                Swal.fire({
+                    title: 'Apakah kamu yakin?',
+                    text: "Data akan disimpan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, simpan!',
+                    cancelButtonText: 'Tidak, batalkan!',
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                        cancelButton: 'btn btn-danger'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: response.message
+                                }).then(() => {
+                                    window.location.href = "/biodata";
+                                });
+                                $('#modal_edit_kerja').modal('hide');
+                                resetFormKerja('#modal_edit_kerja_form');
+                            },
+                            error: function(xhr) {
+                                if (xhr.status === 422) {
+                                    var errors = xhr.responseJSON.errors;
+                                    $('.text-danger').remove();
+
+                                    $.each(errors, function(key, value) {
+                                        var element = form.find('[name="' +
+                                            key + '"]');
+                                        element.addClass('is-invalid');
+
+                                        if (element.is('select')) {
+                                            element.next().after(
+                                                '<div class="text-danger">' +
+                                                value[0] + '</div>');
+                                        } else {
+                                            element.after(
+                                                '<div class="text-danger">' +
+                                                value[0] + '</div>');
+                                        }
+                                    });
+
+                                    var errorMessage = '';
+                                    $.each(errors, function(key, value) {
+                                        errorMessage += value[0] + '<br>';
+                                    });
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Validation Error!',
+                                        html: errorMessage
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'Error terjadi saat menyimpan data.'
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+            // ============================ End Edit Kerja ==============================
+
+            // ============================ Start Delete Kerja ==============================
+            $(document).on('click', '.delete-button-kerja', function() {
+                var alumniId = $(this).data('alumni-id');
+                var id = $(this).data('id');
+
+                Swal.fire({
+                    title: 'Konfirmasi',
+                    text: "Anda yakin ingin menghapus data kerja ini?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'DELETE',
+                            url: '{{ route('landing.deleteKerja', [':alumni_id', ':id']) }}'
+                                .replace(':alumni_id', alumniId).replace(':id', id),
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: response.message
+                                }).then(() => {
+                                    window.location.href = "/biodata";
+                                });
+                            },
+                            error: function(xhr) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: 'Error terjadi saat menghapus data.'
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+            // ============================ End Delete Kerja ==============================
+
+            // ============================ Start Reset Form ==============================
+            function showValidationErrors(errors) {
+                // errors contohnya: { "tanggal": ["The tanggal field is required."] }
+                for (const fieldName in errors) {
+                    if (Object.hasOwnProperty.call(errors, fieldName)) {
+                        // Pesan error pertama
+                        const errorMsg = errors[fieldName][0];
+
+                        // Temukan field input
+                        const inputField = $(`[name="${fieldName}"]`);
+                        inputField.addClass('is-invalid');
+
+                        // Jika belum ada .invalid-feedback, buat baru
+                        if (inputField.next('.invalid-feedback').length === 0) {
+                            inputField.after(`<div class="invalid-feedback">${errorMsg}</div>`);
+                        }
+                    }
+                }
+            }
+
+            // Fungsi membersihkan error sebelumnya
+            function clearErrorFeedback() {
+                $('.is-invalid').removeClass('is-invalid');
+                $('.invalid-feedback').remove();
+            }
+
+            function resetFormKuliah(form) {
+                $(form)[0].reset();
+                $(form).find('input[name="id_kuliah"]').val('');
+                $(form).find('select').val('').trigger('change');
+                $('.is-invalid').removeClass('is-invalid');
+                $('.text-danger').remove();
+            }
+
+            function resetFormKerja(form) {
+                $(form)[0].reset();
+                $(form).find('input[name="id_kerja"]').val('');
+                $(form).find('select').val('').trigger('change');
+                $('.is-invalid').removeClass('is-invalid');
+                $('.text-danger').remove();
+            }
+
+            function clearValidationErrors(form) {
+                form.find('.is-invalid').removeClass('is-invalid');
+                form.find('.text-danger').remove();
+            }
+            // ============================ End Reset Form ==============================
+        });
+    </script>
+@endpush
+
+@push('customStyles')
+    <style>
+        #biodata {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            grid-template-columns: 100%;
+
+            /* fallback height */
+            min-height: 100vh;
+
+            /* new small viewport height for modern browsers */
+            min-height: 100svh;
+        }
+
+        #biodata-content {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+@endpush
