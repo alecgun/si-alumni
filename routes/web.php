@@ -10,6 +10,7 @@ use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\KuliahController;
 use App\Http\Controllers\KerjaController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\PostAcademicDataController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -28,8 +29,12 @@ Route::group(['middleware' => ['guest']], function () {
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::get('/biodata', [LandingController::class, 'biodata'])->name('landing.biodata');
     Route::get('/get-alumni-by-user', [LandingController::class, 'getAlumniByAuthUser'])->name('landing.getAlumniByAuthUser');
+    Route::post('biodata/change-password', [LandingController::class, 'updatePassword'])->name('landing.updatePassword');
+    Route::get('biodata/{idAlumni}/edit', [LandingController::class, 'editSosmed'])->name('landing.editSosmed');
+    Route::put('biodata/{idAlumni}', [LandingController::class, 'updateSosmed'])->name('landing.updateSosmed');
     Route::post('biodata/store-kuliah', [LandingController::class, 'storeKuliah'])->name('landing.storeKuliah');
     Route::get('biodata/{idAlumni}/edit-kuliah/{idKuliah}/edit', [LandingController::class, 'editKuliah'])->name('landing.editKuliah');
     Route::put('biodata/{idAlumni}/edit-kuliah/{idKuliah}', [LandingController::class, 'updateKuliah'])->name('landing.updateKuliah');
@@ -41,6 +46,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     //make route prefix setting
     Route::prefix('alumni')->group(function () {
         Route::resource('alumni', AlumniController::class);
+        Route::get('/alumni/{alumnus}/post-academic-data', [PostAcademicDataController::class, 'index'])->name('pad.index');
+        Route::get('/alumni/{alumnus}/post-academic-data/kuliah', [PostAcademicDataController::class, 'kuliah'])->name('pad.kuliah');
+        Route::get('/alumni/{alumnus}/post-academic-data/kerja', [PostAcademicDataController::class, 'kerja'])->name('pad.kerja');
 
         Route::get('/alumni/{alumnus}/kuliah', [KuliahController::class, 'index'])->name('kuliah.index');
         Route::get('/alumni/{alumnus}/kuliah/get-data', [KuliahController::class, 'getDataByAlumni'])->name('kuliah.data');

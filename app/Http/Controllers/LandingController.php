@@ -10,6 +10,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use App\DataTables\DataAlumniDataTables;
 use App\Services\KuliahService;
 use App\Services\KerjaService;
@@ -151,6 +152,13 @@ class LandingController extends Controller implements HasMiddleware
         return response()->json(['success' => true, 'kerja' => $kerja]);
     }
 
+    public function editSosmed($idAlumni)
+    {
+        $userId = Auth::user()->id;
+        $alumni = Alumni::where('id_user', $userId)->first();
+        return response()->json(['success' => true, 'alumni' => $alumni]);
+    }
+
     public function updateKuliah(KuliahRequest $request, $idAlumni, $idKuliah)
     {
         $userId = Auth::user()->id;
@@ -194,6 +202,61 @@ class LandingController extends Controller implements HasMiddleware
             $kerja->update($data);
             LogAktivitas::log('Mengubah data kerja', request()->url(), null, $data, $userId);
             return response()->json(['success' => true, 'message' => 'Data kerja berhasil diperbarui']);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function updateSosmed(Request $request, $idAlumni)
+    {
+        $userId = Auth::user()->id;
+        $alumni = Alumni::where('id_user', $userId)->first();
+
+        $request->validate([
+            'instagram' => 'nullable|string|max:255',
+            'sosmed_lain' => 'nullable|string|max:255',
+        ], [
+            'instagram.string' => 'Instagram harus berupa teks',
+            'instagram.max' => 'Instagram maksimal 255 karakter',
+            'sosmed_lain.string' => 'Sosmed lain harus berupa teks',
+            'sosmed_lain.max' => 'Sosmed lain maksimal 255 karakter',
+        ]);
+
+        $data = [
+            'instagram' => $request->instagram,
+            'sosmed_lain' => $request->sosmed_lain,
+        ];
+
+        try {
+            $alumni->update($data);
+            LogAktivitas::log('Mengubah data sosmed alumni', request()->url(), null, $data, $userId);
+            return response()->json(['success' => true, 'message' => 'Data sosmed alumni berhasil diperbarui']);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $user = Auth::user();
+        $userId = Auth::user()->id;
+
+        $validatedData = $request->validate([
+            'password' => 'required|string|min:8|confirmed',
+        ], [
+            'password.required' => 'Password harus diisi',
+            'password.string' => 'Password harus berupa teks',
+            'password.min' => 'Password minimal 8 karakter',
+            'password.confirmed' => 'Konfirmasi password tidak sesuai.',
+        ]);
+
+        try {
+            if (!empty($validatedData['password'])) {
+                $user->password = Hash::make($validatedData['password']);
+            }
+            $user->save();
+            LogAktivitas::log('Memperbarui password user', request()->url(), null, null, $userId);
+            return response()->json(['success' => true, 'message' => 'Password user berhasil diperbarui']);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }

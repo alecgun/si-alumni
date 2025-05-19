@@ -1,39 +1,37 @@
-<div class="modal fade" id="modal_edit_sosmed" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modal_edit_password" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Ubah Sosmed</h5>
+                <h5 class="modal-title">Ubah User</h5>
                 <button type="button" class="btn-close" id="close_modal_edit_button" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="modal_edit_sosmed_form" method="POST" action="">
+                <form id="modal_edit_password_form" method="POST" action="">
                     @csrf
-                    @method('PUT')
-                    <input type="hidden" id="edit_id_alumni" name="id_alumni">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="instagram" class="form-label">Instagram</label>
-                                <input type="text" class="form-control" id="edit_instagram" name="instagram"
-                                    placeholder="Masukkan Instagram">
-                                @error('instagram')
+                                <label for="password" class="form-label">Password Baru</label>
+                                <input type="password" class="form-control" id="password" name="password"
+                                    placeholder="Masukkan Password Baru">
+                                @error('password')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="sosmed_lain" class="form-label">Sosmed Lain</label>
-                                <input type="text" class="form-control" id="edit_sosmed_lain" name="sosmed_lain"
-                                    placeholder="Masukkan Sosmed yang lain">
-                                @error('sosmed_lain')
+                                <label for="password_confirmation" class="form-label">Konfirmasi Password Baru</label>
+                                <input type="password" class="form-control" id="password_confirmation"
+                                    name="password_confirmation" placeholder="Masukkan Konfirmasi Password">
+                                @error('password_confirmation')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
                     </div>
                     <div class="text-end">
-                        <button type="submit" class="btn btn-primary me-2 mt-3">Simpan</button>
+                        <button type="submit" class="btn btn-primary mt-3 me-2">Simpan</button>
                         <button type="button" class="btn btn-danger mt-3" id="cancel_edit_button">Batal</button>
                     </div>
                 </form>

@@ -6,7 +6,8 @@
             <div class="row">
                 <div class="col-md-12 text-center">
                     <h1 class="mt-3">Biodata Alumni</h1>
-                    <p class="text-muted">Halaman ini menampilkan biodata anda yang terdata di database SMAN 1 Blitar.</p>
+                    <p class="text-muted">Data kuliah dan data kerja yang terdata di database SMAN 1 Blitar tidak akan
+                        ditampilkan di halaman data alumni.</p>
                 </div>
             </div>
         </div>
@@ -16,7 +17,8 @@
                     <img src="{{ asset('frontend-assets/images/home/messi.png') }}" alt="Alumni Photo"
                         class="img-fluid rounded" style="height: 150px;">
                     <h5 class="mt-3">{{ auth()->user()->name }}</h5>
-                    <a href="#" class="btn btn-primary mt-2">Ganti Password</a>
+                    <a href="#" class="btn btn-primary mt-2 edit-button-password" data-bs-toggle="modal"
+                        data-bs-target="#modal_edit_password">Ganti Password</a>
                 </div>
                 <div class="col-md-8 shadow-sm p-4" id="biodata-content">
                     <div id="data_pribadi">
@@ -24,7 +26,8 @@
                             <span>
                                 <h5>Data Pribadi</h5>
                             </span>
-                            <a href="#" class="mdi mdi-pencil"><b> Edit Data Sosmed</b></a>
+                            <a href="#" class="mdi mdi-pencil edit-button-sosmed" data-bs-toggle="modal"
+                                data-bs-target="#modal_edit_sosmed"><b> Edit Data Sosmed</b></a>
                         </div>
                         <div class="d-flex justify-content-between mb-1">
                             <span class="me-2 text-muted">NIS</span>
@@ -96,6 +99,8 @@
         <!--end container-->
     </section>
     <!-- END MAIN -->
+    @include('frontend.page.edit-password')
+    @include('frontend.page.edit-alumni-sosmed')
     @can('kuliah.create')
         @include('frontend.page.create-kuliah')
     @endcan
@@ -114,6 +119,7 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
+            // ============================ Start Get Data Alumni ==============================
             $.ajax({
                 url: '{{ route('landing.getAlumniByAuthUser') }}', // pastikan ini rute yang benar
                 method: 'GET',
@@ -183,7 +189,7 @@
                             });
                         } else {
                             kuliahHTML +=
-                                `<p class="text-muted">Tambahkan data kuliah.</p>`;
+                                `<p class="text-muted">Data kuliah tidak ditemukan.</p>`;
                         }
                         $('#kuliah-list').html(kuliahHTML);
 
@@ -218,7 +224,7 @@
                             });
                         } else {
                             kerjaHTML +=
-                                `<p class="text-muted">Tambahkan data kerja.</p>`;
+                                `<p class="text-muted">Data kerja tidak ditemukan.</p>`;
                         }
                         $('#kerja-list').html(kerjaHTML);
                     } else {
@@ -229,6 +235,7 @@
                     alert('Terjadi kesalahan saat mengambil data.');
                 }
             });
+            // ============================ End Get Data Alumni ==============================
 
             // ============================ Start Create Kuliah ==============================
             $('#modal_add_kuliah_form').on('submit', function(e) {
@@ -580,7 +587,7 @@
                     }
                 });
             });
-            // ============================ End Show Modal Edit Kuliah ==============================
+            // ============================ End Show Modal Edit Kerja ==============================
 
             // ============================ Start Edit Kerja ==============================
             $('#modal_edit_kerja_form').on('submit', function(e) {
@@ -714,6 +721,206 @@
             });
             // ============================ End Delete Kerja ==============================
 
+            // ============================ Start Show Modal Edit Sosmed ==============================
+            $(document).on('click', '.edit-button-sosmed', function() {
+                var id = $(this).data('id');
+                var editUrl = '{{ route('landing.editSosmed', [':id']) }}'
+                    .replace(':id', id);
+
+                $.ajax({
+                    type: 'GET',
+                    url: editUrl,
+                    success: function(response) {
+                        console.log(response);
+                        $('#edit_id_alumni').val(response.alumni.id);
+                        $('#edit_instagram').val(response.alumni.instagram);
+                        $('#edit_sosmed_lain').val(response.alumni.sosmed_lain);
+                        $('#modal_edit_sosmed_form').attr('action',
+                            '{{ route('landing.updateSosmed', [':alumni_id', ':id']) }}'
+                            .replace(':id', response.alumni.id));
+                        $('#modal_edit_sosmed').modal('show');
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: xhr.responseJSON.message
+                        });
+                    }
+                });
+            });
+            // ============================ End Show Modal Edit Sosmed ==============================
+
+            // ============================ Start Edit Sosmed ==============================
+            $('#modal_edit_sosmed_form').on('submit', function(e) {
+                e.preventDefault();
+                var id = $('#edit_id_alumni').val();
+                var url = '{{ route('landing.updateSosmed', [':id']) }}'
+                    .replace(':id', id);
+                let form = $(this);
+                var formData = new FormData(this);
+
+                clearValidationErrors(form);
+
+                Swal.fire({
+                    title: 'Apakah kamu yakin?',
+                    text: "Data akan disimpan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, simpan!',
+                    cancelButtonText: 'Tidak, batalkan!',
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                        cancelButton: 'btn btn-danger'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: response.message
+                                }).then(() => {
+                                    window.location.href = "/biodata";
+                                });
+                                $('#modal_edit_sosmed').modal('hide');
+                                resetFormSosmed('#modal_edit_sosmed_form');
+                            },
+                            error: function(xhr) {
+                                if (xhr.status === 422) {
+                                    var errors = xhr.responseJSON.errors;
+                                    $('.text-danger').remove();
+
+                                    $.each(errors, function(key, value) {
+                                        var element = form.find('[name="' +
+                                            key + '"]');
+                                        element.addClass('is-invalid');
+
+                                        if (element.is('select')) {
+                                            element.next().after(
+                                                '<div class="text-danger">' +
+                                                value[0] + '</div>');
+                                        } else {
+                                            element.after(
+                                                '<div class="text-danger">' +
+                                                value[0] + '</div>');
+                                        }
+                                    });
+
+                                    var errorMessage = '';
+                                    $.each(errors, function(key, value) {
+                                        errorMessage += value[0] + '<br>';
+                                    });
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Validation Error!',
+                                        html: errorMessage
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'Error terjadi saat menyimpan data.'
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+            // ============================ End Edit Sosmed ==============================
+
+            // ============================ Start Edit Password ==============================
+            $('#modal_edit_password_form').on('submit', function(e) {
+                e.preventDefault();
+                var id = $('#edit_id_alumni').val();
+                var url = '{{ route('landing.updatePassword', [':id']) }}'
+                    .replace(':id', id);
+                let form = $(this);
+                var formData = new FormData(this);
+
+                clearValidationErrors(form);
+
+                Swal.fire({
+                    title: 'Apakah kamu yakin?',
+                    text: "Data akan disimpan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, simpan!',
+                    cancelButtonText: 'Tidak, batalkan!',
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                        cancelButton: 'btn btn-danger'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: response.message
+                                }).then(() => {
+                                    window.location.href = "/biodata";
+                                });
+                                $('#modal_edit_password').modal('hide');
+                                resetFormSosmed('#modal_edit_password_form');
+                            },
+                            error: function(xhr) {
+                                if (xhr.status === 422) {
+                                    var errors = xhr.responseJSON.errors;
+                                    $('.text-danger').remove();
+
+                                    $.each(errors, function(key, value) {
+                                        var element = form.find('[name="' +
+                                            key + '"]');
+                                        element.addClass('is-invalid');
+
+                                        if (element.is('select')) {
+                                            element.next().after(
+                                                '<div class="text-danger">' +
+                                                value[0] + '</div>');
+                                        } else {
+                                            element.after(
+                                                '<div class="text-danger">' +
+                                                value[0] + '</div>');
+                                        }
+                                    });
+
+                                    var errorMessage = '';
+                                    $.each(errors, function(key, value) {
+                                        errorMessage += value[0] + '<br>';
+                                    });
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Validation Error!',
+                                        html: errorMessage
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'Error terjadi saat menyimpan data.'
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+            // ============================ End Edit Sosmed ==============================
+
             // ============================ Start Reset Form ==============================
             function showValidationErrors(errors) {
                 // errors contohnya: { "tanggal": ["The tanggal field is required."] }
@@ -751,6 +958,14 @@
             function resetFormKerja(form) {
                 $(form)[0].reset();
                 $(form).find('input[name="id_kerja"]').val('');
+                $(form).find('select').val('').trigger('change');
+                $('.is-invalid').removeClass('is-invalid');
+                $('.text-danger').remove();
+            }
+
+            function resetFormSosmed(form) {
+                $(form)[0].reset();
+                $(form).find('input[name="id_alumni"]').val('');
                 $(form).find('select').val('').trigger('change');
                 $('.is-invalid').removeClass('is-invalid');
                 $('.text-danger').remove();
