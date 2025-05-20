@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Ubah Data Kerja</h5>
-                <button type="button" class="btn-close" id="close_modal_edit_button" aria-label="Close"></button>
+                <button type="button" class="btn-close" id="close_modal_edit_button_kerja" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="modal_edit_kerja_form" method="POST" action="">
@@ -56,7 +56,7 @@
                     </div>
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary mt-3">Simpan</button>
-                        <button type="button" class="btn btn-secondary mt-3" id="cancel_edit_button">Batal</button>
+                        <button type="button" class="btn btn-secondary mt-3" id="cancel_edit_button_kerja">Batal</button>
                     </div>
                 </form>
             </div>

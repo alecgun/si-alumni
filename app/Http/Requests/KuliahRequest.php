@@ -29,10 +29,10 @@ class KuliahRequest extends FormRequest
             'fakultas' => 'required|string|max:100',
             'program_studi' => 'required|string|max:100',
             'jenjang' => 'required|string|max:50',
+            'status_kuliah' => 'required|string|max:50|in:Aktif,Lulus,Non-Aktif,Drop Out',
             'jalur_masuk' => 'required|string|max:50',
-            'status_kuliah' => 'required|string|max:50',
             'tahun_masuk' => 'required|integer|min:1900',
-            'tahun_lulus' => 'nullable|integer|min:' . ($this->input('tahun_masuk')),
+            'tahun_lulus' => $this->input('status_kuliah') == 'Lulus' ? 'required|integer|min:' . ($this->input('tahun_masuk')) : 'nullable|integer|min:' . ($this->input('tahun_masuk')),
         ];
     }
 
@@ -63,6 +63,7 @@ class KuliahRequest extends FormRequest
             'tahun_masuk.required' => 'Tahun masuk harus diisi',
             'tahun_masuk.integer' => 'Tahun masuk harus berupa angka',
             'tahun_masuk.min' => 'Tahun masuk minimal 1900',
+            'tahun_lulus.required' => 'Tahun lulus harus diisi',
             'tahun_lulus.integer' => 'Tahun lulus harus berupa angka',
             'tahun_lulus.min' => 'Tahun lulus tidak boleh kurang dari tahun masuk',
         ];

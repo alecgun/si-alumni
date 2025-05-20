@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\StoreClass\LogAktivitas;
-use App\DataTables\KuliahDataTables;
 use App\Http\Requests\KuliahRequest;
 use App\Models\Kuliah;
 use App\Services\KuliahService;
@@ -16,7 +15,6 @@ use Spatie\Permission\Middleware\PermissionMiddleware;
 class KuliahController extends Controller implements HasMiddleware
 {
     protected $kuliahService;
-    protected $kuliahDataTable;
 
     public static function middleware(): array
     {
@@ -29,15 +27,9 @@ class KuliahController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __construct(KuliahService $kuliahService, KuliahDataTables $kuliahDataTable)
+    public function __construct(KuliahService $kuliahService)
     {
         $this->kuliahService = $kuliahService;
-        $this->kuliahDataTable = $kuliahDataTable;
-    }
-
-    public function index($alumnus)
-    {
-        return view('backend.kuliah.index', compact('alumnus'));
     }
 
     public function getDataByAlumni($alumnus)
@@ -65,6 +57,15 @@ class KuliahController extends Controller implements HasMiddleware
     public function edit($alumnus, $kuliah)
     {
         $result = $this->kuliahService->editKuliah($alumnus, $kuliah);
+        if ($result['status']) {
+            return response()->json($result['kuliah']);
+        }
+        return response()->json(['success' => false, 'message' => $result['message']], 500);
+    }
+
+    public function show($alumnus, $kuliah)
+    {
+        $result = $this->kuliahService->showKuliah($alumnus, $kuliah);
         if ($result['status']) {
             return response()->json($result['kuliah']);
         }

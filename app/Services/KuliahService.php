@@ -55,6 +55,16 @@ class KuliahService
         }
     }
 
+    public function showKuliah($alumniId, $id)
+    {
+        try {
+            $kuliah = Kuliah::find($id);
+            return ['status' => true, 'kuliah' => $kuliah];
+        } catch (Exception $e) {
+            return response()->json(['status' => false, 'message' => 'Terjadi kesalahan saat mengambil data kuliah: ' . $e->getMessage()], 500);
+        }
+    }
+
     public function updateKuliah($data, $alumniId, $kuliahId)
     {
         DB::beginTransaction();
@@ -107,26 +117,6 @@ class KuliahService
             return ['status' => false, 'message' => 'Gagal mengambil data kuliah untuk diedit: ' . $e->getMessage()];
         }
     }
-
-    // public function getKuliahQuery()
-    // {
-    //     try {
-    //         return DB::table('kuliah')
-    //             ->select(
-    //                 'kuliah.id',
-    //                 'kuliah.alumni_id',
-    //                 'alumni.id',
-    //                 'kuliah.jenjang',
-    //                 'kuliah.jalur_masuk',
-    //                 'kuliah.tahun_masuk',
-    //                 'kuliah.tahun_lulus',
-    //                 'kuliah.created_at',
-    //                 'kuliah.updated_at'
-    //             );
-    //     } catch (Exception $e) {
-    //         return ['status' => false, 'message' => 'Gagal mengambil data kuliah: ' . $e->getMessage()];
-    //     }
-    // }
 
     public function searchKuliahs($query, $search)
     {

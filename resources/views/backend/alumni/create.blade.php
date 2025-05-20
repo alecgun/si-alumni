@@ -96,6 +96,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_user" class="form-label">User</label>
+                                <select class="form-select" data-control="select2" data-placeholder="Pilih User"
+                                    data-hide-search="true" id="id_user" name="id_user">
+                                </select>
+                                @error('id_user')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary mt-3 me-3">
                             Simpan

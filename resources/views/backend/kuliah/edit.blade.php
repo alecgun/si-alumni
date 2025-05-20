@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Ubah Data Kuliah</h5>
-                <button type="button" class="btn-close" id="close_modal_edit_button" aria-label="Close"></button>
+                <button type="button" class="btn-close" id="close_modal_edit_button_kuliah" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="kt_modal_edit_kuliah_form" method="POST" action="">
@@ -23,18 +23,6 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="jenjang" class="form-label">Jenjang</label>
-                                <input type="text" class="form-control" id="edit_jenjang" name="jenjang"
-                                    placeholder="Masukkan Jenjang">
-                                @error('jenjang')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
                                 <label for="fakultas" class="form-label">Fakultas</label>
                                 <input type="text" class="form-control" id="edit_fakultas" name="fakultas"
                                     placeholder="Masukkan Fakultas">
@@ -43,12 +31,24 @@
                                 @enderror
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="program_studi" class="form-label">Program Studi</label>
                                 <input type="text" class="form-control" id="edit_program_studi" name="program_studi"
                                     placeholder="Masukkan Program Studi">
                                 @error('program_studi')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="jenjang" class="form-label">Jenjang</label>
+                                <input type="text" class="form-control" id="edit_jenjang" name="jenjang"
+                                    placeholder="Masukkan Jenjang">
+                                @error('jenjang')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -100,7 +100,8 @@
                     </div>
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary mt-3">Simpan</button>
-                        <button type="button" class="btn btn-secondary mt-3" id="cancel_edit_button">Batal</button>
+                        <button type="button" class="btn btn-danger mt-3"
+                            id="cancel_edit_button_kuliah">Batal</button>
                     </div>
                 </form>
             </div>

@@ -31,13 +31,15 @@ class AlumniRequest extends FormRequest
             'kelas' => 'required|string|max:10',
             'tahun_masuk' => 'required|integer|min:1900|max:' . (date('Y') + 1),
             'tahun_lulus' => 'required|integer|min:1900|max:' . (date('Y') + 1),
-            'tanggal_lahir' => 'nullable|date',
+            'tanggal_lahir' => 'required|date',
             'instagram' => 'nullable|string|max:255',
             'sosmed_lain' => 'nullable|string|max:255',
+            'id_user' => 'required|integer|exists:users,id|unique:alumni,id_user',
         ];
 
         if ($this->isMethod('put')) {
             $rules['nis'] = 'required|string|unique:alumni,nis,' . $alumniId;
+            $rules['id_user'] = 'required|string|unique:alumni,id_user,' . $alumniId;
         }
 
         return $rules;
@@ -68,10 +70,15 @@ class AlumniRequest extends FormRequest
             'tahun_lulus.min' => 'Tahun lulus minimal 1900',
             'tahun_lulus.max' => 'Tahun lulus maximal ' . (date('Y') + 1),
             'tanggal_lahir.date' => 'Tanggal lahir harus sah',
+            'tanggal_lahir.required' => 'Tanggal lahir harus diisi',
             'instagram.string' => 'Instagram harus berupa teks',
             'instagram.max' => 'Instagram maksimal 255 karakter',
             'sosmed_lain.string' => 'Sosmed lain harus berupa teks',
             'sosmed_lain.max' => 'Sosmed lain maksimal 255 karakter',
+            'id_user.required' => 'ID pengguna harus diisi',
+            'id_user.integer' => 'ID pengguna harus berupa angka',
+            'id_user.exists' => 'ID pengguna tidak ditemukan',
+            'id_user.unique' => 'ID pengguna sudah digunakan',
         ];
     }
 }

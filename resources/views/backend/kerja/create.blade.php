@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Tambah Kerja</h5>
-                <button type="button" class="btn-close" id="close_modal_button" aria-label="Close"></button>
+                <button type="button" class="btn-close" id="close_modal_button_kerja" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="kt_modal_add_kerja_form" method="POST" action="">
@@ -53,10 +53,10 @@
                         </div>
                     </div>
                     <div class="text-end">
-                        <button type="submit" class="btn btn-primary mt-3 me-3">
+                        <button type="submit" class="btn btn-primary mt-3">
                             Simpan
                         </button>
-                        <button type="button" class="btn btn-secondary mt-3" id="cancel_button">Batal</button>
+                        <button type="button" class="btn btn-danger mt-3" id="cancel_button_kerja">Batal</button>
                     </div>
                 </form>
             </div>

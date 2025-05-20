@@ -30,6 +30,7 @@ class Alumni extends Model
         'tanggal_lahir',
         'instagram',
         'sosmed_lain',
+        'id_user',
         'created_at',
         'updated_at',
     ];

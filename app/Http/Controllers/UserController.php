@@ -89,4 +89,10 @@ class UserController extends Controller implements HasMiddleware
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);
     }
+
+    public function data()
+    {
+        $users = User::all();
+        return response()->json($users);
+    }
 }

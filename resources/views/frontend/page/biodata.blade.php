@@ -77,7 +77,6 @@
                             <!-- Data kuliah akan dimasukkan di sini -->
                         </div>
                     </div>
-
                     <div id="kerja">
                         <div class="d-flex justify-content-between">
                             <span>
@@ -120,33 +119,34 @@
     <script>
         $(document).ready(function() {
             // ============================ Start Get Data Alumni ==============================
-            $.ajax({
-                url: '{{ route('landing.getAlumniByAuthUser') }}', // pastikan ini rute yang benar
-                method: 'GET',
-                success: function(response) {
-                    // Periksa jika data alumni ditemukan
-                    if (response.alumni) {
-                        // Update data pribadi
-                        $('#nis').text(response.alumni.nis || '-');
-                        $('#nama').text(response.alumni.nama || '-');
-                        $('#kelas').text(response.alumni.kelas || '-');
-                        $('#tanggal_lahir').text(response.alumni.tanggal_lahir ? new Date(response
-                            .alumni
-                            .tanggal_lahir).toLocaleDateString('id-ID', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        }) : '-');
-                        $('#tahun_masuk').text(response.alumni.tahun_masuk || '-');
-                        $('#tahun_lulus').text(response.alumni.tahun_lulus || '-');
-                        $('#instagram').text(response.alumni.instagram || '-');
-                        $('#sosmed_lain').text(response.alumni.sosmed_lain || '-');
+            function getData() {
+                $.ajax({
+                    url: '{{ route('landing.getAlumniByAuthUser') }}', // pastikan ini rute yang benar
+                    method: 'GET',
+                    success: function(response) {
+                        // Periksa jika data alumni ditemukan
+                        if (response.alumni) {
+                            // Update data pribadi
+                            $('#nis').text(response.alumni.nis || '-');
+                            $('#nama').text(response.alumni.nama || '-');
+                            $('#kelas').text(response.alumni.kelas || '-');
+                            $('#tanggal_lahir').text(response.alumni.tanggal_lahir ? new Date(response
+                                .alumni
+                                .tanggal_lahir).toLocaleDateString('id-ID', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            }) : '-');
+                            $('#tahun_masuk').text(response.alumni.tahun_masuk || '-');
+                            $('#tahun_lulus').text(response.alumni.tahun_lulus || '-');
+                            $('#instagram').text(response.alumni.instagram || '-');
+                            $('#sosmed_lain').text(response.alumni.sosmed_lain || '-');
 
-                        // Update data kuliah (loop untuk banyak data kuliah)
-                        let kuliahHTML = '';
-                        if (response.kuliah.length > 0) {
-                            response.kuliah.forEach(function(kuliah) {
-                                kuliahHTML += `
+                            // Update data kuliah (loop untuk banyak data kuliah)
+                            let kuliahHTML = '';
+                            if (response.kuliah.length > 0) {
+                                response.kuliah.forEach(function(kuliah) {
+                                    kuliahHTML += `
                             <div class="d-flex justify-content-between mb-1">
                                 <span class="me-2 text-muted">Nama Universitas</span>
                                 <span class="fw-bold">${kuliah.nama_universitas || '-'}</span>
@@ -182,22 +182,22 @@
                             <div class="d-flex justify-content-end">
                                 <a href="#" class="me-2 mdi mdi-pencil edit-button-kuliah" data-id="${kuliah.id}" data-alumni-id="${kuliah.alumni_id}" data-bs-toggle="modal"
                                     data-bs-target="#modal_edit_kuliah"><b> Edit</b></a>
-                                <a href="#" class="mdi mdi-delete text-danger delete-button-kerja" data-id="${kuliah.id}" data-alumni-id="${kuliah.alumni_id}"><b> Hapus</b></a>
+                                <a href="#" class="mdi mdi-delete text-danger delete-button-kuliah" data-id="${kuliah.id}" data-alumni-id="${kuliah.alumni_id}"><b> Hapus</b></a>
                             </div>
                             <br />
                         `;
-                            });
-                        } else {
-                            kuliahHTML +=
-                                `<p class="text-muted">Data kuliah tidak ditemukan.</p>`;
-                        }
-                        $('#kuliah-list').html(kuliahHTML);
+                                });
+                            } else {
+                                kuliahHTML +=
+                                    `<p class="text-muted">Data kuliah tidak ditemukan.</p>`;
+                            }
+                            $('#kuliah-list').html(kuliahHTML);
 
-                        // Update data kerja (loop untuk banyak data kerja)
-                        let kerjaHTML = '';
-                        if (response.kerja.length > 0) {
-                            response.kerja.forEach(function(kerja) {
-                                kerjaHTML += `
+                            // Update data kerja (loop untuk banyak data kerja)
+                            let kerjaHTML = '';
+                            if (response.kerja.length > 0) {
+                                response.kerja.forEach(function(kerja) {
+                                    kerjaHTML += `
                             <div class="d-flex justify-content-between mb-1">
                                 <span class="me-2 text-muted">Tempat Kerja</span>
                                 <span class="fw-bold">${kerja.tempat_kerja || '-'}</span>
@@ -221,21 +221,47 @@
                             </div>
                             <br />
                         `;
-                            });
+                                });
+                            } else {
+                                kerjaHTML +=
+                                    `<p class="text-muted">Data kerja tidak ditemukan.</p>`;
+                            }
+                            $('#kerja-list').html(kerjaHTML);
                         } else {
-                            kerjaHTML +=
-                                `<p class="text-muted">Data kerja tidak ditemukan.</p>`;
+                            alert('Data alumni tidak ditemukan.');
                         }
-                        $('#kerja-list').html(kerjaHTML);
-                    } else {
-                        alert('Data alumni tidak ditemukan.');
+                    },
+                    error: function() {
+                        alert('Terjadi kesalahan saat mengambil data.');
                     }
-                },
-                error: function() {
-                    alert('Terjadi kesalahan saat mengambil data.');
-                }
-            });
+                });
+            }
+
+            getData();
             // ============================ End Get Data Alumni ==============================
+
+            // ============================ Start Action Cancel Add ==============================
+            $('#cancel_button_kuliah, #close_modal_button_kuliah').on('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Apakah kamu yakin?',
+                    text: "Datanya akan hilang!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, batalkan!',
+                    cancelButtonText: 'Tidak, tetap di sini!',
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                        cancelButton: 'btn btn-danger'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#modal_add_kuliah').modal('hide');
+                        resetFormKuliah('#modal_add_kuliah_form');
+                    }
+                });
+            });
+            // ============================ End Action Cancel Add ==============================
 
             // ============================ Start Create Kuliah ==============================
             $('#modal_add_kuliah_form').on('submit', function(e) {
@@ -278,9 +304,10 @@
                                         icon: 'success',
                                         title: 'Berhasil',
                                         text: response.message
-                                    }).then(() => {
-                                        window.location.href = "/biodata";
                                     });
+                                    getData();
+                                    $('#modal_add_kuliah').modal('hide');
+                                    resetFormKuliah('#modal_add_kuliah_form');
                                 } else {
                                     Swal.fire({
                                         icon: 'error',
@@ -309,6 +336,29 @@
             });
             // ============================ End Create Kuliah ==============================
 
+            // ============================ Start Cancel Edit ==============================
+            $('#cancel_edit_button_kuliah, #close_modal_edit_button_kuliah').on('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Apakah kamu yakin?',
+                    text: "Datanya akan hilang!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, batalkan!',
+                    cancelButtonText: 'Tidak, tetap di sini!',
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                        cancelButton: 'btn btn-danger'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#modal_edit_kuliah').modal('hide');
+                        resetFormKuliah('#modal_edit_kuliah_form');
+                    }
+                });
+            });
+            // ============================ End Cancel Edit ==============================
+
             // ============================ Start Show Modal Edit Kuliah ==============================
             $(document).on('click', '.edit-button-kuliah', function() {
                 var id = $(this).data('id');
@@ -316,8 +366,6 @@
                 var editUrl = '{{ route('landing.editKuliah', [':alumni_id', ':id']) }}'
                     .replace(':alumni_id', alumniId)
                     .replace(':id', id);
-
-                console.log(editUrl);
 
                 $.ajax({
                     type: 'GET',
@@ -388,9 +436,8 @@
                                     icon: 'success',
                                     title: 'Berhasil!',
                                     text: response.message
-                                }).then(() => {
-                                    window.location.href = "/biodata";
                                 });
+                                getData();
                                 $('#modal_edit_kuliah').modal('hide');
                                 resetFormKuliah('#modal_edit_kuliah_form');
                             },
@@ -466,9 +513,8 @@
                                     icon: 'success',
                                     title: 'Berhasil!',
                                     text: response.message
-                                }).then(() => {
-                                    window.location.href = "/biodata";
                                 });
+                                getData();
                             },
                             error: function(xhr) {
                                 Swal.fire({
@@ -482,6 +528,29 @@
                 });
             });
             // ============================ End Delete Kuliah ==============================
+
+            // ============================ Start Action Cancel Add ==============================
+            $('#cancel_button_kerja, #close_modal_button_kerja').on('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Apakah kamu yakin?',
+                    text: "Datanya akan hilang!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, batalkan!',
+                    cancelButtonText: 'Tidak, tetap di sini!',
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                        cancelButton: 'btn btn-danger'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#modal_add_kerja').modal('hide');
+                        resetFormKerja('#modal_add_kerja_form');
+                    }
+                });
+            });
+            // ============================ End Action Cancel Add ==============================
 
             // ============================ Start Create Kerja ==============================
             $('#modal_add_kerja_form').on('submit', function(e) {
@@ -520,9 +589,8 @@
                                         icon: 'success',
                                         title: 'Berhasil',
                                         text: response.message
-                                    }).then(() => {
-                                        window.location.href = "/biodata";
                                     });
+                                    getData();
                                 } else {
                                     Swal.fire({
                                         icon: 'error',
@@ -550,6 +618,29 @@
                 });
             });
             // ============================ End Create Kerja ==============================
+
+            // ============================ Start Cancel Edit ==============================
+            $('#cancel_edit_button_kerja, #close_modal_edit_button_kerja').on('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Apakah kamu yakin?',
+                    text: "Datanya akan hilang!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, batalkan!',
+                    cancelButtonText: 'Tidak, tetap di sini!',
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                        cancelButton: 'btn btn-danger'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#modal_edit_kerja').modal('hide');
+                        resetFormKerja('#modal_edit_kerja_form');
+                    }
+                });
+            });
+            // ============================ End Cancel Edit ==============================
 
             // ============================ Start Show Modal Edit Kerja ==============================
             $(document).on('click', '.edit-button-kerja', function() {
@@ -626,9 +717,8 @@
                                     icon: 'success',
                                     title: 'Berhasil!',
                                     text: response.message
-                                }).then(() => {
-                                    window.location.href = "/biodata";
                                 });
+                                getData();
                                 $('#modal_edit_kerja').modal('hide');
                                 resetFormKerja('#modal_edit_kerja_form');
                             },
@@ -704,9 +794,8 @@
                                     icon: 'success',
                                     title: 'Berhasil!',
                                     text: response.message
-                                }).then(() => {
-                                    window.location.href = "/biodata";
                                 });
+                                getData();
                             },
                             error: function(xhr) {
                                 Swal.fire({
@@ -720,6 +809,29 @@
                 });
             });
             // ============================ End Delete Kerja ==============================
+
+            // ============================ Start Cancel Edit ==============================
+            $('#cancel_edit_button_sosmed, #close_modal_edit_button_sosmed').on('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Apakah kamu yakin?',
+                    text: "Datanya akan hilang!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, batalkan!',
+                    cancelButtonText: 'Tidak, tetap di sini!',
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                        cancelButton: 'btn btn-danger'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#modal_edit_sosmed').modal('hide');
+                        resetFormSosmed('#modal_edit_sosmed_form');
+                    }
+                });
+            });
+            // ============================ End Cancel Edit ==============================
 
             // ============================ Start Show Modal Edit Sosmed ==============================
             $(document).on('click', '.edit-button-sosmed', function() {
@@ -786,9 +898,8 @@
                                     icon: 'success',
                                     title: 'Berhasil!',
                                     text: response.message
-                                }).then(() => {
-                                    window.location.href = "/biodata";
                                 });
+                                getData();
                                 $('#modal_edit_sosmed').modal('hide');
                                 resetFormSosmed('#modal_edit_sosmed_form');
                             },
@@ -836,6 +947,29 @@
             });
             // ============================ End Edit Sosmed ==============================
 
+            // ============================ Start Cancel Edit ==============================
+            $('#cancel_edit_button_password, #close_modal_edit_button_password').on('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Apakah kamu yakin?',
+                    text: "Datanya akan hilang!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, batalkan!',
+                    cancelButtonText: 'Tidak, tetap di sini!',
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                        cancelButton: 'btn btn-danger'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#modal_edit_password').modal('hide');
+                        resetFormSosmed('#modal_edit_password_form');
+                    }
+                });
+            });
+            // ============================ End Cancel Edit ==============================
+
             // ============================ Start Edit Password ==============================
             $('#modal_edit_password_form').on('submit', function(e) {
                 e.preventDefault();
@@ -871,9 +1005,8 @@
                                     icon: 'success',
                                     title: 'Berhasil!',
                                     text: response.message
-                                }).then(() => {
-                                    window.location.href = "/biodata";
                                 });
+                                getData();
                                 $('#modal_edit_password').modal('hide');
                                 resetFormSosmed('#modal_edit_password_form');
                             },

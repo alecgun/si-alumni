@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/get-data-role', [RoleController::class, 'data'])->name('role.data');
+Route::get('/get-data-user', [UserController::class, 'data'])->name('user.data');
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
 Route::get('/data-alumni', [LandingController::class, 'dataAlumni'])->name('landing.dataAlumni');
 
@@ -50,14 +51,13 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('/alumni/{alumnus}/post-academic-data/kuliah', [PostAcademicDataController::class, 'kuliah'])->name('pad.kuliah');
         Route::get('/alumni/{alumnus}/post-academic-data/kerja', [PostAcademicDataController::class, 'kerja'])->name('pad.kerja');
 
-        Route::get('/alumni/{alumnus}/kuliah', [KuliahController::class, 'index'])->name('kuliah.index');
         Route::get('/alumni/{alumnus}/kuliah/get-data', [KuliahController::class, 'getDataByAlumni'])->name('kuliah.data');
         Route::post('/alumni/{alumnus}/kuliah', [KuliahController::class, 'store'])->name('kuliah.store');
         Route::get('/alumni/{alumnus}/kuliah/{kuliah}/edit', [KuliahController::class, 'edit'])->name('kuliah.edit');
+        Route::get('/alumni/{alumnus}/kuliah/{kuliah}/show', [KuliahController::class, 'show'])->name('kuliah.show');
         Route::put('/alumni/{alumnus}/kuliah/{kuliah}', [KuliahController::class, 'update'])->name('kuliah.update');
         Route::delete('/alumni/{alumnus}/kuliah/{kuliah}', [KuliahController::class, 'destroy'])->name('kuliah.destroy');
 
-        Route::get('/alumni/{alumnus}/kerja', [KerjaController::class, 'index'])->name('kerja.index');
         Route::get('/alumni/{alumnus}/kerja/get-data', [KerjaController::class, 'getDataByAlumni'])->name('kerja.data');
         Route::post('/alumni/{alumnus}/kerja', [KerjaController::class, 'store'])->name('kerja.store');
         Route::get('/alumni/{alumnus}/kerja/{kerja}/edit', [KerjaController::class, 'edit'])->name('kerja.edit');

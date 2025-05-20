@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Ubah Data Kerja</h5>
-                <button type="button" class="btn-close" id="close_modal_edit_button" aria-label="Close"></button>
+                <button type="button" class="btn-close" id="close_modal_edit_button_kerja" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="kt_modal_edit_kerja_form" method="POST" action="">
@@ -46,8 +46,8 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="tahun_masuk" class="form-label">Tahun Masuk</label>
-                                <input type="text" class="form-control" id="edit_tahun_masuk" name="tahun_masuk"
-                                    placeholder="Masukkan Tahun Masuk">
+                                <input type="text" class="form-control" id="edit_tahun_masuk_kerja"
+                                    name="tahun_masuk" placeholder="Masukkan Tahun Masuk">
                                 @error('tahun_masuk')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -56,7 +56,7 @@
                     </div>
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary mt-3">Simpan</button>
-                        <button type="button" class="btn btn-secondary mt-3" id="cancel_edit_button">Batal</button>
+                        <button type="button" class="btn btn-danger mt-3" id="cancel_edit_button_kerja">Batal</button>
                     </div>
                 </form>
             </div>

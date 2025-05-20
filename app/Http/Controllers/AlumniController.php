@@ -71,6 +71,10 @@ class AlumniController extends Controller implements HasMiddleware
 
     public function update(AlumniRequest $request, Alumni $alumnus)
     {
+
+        if ($request->has('tanggal_lahir')) {
+            $request->merge(['tanggal_lahir' => date('Y-m-d', strtotime($request->tanggal_lahir))]);
+        }
         $result = $this->alumniService->updateAlumni($alumnus, $request->all());
         if ($result['status']) {
             LogAktivitas::log('Mengubah data alumni', $request->path(), $result['alumni'], $request->all(), Auth::user()->id);
@@ -83,7 +87,7 @@ class AlumniController extends Controller implements HasMiddleware
     {
         $result = $this->alumniService->deleteAlumni($alumnus);
         if ($result['status']) {
-            LogAktivitas::log('Menghapus data alumni', request()->path(), $alumni, null, Auth::user()->id);
+            LogAktivitas::log('Menghapus data alumni', request()->path(), $result, null, Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Data alumni berhasil dihapus']);
         }
         if (strpos($result['message'], 'Data alumni ini memiliki data terkait yang tidak dapat dihapus.') !== false) {
@@ -94,7 +98,7 @@ class AlumniController extends Controller implements HasMiddleware
 
     public function data()
     {
-    $alumni = Alumni::all();
-    return response()->json($alumni);
+        $alumni = Alumni::all();
+        return response()->json($alumni);
     }
 }

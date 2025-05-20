@@ -32,11 +32,6 @@ class KerjaController extends Controller implements HasMiddleware
         $this->kerjaService = $kerjaService;
     }
 
-    public function index($alumnus)
-    {
-        return view('backend.kerja.index', compact('alumnus'));
-    }
-
     public function getDataByAlumni($alumnus)
     {
         $kerja = $this->kerjaService->getKerjaByAlumni($alumnus);
@@ -44,7 +39,13 @@ class KerjaController extends Controller implements HasMiddleware
         return response()->json($kerja);
     }
 
-    public function create()
+
+/*************  ✨ Windsurf Command ⭐  *************/
+    /**
+     * This method is not used in the current implementation.
+     */
+
+/*******  eda0e887-49b8-46c0-8088-d8568dd459f0  *******/    public function create()
     {
         // Tidak digunakan
     }

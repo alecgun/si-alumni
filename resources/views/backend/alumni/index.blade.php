@@ -105,39 +105,34 @@
         $(document).ready(function() {
 
             // ============================ Start Load data form ==============================
-            function loadRoles(selector, selectedRoleId = null) {
+            function loadUsers(selector, selectedUserId = null) {
                 $.ajax({
-                    url: '{{ route('role.data') }}',
+                    url: '{{ route('user.data') }}',
                     type: 'GET',
                     success: function(data) {
-                        let roleSelect = $(selector);
-                        roleSelect.empty();
-                        roleSelect.append('<option value="">Select Role</option>');
-                        $.each(data, function(index, role) {
-                            roleSelect.append('<option value="' + role.id + '">' + role.name +
+                        let userSelect = $(selector);
+                        userSelect.empty();
+                        userSelect.append('<option value="">Select User</option>');
+                        $.each(data, function(index, user) {
+                            userSelect.append('<option value="' + user.id + '">' + user.name +
                                 '</option>');
                         });
-                        if (selectedRoleId) {
-                            roleSelect.val(selectedRoleId).trigger('change');
+                        if (selectedUserId) {
+                            userSelect.val(selectedUserId).trigger('change');
                         }
                     }
                 });
             }
 
             $('#kt_modal_add_alumni').on('show.bs.modal', function() {
-                loadRoles('#role');
+                loadUsers('#id_user');
             });
             // ============================ End Load data form ==============================
 
             // ============================ Start Action Button  ==============================
-            $(document).on('click', '.kuliah-button', function() {
+            $(document).on('click', '.pad-button', function() {
                 var alumniId = $(this).data('id');
-                window.location.href = '{{ route('kuliah.index', ':id') }}'.replace(':id', alumniId);
-            });
-
-            $(document).on('click', '.kerja-button', function() {
-                var alumniId = $(this).data('id');
-                window.location.href = '{{ route('kerja.index', ':id') }}'.replace(':id', alumniId);
+                window.location.href = '{{ route('pad.index', ':id') }}'.replace(':id', alumniId);
             });
             // ============================ End Action Button ==============================
 
@@ -208,7 +203,7 @@
                     $("#" + elementId).daterangepicker({
                             singleDatePicker: true,
                             showDropdowns: true,
-                            parentEl: '#kt_modal_app_pasien',
+                            parentEl: '#kt_modal_app_alumni',
                             minYear: 1901,
                             maxYear: parseInt(moment().format("YYYY"), 12),
                             autoUpdateInput: false
@@ -364,6 +359,7 @@
                         $('#edit_tahun_lulus').val(response.tahun_lulus);
                         $('#edit_instagram').val(response.instagram);
                         $('#edit_sosmed_lain').val(response.sosmed_lain);
+                        loadUsers('#edit_id_user', response.id_user);
 
                         function initializeDatepickerEdit(elementId, response) {
                             var dateValue = response[elementId];
@@ -376,7 +372,7 @@
                             $("#edit_" + elementId).daterangepicker({
                                 singleDatePicker: true,
                                 showDropdowns: true,
-                                parentEl: '#kt_modal_edit_pasien',
+                                parentEl: '#kt_modal_edit_alumni',
                                 minYear: 1901,
                                 maxYear: parseInt(moment().format("YYYY"), 12),
                                 autoUpdateInput: false

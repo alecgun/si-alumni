@@ -6,12 +6,12 @@
             <th class="min-w-150px">Nama</th>
             <th class="min-w-100px">Kelas</th>
             <th class="min-w-150px">Tanggal Lahir</th>
-            <th class="min-w-100px">Tahun Masuk</th>
-            <th class="min-w-100px">Tahun Lulus</th>
+            <th class="min-w-75px">Tahun Masuk</th>
+            <th class="min-w-75px">Tahun Lulus</th>
             <th class="min-w-125px">Instagram</th>
             <th class="min-w-125px">Diubah Tanggal</th>
             @canany(['alumni.edit', 'alumni.delete', 'kuliah.index', 'kerja.index'])
-                <th class="text-center min-w-300px">Aksi</th>
+                <th class="text-center min-w-250px">Aksi</th>
             @endcanany
 
             {{-- <th class="text-center min-w-100px">Aksi</th> --}}

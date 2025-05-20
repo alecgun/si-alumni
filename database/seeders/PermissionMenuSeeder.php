@@ -15,7 +15,7 @@ class PermissionMenuSeeder extends Seeder
             'role.index', 'role.create', 'role.edit', 'role.delete', 'log.aktivitas.index',
             'alumni.index', 'alumni.create', 'alumni.edit', 'alumni.delete',
             'kuliah.index', 'kuliah.create', 'kuliah.edit', 'kuliah.delete',
-            'kerja.index', 'kerja.create', 'kerja.edit', 'kerja.delete',
+            'kerja.index', 'kerja.create', 'kerja.edit', 'kerja.delete', 'pad.index'
         ];
 
         foreach ($permissions as $permission) {
