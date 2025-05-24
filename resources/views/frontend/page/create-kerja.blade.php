@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah Kerja</h5>
+                <h6 class="modal-title">Tambah Kerja</h6>
                 <button type="button" class="btn-close" id="close_modal_button_kerja" aria-label="Close"></button>
             </div>
             <div class="modal-body">

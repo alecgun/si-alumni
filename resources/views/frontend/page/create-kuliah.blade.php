@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah Kuliah</h5>
+                <h6 class="modal-title">Tambah Kuliah</h6>
                 <button type="button" class="btn-close" id="close_modal_button_kuliah" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -65,9 +65,16 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="status_kuliah" class="form-label">Status Kuliah</label>
-                                <input type="text" class="form-control" id="status_kuliah" name="status_kuliah"
-                                    placeholder="Masukkan status kuliah">
+                                <label for="status_kuliah" class="form-label required">Status Kuliah</label>
+                                <select class="form-select" id="status_kuliah" name="status_kuliah"
+                                    data-control="select2" data-placeholder="Pilih Status Kuliah"
+                                    data-hide-search="true">
+                                    <option value="" disabled selected>Pilih Status Kuliah</option>
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Lulus">Lulus</option>
+                                    <option value="Non-Aktif">Non-Aktif</option>
+                                    <option value="Drop Out">Drop Out</option>
+                                </select>
                                 @error('status_kuliah')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -88,8 +95,8 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="tahun_lulus" class="form-label">Tahun Lulus</label>
-                                <input type="text" class="form-control" id="tahun_lulus_kuliah" name="tahun_lulus"
-                                    placeholder="Masukkan tahun lulus">
+                                <input type="text" class="form-control" id="tahun_lulus_kuliah"
+                                    name="tahun_lulus" placeholder="Masukkan tahun lulus">
                                 @error('tahun_lulus')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

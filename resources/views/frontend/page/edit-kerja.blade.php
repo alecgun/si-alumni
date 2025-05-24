@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Ubah Data Kerja</h5>
+                <h6 class="modal-title">Ubah Data Kerja</h6>
                 <button type="button" class="btn-close" id="close_modal_edit_button_kerja" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -56,7 +56,8 @@
                     </div>
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary mt-3">Simpan</button>
-                        <button type="button" class="btn btn-secondary mt-3" id="cancel_edit_button_kerja">Batal</button>
+                        <button type="button" class="btn btn-secondary mt-3"
+                            id="cancel_edit_button_kerja">Batal</button>
                     </div>
                 </form>
             </div>

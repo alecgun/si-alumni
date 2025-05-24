@@ -1,19 +1,35 @@
 @extends('frontend.page.parts.master')
 @section('content')
+    <!-- START HERO -->
+    <section class="bg-blog">
+        <div class="bg-overlay"></div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="text-center text-white">
+                        <h2 class="text-white fw-bold">Biodata Alumni</h2>
+                        {{-- <nav aria-label="breadcrumb" class="mt-3">
+                            <ul class="breadcrumb justify-content-center">
+                                <li class="breadcrumb-item"><a href="{{ route('landing.home') }}">Home</a></li>
+                                <li class="breadcrumb-item active text-white-50" aria-current="page">Biodata Alumni</li>
+                            </ul>
+                        </nav> --}}
+                        <p class="text-white-50">Data Kuliah dan Data Kerja yang diisi oleh alumni tidak akan ditampilkan di
+                            halaman data alumni keseluruhan.</p>
+                    </div>
+                </div>
+                <!--end col-->
+            </div>
+            <!--end row-->
+        </div>
+        <!--end container-->
+    </section>
+    <!-- END HERO -->
     <!-- START MAIN -->
     <section class="section bg-light" id="biodata">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <h1 class="mt-3">Biodata Alumni</h1>
-                    <p class="text-muted">Data kuliah dan data kerja yang terdata di database SMAN 1 Blitar tidak akan
-                        ditampilkan di halaman data alumni.</p>
-                </div>
-            </div>
-        </div>
-        <div class="container mt-4">
             <div class="row justify-content-center align-items-start">
-                <div class="col-md-4 text-center">
+                <div class="col-md-4 text-center mb-3">
                     <img src="{{ asset('frontend-assets/images/home/messi.png') }}" alt="Alumni Photo"
                         class="img-fluid rounded" style="height: 150px;">
                     <h5 class="mt-3">{{ auth()->user()->name }}</h5>
@@ -22,12 +38,12 @@
                 </div>
                 <div class="col-md-8 shadow-sm p-4" id="biodata-content">
                     <div id="data_pribadi">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between mb-2">
                             <span>
                                 <h5>Data Pribadi</h5>
                             </span>
-                            <a href="#" class="mdi mdi-pencil edit-button-sosmed" data-bs-toggle="modal"
-                                data-bs-target="#modal_edit_sosmed"><b> Edit Data Sosmed</b></a>
+                            <button type="button" class="btn btn-primary mdi mdi-pencil edit-button-sosmed fw-bold"
+                                data-bs-toggle="modal" data-bs-target="#modal_edit_sosmed"> Edit Data Sosmed</button>
                         </div>
                         <div class="d-flex justify-content-between mb-1">
                             <span class="me-2 text-muted">NIS</span>
@@ -69,8 +85,8 @@
                                 <h5>Data Kuliah</h5>
                             </span>
                             @can('kuliah.create')
-                                <a href="#" class="mdi mdi-plus-circle" data-bs-toggle="modal"
-                                    data-bs-target="#modal_add_kuliah"><b> Tambah</b></a>
+                                <button type="button" class="btn btn-primary mdi mdi-plus fw-bold" data-bs-toggle="modal"
+                                    data-bs-target="#modal_add_kuliah"> Tambah</button>
                             @endcan
                         </div>
                         <div id="kuliah-list">
@@ -83,8 +99,8 @@
                                 <h5>Data Kerja</h5>
                             </span>
                             @can('kerja.create')
-                                <a href="#" class="mdi mdi-plus-circle" data-bs-toggle="modal"
-                                    data-bs-target="#modal_add_kerja"><b> Tambah</b></a>
+                                <button type="button" class="btn btn-primary mdi mdi-plus fw-bold" data-bs-toggle="modal"
+                                    data-bs-target="#modal_add_kerja"> Tambah</button>
                             @endcan
                         </div>
                         <div id="kerja-list">
@@ -115,10 +131,67 @@
 @endsection
 
 @push('customScripts')
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
+            // ============================ Start Reset Form ==============================
+            function showValidationErrors(errors) {
+                // errors contohnya: { "tanggal": ["The tanggal field is required."] }
+                for (const fieldName in errors) {
+                    if (Object.hasOwnProperty.call(errors, fieldName)) {
+                        // Pesan error pertama
+                        const errorMsg = errors[fieldName][0];
+
+                        // Temukan field input
+                        const inputField = $(`[name="${fieldName}"]`);
+                        inputField.addClass('is-invalid');
+
+                        // Jika belum ada .invalid-feedback, buat baru
+                        if (inputField.next('.invalid-feedback').length === 0) {
+                            inputField.after(`<div class="invalid-feedback">${errorMsg}</div>`);
+                        }
+                    }
+                }
+            }
+
+            // Fungsi membersihkan error sebelumnya
+            function clearErrorFeedback() {
+                $('.is-invalid').removeClass('is-invalid');
+                $('.invalid-feedback').remove();
+            }
+
+            function resetFormKuliah(form) {
+                $(form)[0].reset();
+                $(form).find('input[name="id_kuliah"]').val('');
+                $(form).find('select').val('').trigger('change');
+                $('.is-invalid').removeClass('is-invalid');
+                $('.text-danger').remove();
+            }
+
+            function resetFormKerja(form) {
+                $(form)[0].reset();
+                $(form).find('input[name="id_kerja"]').val('');
+                $(form).find('select').val('').trigger('change');
+                $('.is-invalid').removeClass('is-invalid');
+                $('.text-danger').remove();
+            }
+
+            function resetFormSosmed(form) {
+                $(form)[0].reset();
+                $(form).find('input[name="id_alumni"]').val('');
+                $(form).find('select').val('').trigger('change');
+                $('.is-invalid').removeClass('is-invalid');
+                $('.text-danger').remove();
+            }
+
+            function clearValidationErrors(form) {
+                form.find('.is-invalid').removeClass('is-invalid');
+                form.find('.text-danger').remove();
+            }
+            // ============================ End Reset Form ==============================
+
             // ============================ Start Get Data Alumni ==============================
+            getData();
+
             function getData() {
                 $.ajax({
                     url: '{{ route('landing.getAlumniByAuthUser') }}', // pastikan ini rute yang benar
@@ -180,9 +253,9 @@
                                 <span class="fw-bold">${kuliah.tahun_lulus || '-'}</span>
                             </div>
                             <div class="d-flex justify-content-end">
-                                <a href="#" class="me-2 mdi mdi-pencil edit-button-kuliah" data-id="${kuliah.id}" data-alumni-id="${kuliah.alumni_id}" data-bs-toggle="modal"
-                                    data-bs-target="#modal_edit_kuliah"><b> Edit</b></a>
-                                <a href="#" class="mdi mdi-delete text-danger delete-button-kuliah" data-id="${kuliah.id}" data-alumni-id="${kuliah.alumni_id}"><b> Hapus</b></a>
+                                <button type="button" class="btn btn-primary me-2 mdi mdi-pencil edit-button-kuliah fw-bold" data-id="${kuliah.id}" data-alumni-id="${kuliah.alumni_id}" data-bs-toggle="modal"
+                                    data-bs-target="#modal_edit_kuliah"> Edit</button>
+                                <button type="button" class="btn btn-danger mdi mdi-delete delete-button-kuliah fw-bold" data-id="${kuliah.id}" data-alumni-id="${kuliah.alumni_id}"> Hapus</button>
                             </div>
                             <br />
                         `;
@@ -215,9 +288,9 @@
                                 <span class="fw-bold">${kerja.tahun_masuk || '-'}</span>
                             </div>
                             <div class="d-flex justify-content-end">
-                                <a href="#" class="me-2 mdi mdi-pencil edit-button-kerja" data-id="${kerja.id}" data-alumni-id="${kerja.alumni_id}" data-bs-toggle="modal"
-                                    data-bs-target="#modal_edit_kerja"><b> Edit</b></a>
-                                <a href="#" class="mdi mdi-delete text-danger delete-button-kerja" data-id="${kerja.id}" data-alumni-id="${kerja.alumni_id}"><b> Hapus</b></a>
+                                <button type="button" class="btn btn-primary me-2 mdi mdi-pencil edit-button-kerja fw-bold" data-id="${kerja.id}" data-alumni-id="${kerja.alumni_id}" data-bs-toggle="modal"
+                                    data-bs-target="#modal_edit_kerja"> Edit</button>
+                                <button type="button" class="btn btn-danger mdi mdi-delete delete-button-kerja fw-bold" data-id="${kerja.id}" data-alumni-id="${kerja.alumni_id}"> Hapus</button>
                             </div>
                             <br />
                         `;
@@ -236,8 +309,6 @@
                     }
                 });
             }
-
-            getData();
             // ============================ End Get Data Alumni ==============================
 
             // ============================ Start Action Cancel Add ==============================
@@ -379,7 +450,9 @@
                         $('#edit_program_studi').val(response.kuliah.program_studi);
                         $('#edit_jenjang').val(response.kuliah.jenjang);
                         $('#edit_jalur_masuk').val(response.kuliah.jalur_masuk);
-                        $('#edit_status_kuliah').val(response.kuliah.status_kuliah);
+                        $('#edit_status_kuliah').trigger('change').val(response.kuliah
+                                .status_kuliah)
+                            .trigger('change');
                         $('#edit_tahun_masuk_kuliah').val(response.kuliah.tahun_masuk);
                         $('#edit_tahun_lulus_kuliah').val(response.kuliah.tahun_lulus);
                         $('#modal_edit_kuliah_form').attr('action',
@@ -1053,62 +1126,6 @@
                 });
             });
             // ============================ End Edit Sosmed ==============================
-
-            // ============================ Start Reset Form ==============================
-            function showValidationErrors(errors) {
-                // errors contohnya: { "tanggal": ["The tanggal field is required."] }
-                for (const fieldName in errors) {
-                    if (Object.hasOwnProperty.call(errors, fieldName)) {
-                        // Pesan error pertama
-                        const errorMsg = errors[fieldName][0];
-
-                        // Temukan field input
-                        const inputField = $(`[name="${fieldName}"]`);
-                        inputField.addClass('is-invalid');
-
-                        // Jika belum ada .invalid-feedback, buat baru
-                        if (inputField.next('.invalid-feedback').length === 0) {
-                            inputField.after(`<div class="invalid-feedback">${errorMsg}</div>`);
-                        }
-                    }
-                }
-            }
-
-            // Fungsi membersihkan error sebelumnya
-            function clearErrorFeedback() {
-                $('.is-invalid').removeClass('is-invalid');
-                $('.invalid-feedback').remove();
-            }
-
-            function resetFormKuliah(form) {
-                $(form)[0].reset();
-                $(form).find('input[name="id_kuliah"]').val('');
-                $(form).find('select').val('').trigger('change');
-                $('.is-invalid').removeClass('is-invalid');
-                $('.text-danger').remove();
-            }
-
-            function resetFormKerja(form) {
-                $(form)[0].reset();
-                $(form).find('input[name="id_kerja"]').val('');
-                $(form).find('select').val('').trigger('change');
-                $('.is-invalid').removeClass('is-invalid');
-                $('.text-danger').remove();
-            }
-
-            function resetFormSosmed(form) {
-                $(form)[0].reset();
-                $(form).find('input[name="id_alumni"]').val('');
-                $(form).find('select').val('').trigger('change');
-                $('.is-invalid').removeClass('is-invalid');
-                $('.text-danger').remove();
-            }
-
-            function clearValidationErrors(form) {
-                form.find('.is-invalid').removeClass('is-invalid');
-                form.find('.text-danger').remove();
-            }
-            // ============================ End Reset Form ==============================
         });
     </script>
 @endpush
@@ -1132,6 +1149,53 @@
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #data_pribadi .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 180px;
+            height: 30px;
+            padding: 0;
+        }
+
+        #kuliah .btn,
+        #kerja .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 90px;
+            height: 30px;
+        }
+
+        .modal-body {
+            padding: 15px 30px;
+        }
+
+        .form-select,
+        .form-control {
+            padding: 7px 12px;
+            border-color: rgba(37, 39, 43, 0.2);
+            box-shadow: rgba(149, 157, 165, 0.08) 0px 8px 24px;
+            font-size: 14px;
+        }
+
+        .form-select:focus {
+            box-shadow: rgba(149, 157, 165, 0.08) 0px 8px 24px;
+            border-color: #3f8efc;
+        }
+
+        .form-select::-moz-placeholder {
+            color: #ced4da;
+        }
+
+        .form-select::placeholder {
+            color: #ced4da;
+        }
+
+        .form-select option {
+            padding: 10px;
         }
     </style>
 @endpush

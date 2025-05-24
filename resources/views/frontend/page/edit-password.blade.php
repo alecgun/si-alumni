@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Ubah User</h5>
+                <h6 class="modal-title">Ubah User</h6>
                 <button type="button" class="btn-close" id="close_modal_edit_button_password"
                     aria-label="Close"></button>
             </div>
