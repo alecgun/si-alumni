@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             AlumniSeeder::class,
             KerjaSeeder::class,
             KuliahSeeder::class,
+            PengumumanSeeder::class,
         ]);
     }
 }

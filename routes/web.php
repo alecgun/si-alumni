@@ -1,24 +1,26 @@
 <?php
 
+use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\LogAktivitasController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\AlumniController;
-use App\Http\Controllers\KuliahController;
 use App\Http\Controllers\KerjaController;
+use App\Http\Controllers\KuliahController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\PostAcademicDataController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\TicketReplyController;
+use App\Http\Controllers\PengumumanController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-
-
 
 Route::get('/get-data-role', [RoleController::class, 'data'])->name('role.data');
 Route::get('/get-data-user', [UserController::class, 'data'])->name('user.data');
+Route::get('/get-data-alumni', [AlumniController::class, 'data'])->name('alumni.data');
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
-Route::get('/data-alumni', [LandingController::class, 'dataAlumni'])->name('landing.dataAlumni');
+Route::get('/daftar-alumni', [LandingController::class, 'dataAlumni'])->name('landing.dataAlumni');
 
 Route::group(['middleware' => ['guest']], function () {
     Route::get('/login', function () {
@@ -30,6 +32,14 @@ Route::group(['middleware' => ['guest']], function () {
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::resource('ticket', TicketController::class)->except(['index']);
+    Route::get('/ticket', [TicketController::class, 'index'])->name('ticket');
+    Route::post('/ticket-reply/store', [TicketReplyController::class, 'store'])->name('ticket-reply.store');
+    Route::get('ticket-reply/{ticket}', [TicketReplyController::class, 'getReplies'])->name('ticket-reply.replies');
+
+    Route::resource('pengumuman', PengumumanController::class)->except(['index']);
+    Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman');
 
     Route::get('/biodata', [LandingController::class, 'biodata'])->name('landing.biodata');
     Route::get('/get-alumni-by-user', [LandingController::class, 'getAlumniByAuthUser'])->name('landing.getAlumniByAuthUser');
@@ -44,6 +54,14 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('biodata/{idAlumni}/edit-kerja/{idKerja}/edit', [LandingController::class, 'editKerja'])->name('landing.editKerja');
     Route::put('biodata/{idAlumni}/edit-kerja/{idKerja}', [LandingController::class, 'updateKerja'])->name('landing.updateKerja');
     Route::delete('biodata/{idAlumni}/delete-kerja/{idKerja}', [LandingController::class, 'deleteKerja'])->name('landing.deleteKerja');
+
+    Route::get('/open-ticket', [LandingController::class, 'openTicket'])->name('landing.ticket.open');
+    Route::post('/store-ticket', [LandingController::class, 'storeTicket'])->name('landing.ticket.store');
+    Route::get('/history-ticket', [LandingController::class, 'historyTicket'])->name('landing.ticket.history');
+    Route::get('/show-ticket/{idTicket}', [LandingController::class, 'showTicketPage'])->name('landing.ticket.show');
+    Route::get('/show-ticket/{idTicket}/data', [LandingController::class, 'showTicket'])->name('landing.ticket.data');
+    Route::get('/show-reply/{idTicket}', [LandingController::class, 'showTicketReplies'])->name('landing.ticket-reply.show');
+    Route::post('/store-reply', [LandingController::class, 'storeTicketReply'])->name('landing.ticket-reply.store');
     //make route prefix setting
     Route::prefix('alumni')->group(function () {
         Route::resource('alumni', AlumniController::class);

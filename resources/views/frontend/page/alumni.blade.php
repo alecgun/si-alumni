@@ -1,19 +1,24 @@
 @extends('frontend.page.parts.master')
 @section('content')
-    <!-- START MAIN -->
-    <section class="section bg-light" id="alumni">
+    <!-- START HERO -->
+    <section class="bg-blue">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-12 mt-4 text-center">
-                    <div class="title-heading">
-                        <h1 class="heading mb
-                        -3">Data Alumni</h1>
-                        <p class="para-desc mx-auto text-muted">Berikut adalah data alumni SMAN 1 Blitar</p>
+                <div class="col-lg-8">
+                    <div class="text-center text-white">
+                        <h2 class="text-white fw-bold">Daftar Alumni</h2>
                     </div>
                 </div>
                 <!--end col-->
             </div>
             <!--end row-->
+        </div>
+        <!--end container-->
+    </section>
+    <!-- END HERO -->
+    <!-- START MAIN -->
+    <section class="section bg-light" id="alumni">
+        <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card-body py-4">
@@ -21,7 +26,6 @@
                             <table id="table_data_alumnis" class="table table-bordered card" width="100%">
                                 <thead>
                                     <tr>
-                                        <th class="text-start">NIS</th>
                                         <th class="text-start">Nama</th>
                                         <th class="text-start">Kelas</th>
                                         <th class="text-start">Tahun Lulus</th>
@@ -52,11 +56,6 @@
                 serverSide: true,
                 ajax: '{{ route('landing.dataAlumni') }}',
                 columns: [{
-                        class: 'text-start',
-                        data: 'nis',
-                        name: 'nis'
-                    },
-                    {
                         class: 'text-start',
                         data: 'nama',
                         name: 'nama'
@@ -129,6 +128,15 @@
 
 @push('customStyles')
     <style>
+        .bg-blue {
+            padding: 150px 0 80px 0;
+            position: relative;
+            background-color: #135fc9;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
         #alumni {
             display: grid;
             grid-template-rows: auto 1fr auto;

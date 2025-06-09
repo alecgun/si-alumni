@@ -23,7 +23,7 @@
                             <div class="mb-3">
                                 <label for="fakultas" class="form-label">Fakultas</label>
                                 <input type="text" class="form-control" id="fakultas" name="fakultas"
-                                    placeholder="Masukkan fakultas lengkap">
+                                    placeholder="Masukkan fakultas">
                                 @error('fakultas')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -45,7 +45,7 @@
                             <div class="mb-3">
                                 <label for="jenjang" class="form-label">Jenjang</label>
                                 <input type="text" class="form-control" id="jenjang" name="jenjang"
-                                    placeholder="Masukkan jenjang lengkap">
+                                    placeholder="Masukkan jenjang">
                                 @error('jenjang')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -66,8 +66,15 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="status_kuliah" class="form-label">Status Kuliah</label>
-                                <input type="text" class="form-control" id="status_kuliah" name="status_kuliah"
-                                    placeholder="Masukkan status kuliah">
+                                <select class="form-select" data-control="select2"
+                                    data-placeholder="Pilih Status Kuliah" data-hide-search="true" id="status_kuliah"
+                                    name="status_kuliah">
+                                    <option value="" disabled selected>Pilih Status Kuliah</option>
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Lulus">Lulus</option>
+                                    <option value="Non-Aktif">Non-Aktif</option>
+                                    <option value="Drop Out">Drop Out</option>
+                                </select>
                                 @error('status_kuliah')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

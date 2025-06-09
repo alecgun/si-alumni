@@ -77,21 +77,47 @@
                     <div class="card-body py-4">
                         <!-- begin::Main content -->
                         <div class="row justify-content-center align-items-start">
-                            <div class="col-md-2 d-flex flex-column align-items-center">
-                                <div class="mb-3">
-                                    <img src="{{ asset('frontend-assets/images/home/messi.png') }}" alt="Alumni Photo"
-                                        class="img-fluid rounded shadow" style="height: 150px;">
-                                </div>
-                                <div class="text-center">
-                                    <h5 class="mt-2" style="font-size: 1.4rem;">{{ $alumni->nama }}</h5>
-                                    <p class="text-muted mb-1" style="font-size: 1.2rem;">{{ $alumni->nis }}</p>
-                                    <p class="text-muted mb-1" style="font-size: 1.2rem;">{{ $alumni->kelas }}</p>
-                                    <p class="text-muted mb-1" style="font-size: 1.2rem;">Angkatan
-                                        {{ $alumni->tahun_lulus }}</p>
-                                </div>
+                            <div class="col-md-3 d-flex flex-column align-items-center pb-5">
+                                <img src="{{ asset('frontend-assets/images/home/messi.png') }}" alt="Alumni Photo"
+                                    class="img-fluid rounded shadow" style="max-height: 150px;">
                             </div>
-                            <div class="col-md-10">
+                            <div class="col-md-9">
                                 <div id="pad">
+                                    <div class="mb-3">
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <th class="fw-bold" width="20%">Nama</th>
+                                                    <td>{{ $alumni->nama }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="fw-bold">NIS</th>
+                                                    <td>{{ $alumni->nis }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="fw-bold">Kelas</th>
+                                                    <td>{{ $alumni->kelas }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="fw-bold">Tahun Masuk</th>
+                                                    <td>{{ $alumni->tahun_masuk }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="fw-bold">Tahun Lulus</th>
+                                                    <td>{{ $alumni->tahun_lulus }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="fw-bold">Tanggal Lahir</th>
+                                                    <td>{{ $alumni->tanggal_lahir }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="fw-bold">Instagram</th>
+                                                    <td>{{ $alumni->instagram }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    </br>
                                     <!-- begin::Data Kuliah -->
                                     <div class="d-flex justify-content-between">
                                         <span style="font-size: 1.5rem;">
@@ -353,8 +379,6 @@
                     type: 'GET',
                     url: showUrl,
                     success: function(response) {
-                        $('#show_id_kuliah').val(response.id);
-                        $('#show_alumni_id').val(alumniId);
                         $('#show_nama_universitas').val(response.nama_universitas);
                         $('#show_jenjang').val(response.jenjang);
                         $('#show_fakultas').val(response.fakultas);
@@ -403,7 +427,8 @@
                         $('#edit_jenjang').val(response.jenjang);
                         $('#edit_fakultas').val(response.fakultas);
                         $('#edit_program_studi').val(response.program_studi);
-                        $('#edit_status_kuliah').val(response.status_kuliah);
+                        $('#edit_status_kuliah').trigger('change').val(response.status_kuliah)
+                            .trigger('change');
                         $('#edit_jalur_masuk').val(response.jalur_masuk);
                         $('#edit_tahun_masuk').val(response.tahun_masuk);
                         $('#edit_tahun_lulus').val(response.tahun_lulus);

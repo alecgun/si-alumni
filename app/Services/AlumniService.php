@@ -4,9 +4,8 @@ namespace App\Services;
 
 use App\Models\Alumni;
 use Exception;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class AlumniService
 {
@@ -16,10 +15,12 @@ class AlumniService
         try {
             $alumni = Alumni::create($data);
             DB::commit();
+
             return ['status' => true, 'alumni' => $alumni];
         } catch (Exception $e) {
             DB::rollback();
-            return ['status' => false, 'message' => 'Gagal membuat data alumni: ' . $e->getMessage()];
+
+            return ['status' => false, 'message' => 'Gagal membuat data alumni: '.$e->getMessage()];
         }
     }
 
@@ -29,10 +30,12 @@ class AlumniService
         try {
             $alumni->update($data);
             DB::commit();
+
             return ['status' => true, 'alumni' => $alumni];
         } catch (Exception $e) {
             DB::rollback();
-            return ['status' => false, 'message' => 'Gagal memperbarui data alumni: ' . $e->getMessage()];
+
+            return ['status' => false, 'message' => 'Gagal memperbarui data alumni: '.$e->getMessage()];
         }
     }
 
@@ -42,16 +45,19 @@ class AlumniService
         try {
             $alumni->delete();
             DB::commit();
+
             return ['status' => true];
         } catch (QueryException $e) {
             DB::rollback();
             if ($e->getCode() === '23000') {
                 return ['status' => false, 'message' => 'Gagal menghapus data alumni: Data alumni ini memiliki data terkait yang tidak dapat dihapus.'];
             }
-            return ['status' => false, 'message' => 'Gagal menghapus data alumni: ' . $e->getMessage()];
+
+            return ['status' => false, 'message' => 'Gagal menghapus data alumni: '.$e->getMessage()];
         } catch (Exception $e) {
             DB::rollback();
-            return ['status' => false, 'message' => 'Gagal menghapus data alumni: ' . $e->getMessage()];
+
+            return ['status' => false, 'message' => 'Gagal menghapus data alumni: '.$e->getMessage()];
         }
     }
 
@@ -60,33 +66,26 @@ class AlumniService
         try {
             return ['status' => true, 'alumni' => $alumni];
         } catch (Exception $e) {
-            return ['status' => false, 'message' => 'Gagal mengambil data alumni: ' . $e->getMessage()];
+            return ['status' => false, 'message' => 'Gagal mengambil data alumni: '.$e->getMessage()];
         }
     }
 
     public function getAlumniQuery()
     {
         try {
-            return Alumni::select(
-                'alumni.*'
-            );
+            return Alumni::select('alumni.*');
         } catch (Exception $e) {
-            return ['status' => false, 'message' => 'Gagal mengambil data alumni: ' . $e->getMessage()];
+            return ['status' => false, 'message' => 'Gagal mengambil data alumni: '.$e->getMessage()];
         }
     }
 
     public function searchAlumnis($query, $search)
     {
         try {
-            return $query->where(function ($q) use ($search) {
-                $q->where('alumni.nama', 'like', "%{$search}%")
-                    ->orWhere('alumni.nis', 'like', "%{$search}%")
-                    ->orWhere('alumni.kelas', 'like', "%{$search}%")
-                    ->orWhere('alumni.tahun_masuk', 'like', "%{$search}%")
-                    ->orWhere('alumni.tahun_lulus', 'like', "%{$search}%");
-            });
+            return $query->when($search, fn ($q) => $q->whereAny(
+                ['nama', 'nis', 'kelas', 'tahun_masuk', 'tahun_lulus'], 'like', "%{$search}%"));
         } catch (Exception $e) {
-            return ['status' => false, 'message' => 'Gagal mencari data alumni: ' . $e->getMessage()];
+            return ['status' => false, 'message' => 'Gagal mencari data alumni: '.$e->getMessage()];
         }
     }
 }

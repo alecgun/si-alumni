@@ -11,11 +11,7 @@ class KerjaRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->user()->can('kerja.create') || $this->user()->can('kerja.edit')) {
-            return true;
-        } else {
-            return false;
-        }
+        return true;
     }
 
     /**

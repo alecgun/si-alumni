@@ -1,8 +1,7 @@
 @extends('frontend.page.parts.master')
 @section('content')
     <!-- START HERO -->
-    <section class="bg-blog">
-        <div class="bg-overlay"></div>
+    <section class="bg-blue">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
@@ -14,8 +13,8 @@
                                 <li class="breadcrumb-item active text-white-50" aria-current="page">Biodata Alumni</li>
                             </ul>
                         </nav> --}}
-                        <p class="text-white-50">Data Kuliah dan Data Kerja yang diisi oleh alumni tidak akan ditampilkan di
-                            halaman data alumni keseluruhan.</p>
+                        <p class="text-white-50">Data kuliah dan data kerja yang diisi oleh alumni tidak akan ditampilkan di
+                            halaman daftar alumni.</p>
                     </div>
                 </div>
                 <!--end col-->
@@ -33,8 +32,8 @@
                     <img src="{{ asset('frontend-assets/images/home/messi.png') }}" alt="Alumni Photo"
                         class="img-fluid rounded" style="height: 150px;">
                     <h5 class="mt-3">{{ auth()->user()->name }}</h5>
-                    <a href="#" class="btn btn-primary mt-2 edit-button-password" data-bs-toggle="modal"
-                        data-bs-target="#modal_edit_password">Ganti Password</a>
+                    <button class="btn btn-primary mt-2 edit-button-password" data-bs-toggle="modal"
+                        data-bs-target="#modal_edit_password">Ganti Password</button>
                 </div>
                 <div class="col-md-8 shadow-sm p-4" id="biodata-content">
                     <div id="data_pribadi">
@@ -62,6 +61,10 @@
                             <span id="tanggal_lahir" class="fw-bold"></span>
                         </div>
                         <div class="d-flex justify-content-between mb-1">
+                            <span class="me-2 text-muted">Jenis Kelamin</span>
+                            <span id="jenis_kelamin" class="fw-bold"></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
                             <span class="me-2 text-muted">Tahun Masuk</span>
                             <span id="tahun_masuk" class="fw-bold"></span>
                         </div>
@@ -84,10 +87,8 @@
                             <span>
                                 <h5>Data Kuliah</h5>
                             </span>
-                            @can('kuliah.create')
-                                <button type="button" class="btn btn-primary mdi mdi-plus fw-bold" data-bs-toggle="modal"
-                                    data-bs-target="#modal_add_kuliah"> Tambah</button>
-                            @endcan
+                            <button type="button" class="btn btn-primary mdi mdi-plus fw-bold" data-bs-toggle="modal"
+                                data-bs-target="#modal_add_kuliah"> Tambah</button>
                         </div>
                         <div id="kuliah-list">
                             <!-- Data kuliah akan dimasukkan di sini -->
@@ -98,10 +99,8 @@
                             <span>
                                 <h5>Data Kerja</h5>
                             </span>
-                            @can('kerja.create')
-                                <button type="button" class="btn btn-primary mdi mdi-plus fw-bold" data-bs-toggle="modal"
-                                    data-bs-target="#modal_add_kerja"> Tambah</button>
-                            @endcan
+                            <button type="button" class="btn btn-primary mdi mdi-plus fw-bold" data-bs-toggle="modal"
+                                data-bs-target="#modal_add_kerja"> Tambah</button>
                         </div>
                         <div id="kerja-list">
                             <!-- Data kerja akan dimasukkan di sini -->
@@ -116,18 +115,10 @@
     <!-- END MAIN -->
     @include('frontend.page.edit-password')
     @include('frontend.page.edit-alumni-sosmed')
-    @can('kuliah.create')
-        @include('frontend.page.create-kuliah')
-    @endcan
-    @can('kuliah.edit')
-        @include('frontend.page.edit-kuliah')
-    @endcan
-    @can('kerja.create')
-        @include('frontend.page.create-kerja')
-    @endcan
-    @can('kerja.edit')
-        @include('frontend.page.edit-kerja')
-    @endcan
+    @include('frontend.page.create-kuliah')
+    @include('frontend.page.edit-kuliah')
+    @include('frontend.page.create-kerja')
+    @include('frontend.page.edit-kerja')
 @endsection
 
 @push('customScripts')
@@ -210,6 +201,8 @@
                                 month: 'long',
                                 day: 'numeric'
                             }) : '-');
+                            $('#jenis_kelamin').text(response.alumni.jenis_kelamin === 'L' ?
+                                'Laki-laki' : 'Perempuan' || '-');
                             $('#tahun_masuk').text(response.alumni.tahun_masuk || '-');
                             $('#tahun_lulus').text(response.alumni.tahun_lulus || '-');
                             $('#instagram').text(response.alumni.instagram || '-');
@@ -1132,6 +1125,15 @@
 
 @push('customStyles')
     <style>
+        .bg-blue {
+            padding: 150px 0 80px 0;
+            position: relative;
+            background-color: #135fc9;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
         #biodata {
             display: grid;
             grid-template-rows: auto 1fr auto;

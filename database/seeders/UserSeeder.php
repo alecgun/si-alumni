@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -39,7 +38,7 @@ class UserSeeder extends Seeder
                 'email' => 'user5@gmail.com',
                 'password' => bcrypt('password'),
             ],
-                        [
+            [
                 'name' => 'Emily Davis',
                 'email' => 'user6@gmail.com',
                 'password' => bcrypt('password'),
@@ -64,6 +63,57 @@ class UserSeeder extends Seeder
                 'email' => 'user10@gmail.com',
                 'password' => bcrypt('password'),
             ],
+            [
+                'name' => 'Sophia Williams',
+                'email' => 'user11@gmail.com',
+                'password' => bcrypt('password'),
+            ],
+            [
+                'name' => 'Ethan Thomas',
+                'email' => 'user12@gmail.com',
+                'password' => bcrypt('password'),
+            ],
+            [
+                'name' => 'Olivia Martinez',
+                'email' => 'user13@gmail.com',
+                'password' => bcrypt('password'),
+            ],
+            [
+                'name' => 'Ava White',
+                'email' => 'user14@gmail.com',
+                'password' => bcrypt('password'),
+            ],
+            [
+                'name' => 'James Harris',
+                'email' => 'user15@gmail.com',
+                'password' => bcrypt('password'),
+            ],
+            [
+                'name' => 'Isabella Clark',
+                'email' => 'user16@gmail.com',
+                'password' => bcrypt('password'),
+            ],
+            [
+                'name' => 'Liam Lewis',
+                'email' => 'user17@gmail.com',
+                'password' => bcrypt('password'),
+            ],
+            [
+                'name' => 'Mia Walker',
+                'email' => 'user18@gmail.com',
+                'password' => bcrypt('password'),
+            ],
+            [
+                'name' => 'Noah Hall',
+                'email' => 'user19@gmail.com',
+                'password' => bcrypt('password'),
+            ],
+            [
+                'name' => 'Lucas Young',
+                'email' => 'user20@gmail.com',
+                'password' => bcrypt('password'),
+            ],
+
         ];
 
         foreach ($users as $user) {

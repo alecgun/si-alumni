@@ -46,10 +46,10 @@ class DataAlumniDataTables
             'draw' => intval($request->input('draw')),
             'recordsTotal' => $totalRecords,
             'recordsFiltered' => $totalFiltered,
-            'data' => $data->map(function ($alumni, $index) use ($start) {
+            'data' => $data->map(function ($alumni, $index) {
                 Carbon::setLocale('id');
+
                 return [
-                    'nis' => $alumni->nis,
                     'nama' => $alumni->nama,
                     'kelas' => $alumni->kelas,
                     'tahun_lulus' => $alumni->tahun_lulus,
@@ -58,5 +58,4 @@ class DataAlumniDataTables
             }),
         ];
     }
-
 }

@@ -55,6 +55,21 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
+                                <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                                <select class="form-select" data-control="select2"
+                                    data-placeholder="Pilih Jenis Kelamin" data-hide-search="true" id="jenis_kelamin"
+                                    name="jenis_kelamin">
+                                    <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                                    <option value="L">Laki-laki</option>
+                                    <option value="P">Perempuan</option>
+                                </select>
+                                @error('jenis_kelamin')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
                                 <label for="tahun_masuk" class="form-label required">Tahun Masuk</label>
                                 <input type="text" class="form-control" id="tahun_masuk" name="tahun_masuk"
                                     placeholder="Masukkan Tahun Masuk">
@@ -63,6 +78,8 @@
                                 @enderror
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="tahun_lulus" class="form-label required">Tahun Lulus</label>
@@ -73,8 +90,6 @@
                                 @enderror
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="instagram" class="form-label">Instagram</label>
@@ -85,6 +100,8 @@
                                 @enderror
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="sosmed_lain" class="form-label">Sosmed Lain</label>
@@ -95,8 +112,6 @@
                                 @enderror
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="id_user" class="form-label">User</label>

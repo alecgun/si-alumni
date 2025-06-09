@@ -78,3 +78,4 @@ window.onload = function loader() {
     document.getElementById("preloader").style.opacity = "0";
   }, 350);
 };
+

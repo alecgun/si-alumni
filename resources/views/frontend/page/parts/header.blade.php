@@ -29,10 +29,6 @@
     <link href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.2/css/buttons.dataTables.css" type="text.css">
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     @stack('customStyles')
 
 </head>

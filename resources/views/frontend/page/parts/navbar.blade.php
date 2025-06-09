@@ -8,10 +8,10 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0" id="navbar-navList">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('landing.dataAlumni') }}">Data Alumni</a>
+            </li>
             @guest
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('landing.dataAlumni') }}">Data Alumni</a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('login') }}">Login</a>
                 </li>
@@ -21,11 +21,29 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
+                            Tiket Bantuan
+                            <i class="mdi mdi-chevron-down"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="nav-link" href="{{ route('landing.ticket.open') }}">Buka Tiket</a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="{{ route('landing.ticket.history') }}">Riwayat Tiket</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             {{ ucfirst(strtolower(explode(' ', auth()->user()->name)[0])) }}
                             <i class="mdi mdi-chevron-down"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li class="nav-item">
+                            <li>
+                                <a class="nav-link" href="{{ route('landing.biodata') }}">Biodata</a>
+                            </li>
+                            <li>
                                 <a class="nav-link" href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

@@ -4,10 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\Kuliah;
-use App\Models\Kerja;
-use App\Models\User;
 
 class Alumni extends Model
 {
@@ -28,6 +24,7 @@ class Alumni extends Model
         'tahun_masuk',
         'tahun_lulus',
         'tanggal_lahir',
+        'jenis_kelamin',
         'instagram',
         'sosmed_lain',
         'id_user',
@@ -46,5 +43,4 @@ class Alumni extends Model
     {
         return $this->hasMany(Kerja::class);
     }
-
 }

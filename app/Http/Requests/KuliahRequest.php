@@ -11,11 +11,7 @@ class KuliahRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->user()->can('kuliah.create') || $this->user()->can('kuliah.edit')) {
-            return true;
-        } else {
-            return false;
-        }
+        return true;
     }
 
     /**
@@ -32,7 +28,7 @@ class KuliahRequest extends FormRequest
             'status_kuliah' => 'required|string|max:50|in:Aktif,Lulus,Non-Aktif,Drop Out',
             'jalur_masuk' => 'required|string|max:50',
             'tahun_masuk' => 'required|integer|min:1900',
-            'tahun_lulus' => $this->input('status_kuliah') == 'Lulus' ? 'required|integer|min:' . ($this->input('tahun_masuk')) : 'nullable|integer|min:' . ($this->input('tahun_masuk')),
+            'tahun_lulus' => $this->input('status_kuliah') == 'Lulus' ? 'required|integer|min:'.($this->input('tahun_masuk')) : 'nullable|integer|min:'.($this->input('tahun_masuk')),
         ];
     }
 
@@ -57,6 +53,7 @@ class KuliahRequest extends FormRequest
             'status_kuliah.required' => 'Status kuliah harus diisi',
             'status_kuliah.string' => 'Status kuliah harus berupa teks',
             'status_kuliah.max' => 'Status kuliah maksimal 50 karakter',
+            'status_kuliah.in' => 'Status kuliah harus berupa Aktif, Lulus, Non-Aktif, atau Drop Out',
             'jalur_masuk.required' => 'Jalur masuk harus diisi',
             'jalur_masuk.string' => 'Jalur masuk harus berupa teks',
             'jalur_masuk.max' => 'Jalur masuk maksimal 50 karakter',

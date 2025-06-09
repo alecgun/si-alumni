@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\PermissionRegistrar;
+use Spatie\Permission\Models\Role;
 
 class RoleAndPermissionSeeder extends Seeder
 {
@@ -19,10 +17,5 @@ class RoleAndPermissionSeeder extends Seeder
         $userRole = Role::create(['name' => 'user']);
 
         $adminRole->givePermissionTo(Permission::all());
-
-        $userRole->givePermissionTo([
-            'dashboard', 'kuliah.create', 'kuliah.edit', 'kuliah.delete',
-            'kerja.create', 'kerja.edit', 'kerja.delete', 'alumni.edit',
-        ]);
     }
 }

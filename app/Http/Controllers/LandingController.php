@@ -2,35 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\DataAlumniDataTables;
+use App\Http\Requests\KerjaRequest;
+use App\Http\Requests\KuliahRequest;
+use App\Http\Requests\TicketReplyRequest;
+use App\Http\Requests\TicketRequest;
+use App\Models\Alumni;
+use App\Models\Kerja;
+use App\Models\Kuliah;
+use App\Models\Ticket;
+use App\Models\TicketReply;
+use App\Services\KerjaService;
+use App\Services\KuliahService;
+use App\StoreClass\LogAktivitas;
 use Exception;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\DataTables\DataAlumniDataTables;
-use App\Services\KuliahService;
-use App\Services\KerjaService;
-use App\Models\Alumni;
-use App\Models\Kuliah;
-use App\Models\Kerja;
-use App\StoreClass\LogAktivitas;
-use App\Http\Requests\KuliahRequest;
-use App\Http\Requests\KerjaRequest;
 
 class LandingController extends Controller implements HasMiddleware
 {
     /**
      * Constructor to apply middleware.
      */
-
     protected $dataAlumniDataTable;
-    protected $kuliahService;
-    protected $kerjaService;
 
+    protected $kuliahService;
+
+    protected $kerjaService;
 
     public static function middleware(): array
     {
@@ -48,7 +50,12 @@ class LandingController extends Controller implements HasMiddleware
 
     public function index()
     {
-        return view('frontend.page.landing');
+        $data = Alumni::selectRaw('tahun_lulus, SUM(jenis_kelamin = "L") as jumlah_laki, SUM(jenis_kelamin = "P") as jumlah_perempuan')
+            ->groupBy('tahun_lulus')
+            ->orderBy('tahun_lulus', 'desc')
+            ->get();
+
+        return view('frontend.page.landing', compact('data'));
     }
 
     public function dataAlumni(Request $request)
@@ -70,7 +77,7 @@ class LandingController extends Controller implements HasMiddleware
         $kuliah = $this->kuliahService->getKuliahByAlumni($alumni->id);
         $kerja = $this->kerjaService->getKerjaByAlumni($alumni->id);
 
-        if (!$alumni) {
+        if (! $alumni) {
             return redirect()->route('landing.index')->with('error', 'Data alumni tidak ditemukan.');
         }
 
@@ -108,6 +115,7 @@ class LandingController extends Controller implements HasMiddleware
         try {
             Kuliah::create($data);
             LogAktivitas::log('Menambah data kuliah', $request->url(), $request->all(), null, $userId);
+
             return response()->json(['success' => true, 'message' => 'Data kuliah berhasil ditambahkan']);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
@@ -130,6 +138,7 @@ class LandingController extends Controller implements HasMiddleware
         try {
             Kerja::create($data);
             LogAktivitas::log('Menambah data kerja', $request->url(), $request->all(), null, $userId);
+
             return response()->json(['success' => true, 'message' => 'Data kerja berhasil ditambahkan']);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
@@ -141,6 +150,7 @@ class LandingController extends Controller implements HasMiddleware
         $userId = Auth::user()->id;
         $alumni = Alumni::where('id_user', $userId)->first();
         $kuliah = Kuliah::find($idKuliah);
+
         return response()->json(['success' => true, 'kuliah' => $kuliah]);
     }
 
@@ -149,6 +159,7 @@ class LandingController extends Controller implements HasMiddleware
         $userId = Auth::user()->id;
         $alumni = Alumni::where('id_user', $userId)->first();
         $kerja = Kerja::find($idKerja);
+
         return response()->json(['success' => true, 'kerja' => $kerja]);
     }
 
@@ -156,6 +167,7 @@ class LandingController extends Controller implements HasMiddleware
     {
         $userId = Auth::user()->id;
         $alumni = Alumni::where('id_user', $userId)->first();
+
         return response()->json(['success' => true, 'alumni' => $alumni]);
     }
 
@@ -179,6 +191,7 @@ class LandingController extends Controller implements HasMiddleware
         try {
             $kuliah->update($data);
             LogAktivitas::log('Mengubah data kuliah', request()->url(), null, $data, $userId);
+
             return response()->json(['success' => true, 'message' => 'Data kuliah berhasil diperbarui']);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
@@ -201,6 +214,7 @@ class LandingController extends Controller implements HasMiddleware
         try {
             $kerja->update($data);
             LogAktivitas::log('Mengubah data kerja', request()->url(), null, $data, $userId);
+
             return response()->json(['success' => true, 'message' => 'Data kerja berhasil diperbarui']);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
@@ -230,6 +244,7 @@ class LandingController extends Controller implements HasMiddleware
         try {
             $alumni->update($data);
             LogAktivitas::log('Mengubah data sosmed alumni', request()->url(), null, $data, $userId);
+
             return response()->json(['success' => true, 'message' => 'Data sosmed alumni berhasil diperbarui']);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
@@ -251,11 +266,12 @@ class LandingController extends Controller implements HasMiddleware
         ]);
 
         try {
-            if (!empty($validatedData['password'])) {
+            if (! empty($validatedData['password'])) {
                 $user->password = Hash::make($validatedData['password']);
             }
             $user->save();
             LogAktivitas::log('Memperbarui password user', request()->url(), null, null, $userId);
+
             return response()->json(['success' => true, 'message' => 'Password user berhasil diperbarui']);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
@@ -271,6 +287,7 @@ class LandingController extends Controller implements HasMiddleware
         try {
             $kuliah->delete();
             LogAktivitas::log('Menghapus data kuliah', request()->url(), null, $kuliah, $userId);
+
             return response()->json(['success' => true, 'message' => 'Data kuliah berhasil dihapus']);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
@@ -286,10 +303,122 @@ class LandingController extends Controller implements HasMiddleware
         try {
             $kerja->delete();
             LogAktivitas::log('Menghapus data kerja', request()->url(), null, $kerja, $userId);
+
             return response()->json(['success' => true, 'message' => 'Data kerja berhasil dihapus']);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 
+    public function openTicket()
+    {
+        return view('frontend.page.open-ticket');
+    }
+
+    public function storeTicket(TicketRequest $request)
+    {
+        $userId = Auth::user()->id;
+        $alumni = Alumni::where('id_user', $userId)->first();
+
+        $data = [
+            'email' => $request->email,
+            'kategori' => $request->kategori,
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'alumni_id' => $alumni->id,
+            'status_ticket' => 'Open',
+        ];
+
+        try {
+            Ticket::create($data);
+            LogAktivitas::log('User membuat tiket', $request->url(), $request->all(), null, $userId);
+
+            return response()->json(['success' => true, 'message' => 'Tiket berhasil dibuat']);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function historyTicket()
+    {
+        $userId = Auth::user()->id;
+        $alumni = Alumni::where('id_user', $userId)->first();
+        $ticket = Ticket::where('alumni_id', $alumni->id)->get();
+
+        return view('frontend.page.history-ticket', compact('ticket'));
+    }
+
+    public function showTicket($idTicket)
+    {
+        try {
+            $ticket = Ticket::select(
+            'ticket.id',
+            'ticket.email',
+            'ticket.kategori',
+            'ticket.judul',
+            'ticket.deskripsi',
+            'ticket.status_ticket',
+            'ticket.created_at',
+            'ticket.alumni_id',
+            'alumni.nama as nama_alumni',
+            )
+            ->join('alumni', 'ticket.alumni_id', '=', 'alumni.id')
+            ->where('ticket.id', $idTicket)
+            ->first();
+
+            return ['status' => true, 'ticket' => $ticket];
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => 'Gagal mengambil data tiket: ' . $e->getMessage()];
+        }
+    }
+
+    public function showTicketPage($idTicket)
+    {
+        try {
+            $ticket = Ticket::findOrFail($idTicket);
+            return view('frontend.page.show-ticket', compact('ticket'));
+        } catch (Exception $e) {
+            return redirect()->route('landing.ticket.history')->with('error', 'Gagal mengambil data tiket: ' . $e->getMessage());
+        }
+    }
+
+    public function showTicketReplies($idTicket)
+    {
+        try {
+            $ticket_reply = TicketReply::select(
+                'ticket_reply.id',
+                'ticket_reply.reply_text',
+                'ticket_reply.id_ticket',
+                'ticket_reply.id_user',
+                'users.name as nama_user',
+                'ticket_reply.created_at'
+            )
+            ->join('users', 'ticket_reply.id_user', '=', 'users.id')
+            ->where('ticket_reply.id_ticket', $idTicket)
+            ->get();
+            return ['status' => true, 'ticket_reply' => $ticket_reply];
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => 'Gagal mengambil data balasan: ' . $e->getMessage()];
+        }
+    }
+
+    public function storeTicketReply(TicketReplyRequest $request)
+    {
+        $userId = Auth::user()->id;
+
+        $data = [
+            'reply_text' => $request->reply_text,
+            'id_ticket' => $request->id_ticket,
+            'id_user' => $userId,
+        ];
+
+        try {
+            TicketReply::create($data);
+            LogAktivitas::log('User membuat teks balasan', $request->url(), $request->all(), null, $userId);
+
+            return response()->json(['success' => true, 'message' => 'Teks balasan berhasil dibuat']);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
 }

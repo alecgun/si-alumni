@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('kelas');
             $table->year('tahun_masuk');
             $table->year('tahun_lulus');
-            $table->date('tanggal_lahir')->nullable();
+            $table->date('tanggal_lahir');
+            $table->enum('jenis_kelamin', ['L', 'P']);
             $table->string('instagram')->nullable();
             $table->string('sosmed_lain')->nullable();
             $table->foreignId('id_user')->constrained('users')->restrictOnDelete();

@@ -4,31 +4,22 @@ namespace App\Services;
 
 use App\Models\Kuliah;
 use Exception;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class KuliahService
 {
     public function getKuliahByAlumni($alumniId)
     {
         try {
-            return Kuliah::selectRaw('
-                id,
-                alumni_id,
-                COALESCE(nama_universitas, \'-\') as nama_universitas,
-                COALESCE(jenjang, \'-\') as jenjang,
-                COALESCE(fakultas, \'-\') as fakultas,
-                COALESCE(program_studi, \'-\') as program_studi,
-                COALESCE(status_kuliah, \'-\') as status_kuliah,
-                COALESCE(jalur_masuk, \'-\') as jalur_masuk,
-                COALESCE(tahun_masuk, \'-\') as tahun_masuk,
-                COALESCE(tahun_lulus, \'-\') as tahun_lulus'
-            )
-            ->where('alumni_id', $alumniId)
-            ->get();
+
+            $query = Kuliah::query();
+
+            return $query
+                ->where('alumni_id', $alumniId)
+                ->get();
         } catch (Exception $e) {
-            return ['status' => false, 'message' => 'Gagal mengambil data kuliah: ' . $e->getMessage()];
+            return ['status' => false, 'message' => 'Gagal mengambil data kuliah: '.$e->getMessage()];
         }
     }
 
@@ -48,10 +39,12 @@ class KuliahService
                 'tahun_lulus' => $data['tahun_lulus'],
             ]);
             DB::commit();
+
             return ['status' => true, 'kuliah' => $kuliah];
         } catch (Exception $e) {
             DB::rollback();
-            return ['status' => false, 'message' => 'Gagal membuat data kuliah: ' . $e->getMessage()];
+
+            return ['status' => false, 'message' => 'Gagal membuat data kuliah: '.$e->getMessage()];
         }
     }
 
@@ -59,9 +52,11 @@ class KuliahService
     {
         try {
             $kuliah = Kuliah::find($id);
+            $kuliah->tahun_lulus = $kuliah->tahun_lulus === null ? '-' : $kuliah->tahun_lulus;
+
             return ['status' => true, 'kuliah' => $kuliah];
         } catch (Exception $e) {
-            return response()->json(['status' => false, 'message' => 'Terjadi kesalahan saat mengambil data kuliah: ' . $e->getMessage()], 500);
+            return response()->json(['status' => false, 'message' => 'Terjadi kesalahan saat mengambil data kuliah: '.$e->getMessage()], 500);
         }
     }
 
@@ -69,20 +64,22 @@ class KuliahService
     {
         DB::beginTransaction();
         try {
-            if (!is_array($data)) {
+            if (! is_array($data)) {
                 throw new Exception('Data yang diberikan tidak valid.');
             }
 
             $kuliah = Kuliah::where('id', $kuliahId)->first();
-            if (!$kuliah) {
+            if (! $kuliah) {
                 return ['status' => false, 'message' => 'Data kuliah tidak ditemukan'];
             }
             $kuliah->update($data);
             DB::commit();
+
             return ['status' => true, 'kuliah' => $kuliah];
         } catch (Exception $e) {
             DB::rollback();
-            return ['status' => false, 'message' => 'Gagal memperbarui data kuliah: ' . $e->getMessage()];
+
+            return ['status' => false, 'message' => 'Gagal memperbarui data kuliah: '.$e->getMessage()];
         }
     }
 
@@ -93,6 +90,7 @@ class KuliahService
             $kuliah = Kuliah::find($kuliahId);
             $kuliah->delete();
             DB::commit();
+
             return ['status' => true];
         } catch (QueryException $e) {
             DB::rollback();
@@ -101,10 +99,11 @@ class KuliahService
                 return ['status' => false, 'message' => 'Gagal menghapus data kuliah: Data kuliah ini memiliki data terkait yang tidak dapat dihapus.'];
             }
 
-            return ['status' => false, 'message' => 'Gagal menghapus data kuliah: ' . $e->getMessage()];
+            return ['status' => false, 'message' => 'Gagal menghapus data kuliah: '.$e->getMessage()];
         } catch (Exception $e) {
             DB::rollback();
-            return ['status' => false, 'message' => 'Gagal menghapus data kuliah: ' . $e->getMessage()];
+
+            return ['status' => false, 'message' => 'Gagal menghapus data kuliah: '.$e->getMessage()];
         }
     }
 
@@ -112,9 +111,10 @@ class KuliahService
     {
         try {
             $kuliah = Kuliah::find($kuliahId);
+
             return ['status' => true, 'kuliah' => $kuliah];
         } catch (Exception $e) {
-            return ['status' => false, 'message' => 'Gagal mengambil data kuliah untuk diedit: ' . $e->getMessage()];
+            return ['status' => false, 'message' => 'Gagal mengambil data kuliah untuk diedit: '.$e->getMessage()];
         }
     }
 
@@ -128,7 +128,7 @@ class KuliahService
                     ->orWhere('kuliah.tahun_lulus', 'like', "%{$search}%");
             });
         } catch (Exception $e) {
-            return ['status' => false, 'message' => 'Gagal mencari data kuliah: ' . $e->getMessage()];
+            return ['status' => false, 'message' => 'Gagal mencari data kuliah: '.$e->getMessage()];
         }
     }
 }

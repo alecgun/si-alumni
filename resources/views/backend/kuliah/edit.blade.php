@@ -68,8 +68,14 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="status_kuliah" class="form-label">Status Kuliah</label>
-                                <input type="text" class="form-control" id="edit_status_kuliah" name="status_kuliah"
-                                    placeholder="Masukkan Status Kuliah">
+                                <select class="form-select" data-control="select2"
+                                    data-placeholder="Pilih Jenis Kelamin" data-hide-search="true"
+                                    id="edit_status_kuliah" name="status_kuliah">
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Lulus">Lulus</option>
+                                    <option value="Non-Aktif">Non-Aktif</option>
+                                    <option value="Drop Out">Drop Out</option>
+                                </select>
                                 @error('status_kuliah')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

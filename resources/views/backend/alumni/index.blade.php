@@ -355,6 +355,8 @@
                         $('#edit_nis').val(response.nis);
                         $('#edit_nama').val(response.nama);
                         $('#edit_kelas').val(response.kelas);
+                        $('#edit_jenis_kelamin').trigger('change').val(response.jenis_kelamin)
+                            .trigger('change');
                         $('#edit_tahun_masuk').val(response.tahun_masuk);
                         $('#edit_tahun_lulus').val(response.tahun_lulus);
                         $('#edit_instagram').val(response.instagram);

@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div class="text-end">
-                        <button type="submit" class="btn btn-primary mt-3 me-3">
+                        <button type="submit" class="btn btn-primary mt-3 me-2">
                             Simpan
                         </button>
                         <button type="button" class="btn btn-danger mt-3" id="cancel_button_kerja">Batal</button>

@@ -55,9 +55,8 @@
                         </div>
                     </div>
                     <div class="text-end">
-                        <button type="submit" class="btn btn-primary mt-3">Simpan</button>
-                        <button type="button" class="btn btn-secondary mt-3"
-                            id="cancel_edit_button_kerja">Batal</button>
+                        <button type="submit" class="btn btn-primary mt-3 me-2">Simpan</button>
+                        <button type="button" class="btn btn-danger mt-3" id="cancel_edit_button_kerja">Batal</button>
                     </div>
                 </form>
             </div>

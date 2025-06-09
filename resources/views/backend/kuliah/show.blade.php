@@ -2,14 +2,13 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Ubah Data Kuliah</h5>
+                <h5 class="modal-title">Detail Data Kuliah</h5>
                 <button type="button" class="btn-close" id="close_modal_show_button_kuliah" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="kt_modal_show_kuliah_form" method="" action="">
                     @csrf
                     @method('PUT')
-                    <input readonly type="hidden" id="show_id_kuliah" name="id">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
