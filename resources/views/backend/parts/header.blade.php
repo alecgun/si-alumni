@@ -13,6 +13,8 @@
         type="text/css" />
     <link href="{{ asset('backend-assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet"
         type="text/css" />
+    <link rel="stylesheet" href="{{ asset('backend-assets/plugins/custom/ckeditor5/ckeditor5.css') }}"
+        type="text/css" />
     <!--end::Vendor Stylesheets-->
 
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->

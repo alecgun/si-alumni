@@ -20,6 +20,8 @@
 
     <!-- Custom Css -->
     <link href="{{ asset('frontend-assets/css/style.min.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('frontend-assets/plugins/custom/ckeditor5/ckeditor5.css') }}" type="text/css" />
+
 
     <!-- colors -->
     <link href="{{ asset('frontend-assets/css/colors/default.css') }}" rel="stylesheet" type="text/css"

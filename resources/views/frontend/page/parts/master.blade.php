@@ -65,6 +65,15 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <script type="importmap">
+		{
+			"imports": {
+				"ckeditor5": "{{ asset('frontend-assets/plugins/custom/ckeditor5/ckeditor5.js') }}",
+				"ckeditor5/": "{{ rtrim(asset('frontend-assets/plugins/custom/ckeditor5'), '/') }}/"
+			}
+		}
+	</script>
+
     @stack('customScripts')
 </body>
 

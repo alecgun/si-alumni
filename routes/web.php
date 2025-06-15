@@ -21,6 +21,9 @@ Route::get('/get-data-user', [UserController::class, 'data'])->name('user.data')
 Route::get('/get-data-alumni', [AlumniController::class, 'data'])->name('alumni.data');
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
 Route::get('/daftar-alumni', [LandingController::class, 'dataAlumni'])->name('landing.dataAlumni');
+Route::get('/pengumuman-alumni/get', [LandingController::class, 'dataPengumuman'])->name('landing.pengumuman.data');
+Route::get('/pengumuman-alumni', [LandingController::class, 'showPengumumanPage'])->name('landing.pengumuman');
+Route::get('/pengumuman-alumni/{pengumuman}', [LandingController::class, 'showPengumumanDetail'])->name('landing.pengumuman.show');
 
 Route::group(['middleware' => ['guest']], function () {
     Route::get('/login', function () {
@@ -36,10 +39,12 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('ticket', TicketController::class)->except(['index']);
     Route::get('/ticket', [TicketController::class, 'index'])->name('ticket');
     Route::post('/ticket-reply/store', [TicketReplyController::class, 'store'])->name('ticket-reply.store');
+    Route::post('/ticket-reply/store-img', [TicketReplyController::class, 'storeImage'])->name('ticket-reply.store-image');
     Route::get('ticket-reply/{ticket}', [TicketReplyController::class, 'getReplies'])->name('ticket-reply.replies');
 
     Route::resource('pengumuman', PengumumanController::class)->except(['index']);
     Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman');
+    Route::post('/pengumuman/store-image', [PengumumanController::class, 'storeImage'])->name('pengumuman.store-image');
 
     Route::get('/biodata', [LandingController::class, 'biodata'])->name('landing.biodata');
     Route::get('/get-alumni-by-user', [LandingController::class, 'getAlumniByAuthUser'])->name('landing.getAlumniByAuthUser');
@@ -57,11 +62,14 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::get('/open-ticket', [LandingController::class, 'openTicket'])->name('landing.ticket.open');
     Route::post('/store-ticket', [LandingController::class, 'storeTicket'])->name('landing.ticket.store');
+    Route::post('/store-ticket-img', [LandingController::class, 'storeTicketImage'])->name('landing.ticket.store-img');
     Route::get('/history-ticket', [LandingController::class, 'historyTicket'])->name('landing.ticket.history');
     Route::get('/show-ticket/{idTicket}', [LandingController::class, 'showTicketPage'])->name('landing.ticket.show');
     Route::get('/show-ticket/{idTicket}/data', [LandingController::class, 'showTicket'])->name('landing.ticket.data');
     Route::get('/show-reply/{idTicket}', [LandingController::class, 'showTicketReplies'])->name('landing.ticket-reply.show');
     Route::post('/store-reply', [LandingController::class, 'storeTicketReply'])->name('landing.ticket-reply.store');
+    Route::post('/store-reply-img', [LandingController::class, 'storeTicketReplyImage'])->name('landing.ticket-reply.store-img');
+
     //make route prefix setting
     Route::prefix('alumni')->group(function () {
         Route::resource('alumni', AlumniController::class);

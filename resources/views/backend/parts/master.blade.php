@@ -99,6 +99,14 @@
     <script src="{{ asset('backend-assets/js/custom/utilities/modals/create-app.js') }}"></script>
     <script src="{{ asset('backend-assets/js/custom/utilities/modals/create-campaign.js') }}"></script>
     <script src="{{ asset('backend-assets/js/custom/utilities/modals/users-search.js') }}"></script>
+    <script type="importmap">
+		{
+			"imports": {
+				"ckeditor5": "{{ asset('backend-assets/plugins/custom/ckeditor5/ckeditor5.js') }}",
+				"ckeditor5/": "{{ rtrim(asset('backend-assets/plugins/custom/ckeditor5'), '/') }}/"
+			}
+		}
+	</script>
     @stack('customScripts')
     <!--end::Custom Javascript-->
     <!--end::Javascript-->

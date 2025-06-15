@@ -31,7 +31,7 @@ class MenuGroupSeeder extends Seeder
 
         MenuGroup::create([
             'nama_menu_group' => 'Support Ticket',
-            'icon_menu_group' => 'fas fa-question-circle',
+            'icon_menu_group' => 'fas fa-headset',
             'id_permission_menu_group' => $ticketPermission->id,
         ]);
 

@@ -20,7 +20,7 @@
     <section class="section bg-light">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-8 shadow-sm p-4" id="ticket">
+                <div class="col-lg-12 shadow-sm p-4" id="ticket">
                     <table class="table table-bordered mb-3">
                         <tr>
                             <th class="fw-bold" width="15%">ID Tiket</th>
@@ -51,7 +51,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h3 id="show_judul"></h3>
-                                <p id="show_deskripsi"></p>
+                                <div id="show_deskripsi"></div>
                             </div>
                         </div>
                     </div>
@@ -65,9 +65,9 @@
                                     <h5>Balas Tiket</h5>
                                     <form id="add_ticket_reply_form" action="" method="POST">
                                         @csrf
-                                        <textarea class="form-control mb-3" id="reply_text" name="reply_text" rows="1"
-                                            placeholder="Masukkan teks balasan"></textarea>
-                                        <div class="text-end">
+                                        <textarea class="form-control ckeditor" id="reply_text" name="reply_text" rows="4"
+                                            placeholder="Buat teks balasan"></textarea>
+                                        <div class="text-end mt-3">
                                             <button type="submit" class="btn btn-primary">Kirim
                                                 Balasan</button>
                                         </div>
@@ -84,7 +84,49 @@
 @endsection
 
 @push('customScripts')
-    <script>
+    <script type="module">
+        import {
+            ClassicEditor,
+            AutoImage,
+            Autosave,
+            BalloonToolbar,
+            BlockQuote,
+            Bold,
+            CloudServices,
+            Essentials,
+            Heading,
+            ImageBlock,
+            ImageCaption,
+            ImageEditing,
+            ImageInline,
+            ImageInsert,
+            ImageInsertViaUrl,
+            ImageResize,
+            ImageStyle,
+            ImageTextAlternative,
+            ImageToolbar,
+            ImageUpload,
+            ImageUtils,
+            Indent,
+            IndentBlock,
+            Italic,
+            Link,
+            LinkImage,
+            List,
+            ListProperties,
+            Paragraph,
+            SimpleUploadAdapter,
+            Table,
+            TableCaption,
+            TableCellProperties,
+            TableColumnResize,
+            TableProperties,
+            TableToolbar,
+            TodoList,
+            Underline
+        } from 'ckeditor5';
+
+        const LICENSE_KEY = 'GPL';
         $(document).ready(function() {
             // ============================ Start Reset Form ==============================
             function showValidationErrors(errors) {
@@ -114,7 +156,7 @@
 
             function resetForm(form) {
                 $(form)[0].reset();
-                $(form).find('input[name="id_ticket"]').val('');
+                $(form).find('input[name="id_ticket_reply"]').val('');
                 $(form).find('select').val('').trigger('change');
                 $('.is-invalid').removeClass('is-invalid');
                 $('.text-danger').remove();
@@ -143,7 +185,7 @@
                     $('#show_alumni_id').html(response.ticket.nama_alumni);
                     $('#show_email').html(response.ticket.email);
                     $('#show_judul').html(response.ticket.judul);
-                    $('#show_deskripsi').html(response.ticket.deskripsi.replace(/\n/g, '<br>'));
+                    $('#show_deskripsi').html(response.ticket.deskripsi);
                 },
                 error: function(xhr) {
                     alert('Gagal mengambil data tiket');
@@ -167,16 +209,15 @@
                         } else {
                             data.ticket_reply.forEach(function(reply) {
                                 const date = new Date(reply.created_at);
-                                const tanggal = date.toLocaleDateString('id-ID', {
-                                    day: 'numeric',
-                                    month: 'long',
-                                    year: 'numeric'
-                                });
+                                const tanggal = date.getDate().toString().padStart(2, '0');
+                                const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei',
+                                    'Juni', 'Juli', 'Agustus', 'September', 'Oktober',
+                                    'November', 'Desember'
+                                ][date.getMonth()];
+                                const tahun = date.getFullYear();
 
-                                const jam = date.getHours().toString().padStart(2, '0');
-                                const menit = date.getMinutes().toString().padStart(2, '0');
-
-                                const formattedDate = `${tanggal}, ${jam}.${menit}`;
+                                const formattedDate =
+                                    `${tanggal} ${bulan} ${tahun} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
 
                                 let replyHtml = `
                         <div class="mb-3 border-bottom pb-2">
@@ -184,7 +225,7 @@
                                 <strong>${reply.nama_user}</strong>
                                 <small class="text-muted">${formattedDate}</small>
                             </div>
-                            <p class="mb-0">${reply.reply_text}</p>
+                            <div id="show_reply_text" class="mb-0">${reply.reply_text}</div>
                         </div>
                     `;
                                 repliesContainer.append(replyHtml);
@@ -197,6 +238,229 @@
                 });
             }
             // ============================ End Show Replies ==============================
+
+            // ============================ Start CKEditor ==============================
+            const editors = {};
+
+            document.querySelectorAll('.ckeditor').forEach(textarea => {
+                ClassicEditor
+                    .create(textarea, {
+                        plugins: [
+                            AutoImage,
+                            Autosave,
+                            BalloonToolbar,
+                            BlockQuote,
+                            Bold,
+                            CloudServices,
+                            Essentials,
+                            Heading,
+                            ImageBlock,
+                            ImageCaption,
+                            ImageEditing,
+                            ImageInline,
+                            ImageInsert,
+                            ImageInsertViaUrl,
+                            ImageResize,
+                            ImageStyle,
+                            ImageTextAlternative,
+                            ImageToolbar,
+                            ImageUpload,
+                            ImageUtils,
+                            Indent,
+                            IndentBlock,
+                            Italic,
+                            Link,
+                            LinkImage,
+                            List,
+                            ListProperties,
+                            Paragraph,
+                            SimpleUploadAdapter,
+                            Table,
+                            TableCaption,
+                            TableCellProperties,
+                            TableColumnResize,
+                            TableProperties,
+                            TableToolbar,
+                            TodoList,
+                            Underline
+                        ],
+                        toolbar: {
+                            items: [
+                                'undo',
+                                'redo',
+                                '|',
+                                'heading',
+                                '|',
+                                'bold',
+                                'italic',
+                                'underline',
+                                '|',
+                                'link',
+                                'insertImage',
+                                'insertTable',
+                                'blockQuote',
+                                '|',
+                                'bulletedList',
+                                'numberedList',
+                                'todoList',
+                                'outdent',
+                                'indent'
+                            ]
+                        },
+                        balloonToolbar: ['bold', 'italic', '|', 'link', 'insertImage', '|',
+                            'bulletedList',
+                            'numberedList'
+                        ],
+                        heading: {
+                            options: [{
+                                    model: 'paragraph',
+                                    title: 'Paragraph',
+                                    class: 'ck-heading_paragraph'
+                                },
+                                {
+                                    model: 'heading1',
+                                    view: 'h1',
+                                    title: 'Heading 1',
+                                    class: 'ck-heading_heading1'
+                                },
+                                {
+                                    model: 'heading2',
+                                    view: 'h2',
+                                    title: 'Heading 2',
+                                    class: 'ck-heading_heading2'
+                                },
+                                {
+                                    model: 'heading3',
+                                    view: 'h3',
+                                    title: 'Heading 3',
+                                    class: 'ck-heading_heading3'
+                                },
+                                {
+                                    model: 'heading4',
+                                    view: 'h4',
+                                    title: 'Heading 4',
+                                    class: 'ck-heading_heading4'
+                                },
+                                {
+                                    model: 'heading5',
+                                    view: 'h5',
+                                    title: 'Heading 5',
+                                    class: 'ck-heading_heading5'
+                                },
+                                {
+                                    model: 'heading6',
+                                    view: 'h6',
+                                    title: 'Heading 6',
+                                    class: 'ck-heading_heading6'
+                                }
+                            ]
+                        },
+                        image: {
+                            toolbar: [
+                                'toggleImageCaption',
+                                'imageTextAlternative',
+                                '|',
+                                'imageStyle:inline',
+                                'imageStyle:wrapText',
+                                'imageStyle:breakText',
+                                '|',
+                                'resizeImage'
+                            ],
+                            styles: [
+                                'full',
+                                'side',
+                                'responsive' // Add responsive style option
+                            ],
+                            upload: {
+                                types: ['jpeg', 'jpg', 'png', 'gif']
+                            },
+                        },
+                        simpleUpload: {
+                            uploadUrl: `{{ route('landing.ticket-reply.store-img') }}`,
+                            headers: {
+                                'X-CSRF-TOKEN': `{{ csrf_token() }}`
+                            },
+                        },
+                        link: {
+                            addTargetToExternalLinks: true,
+                            defaultProtocol: 'https://',
+                            decorators: {
+                                toggleDownloadable: {
+                                    mode: 'manual',
+                                    label: 'Downloadable',
+                                    attributes: {
+                                        download: 'file'
+                                    }
+                                }
+                            }
+                        },
+                        list: {
+                            properties: {
+                                styles: true,
+                                startIndex: true,
+                                reversed: true
+                            }
+                        },
+                        placeholder: 'Buat teks balasan',
+                        table: {
+                            contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells',
+                                'tableProperties',
+                                'tableCellProperties'
+                            ]
+                        },
+                        htmlSupport: {
+                            allow: [{
+                                    name: 'div',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                },
+                                {
+                                    name: 'i',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                },
+                                {
+                                    name: 'p',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                },
+                                {
+                                    name: 'ul',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                },
+                                {
+                                    name: 'li',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                },
+                                {
+                                    name: 'h6',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                }
+                            ]
+                        },
+                        htmlEmbed: {
+                            showPreviews: true
+                        },
+                        allowedContent: true,
+                        licenseKey: LICENSE_KEY,
+                    })
+                    .then(editor => {
+                        editors[textarea.id] = editor;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            });
+            // ============================ End CKEditor ==============================
 
             // ============================ Start Tambah Ticket Reply ==============================
             $('#add_ticket_reply_form').on('submit', function(e) {
@@ -342,6 +606,16 @@
 
         .form-select option {
             padding: 10px;
+        }
+
+        #show_deskripsi img,
+        #show_reply_text img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .ck-editor__editable {
+            min-height: 200px;
         }
     </style>
 @endpush

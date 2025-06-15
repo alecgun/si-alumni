@@ -14,12 +14,43 @@ class PengumumanService
     {
         DB::beginTransaction();
         try {
+            if (isset($data['foto']) && $data['foto'] instanceof \Illuminate\Http\UploadedFile) {
+                $file = $data['foto'];
+                $ext = $file->getClientOriginalExtension();
+                $time = time();
+                $date = date('ymd-His', $time);
+                $filename = $date . '.' . $ext;
+
+                $path = $file->storeAs('pengumuman', $filename, 'public');
+                $data['foto'] = $path;
+            }
+
             $pengumuman = Pengumuman::create($data);
             DB::commit();
             return ['status' => true, 'pengumuman' => $pengumuman];
         } catch (Exception $e) {
             DB::rollback();
             return ['status' => false, 'message' => 'Gagal membuat data pengumuman: ' . $e->getMessage()];
+        }
+    }
+
+    public function createPengumumanImage($data)
+    {
+        try {
+            if ($data->hasFile('upload')) {
+                $file = $data->file('upload');
+                $ext = $file->getClientOriginalExtension();
+                $time = time();
+                $date = date('ymd-His', $time);
+                $filename = $date . '.' . $ext;
+
+                $path = $file->storeAs('pengumuman', $filename, 'public');
+                $url = asset('storage/' . $path);
+
+                return ['status' => true, 'url' => $url];
+            }
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => 'Gagal mengunggah gambar: ' . $e->getMessage()];
         }
     }
 
@@ -93,7 +124,7 @@ class PengumumanService
                 'pengumuman.judul',
                 'pengumuman.isi',
                 'pengumuman.created_at'
-            );
+            )->orderByDesc('pengumuman.created_at');
         } catch (Exception $e) {
             return ['status' => false, 'message' => 'Gagal mengambil data pengumuman: ' . $e->getMessage()];
         }

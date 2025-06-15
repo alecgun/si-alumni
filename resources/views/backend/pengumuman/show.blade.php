@@ -18,7 +18,7 @@
                                 <div class="text-muted">
                                     <small id="show_created_at"></small>
                                 </div>
-                                <p id="show_isi"></p>
+                                <div id="show_isi"></div>
                             </div>
                         </div>
                     </div>

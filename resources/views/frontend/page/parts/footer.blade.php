@@ -14,22 +14,11 @@
                 </ul>
                 <!--end social-->
             </div>
-            <div class="footer-terms">
-                <ul class="mb-0 list-inline text-center mt-4">
-                    <li class="list-inline-item"><a href="#" class="footer-link">Terms & Condition</a>
-                    </li>
-                    <li class="list-inline-item"><a href="#" class="footer-link">Privacy Policy</a>
-                    </li>
-                    <li class="list-inline-item"><a href="#" class="footer-link">Contact Us</a></li>
-                </ul>
-            </div>
-            <!--end footer-terms-->
             <div class="mt-4 pt-2 text-center">
                 <p class="text-white-50 mb-0">
                     <script>
                         document.write(new Date().getFullYear())
-                    </script> &copy; Landsay - Design with <i class="mdi mdi-heart text-danger"></i> by
-                    <a href="https://themeforest.net/search/themesdesign" class="text-muted">Themesdesign.</a>
+                    </script> &copy;
                 </p>
             </div>
         </div>

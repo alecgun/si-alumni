@@ -51,10 +51,24 @@ class PengumumanController extends Controller implements HasMiddleware
 
     public function store(PengumumanRequest $request)
     {
-        $result = $this->pengumumanService->createPengumuman($request->all());
+        $data = $request->validated();
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto');
+        }
+
+        $result = $this->pengumumanService->createPengumuman($data);
         if ($result['status']) {
             LogAktivitas::log('Menambah data pengumuman', $request->path(), null, $result['pengumuman'], Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Data pengumuman berhasil dibuat']);
+        }
+        return response()->json(['success' => false, 'message' => $result['message']], 500);
+    }
+
+    public function storeImage(Request $request)
+    {
+        $result = $this->pengumumanService->createPengumumanImage($request);
+        if ($result['status']) {
+            return response()->json(['success' => true, 'url' => $result['url']]);
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);
     }

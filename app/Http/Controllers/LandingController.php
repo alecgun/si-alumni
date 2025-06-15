@@ -12,6 +12,7 @@ use App\Models\Kerja;
 use App\Models\Kuliah;
 use App\Models\Ticket;
 use App\Models\TicketReply;
+use App\Models\Pengumuman;
 use App\Services\KerjaService;
 use App\Services\KuliahService;
 use App\StoreClass\LogAktivitas;
@@ -54,6 +55,8 @@ class LandingController extends Controller implements HasMiddleware
             ->groupBy('tahun_lulus')
             ->orderBy('tahun_lulus', 'desc')
             ->get();
+
+
 
         return view('frontend.page.landing', compact('data'));
     }
@@ -122,29 +125,6 @@ class LandingController extends Controller implements HasMiddleware
         }
     }
 
-    public function storeKerja(KerjaRequest $request)
-    {
-        $userId = Auth::user()->id;
-        $alumni = Alumni::where('id_user', $userId)->first();
-
-        $data = [
-            'alumni_id' => $alumni->id,
-            'posisi_kerja' => $request->posisi_kerja,
-            'tempat_kerja' => $request->tempat_kerja,
-            'alamat_kerja' => $request->alamat_kerja,
-            'tahun_masuk' => $request->tahun_masuk,
-        ];
-
-        try {
-            Kerja::create($data);
-            LogAktivitas::log('Menambah data kerja', $request->url(), $request->all(), null, $userId);
-
-            return response()->json(['success' => true, 'message' => 'Data kerja berhasil ditambahkan']);
-        } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
-        }
-    }
-
     public function editKuliah($idAlumni, $idKuliah)
     {
         $userId = Auth::user()->id;
@@ -152,23 +132,6 @@ class LandingController extends Controller implements HasMiddleware
         $kuliah = Kuliah::find($idKuliah);
 
         return response()->json(['success' => true, 'kuliah' => $kuliah]);
-    }
-
-    public function editKerja($idAlumni, $idKerja)
-    {
-        $userId = Auth::user()->id;
-        $alumni = Alumni::where('id_user', $userId)->first();
-        $kerja = Kerja::find($idKerja);
-
-        return response()->json(['success' => true, 'kerja' => $kerja]);
-    }
-
-    public function editSosmed($idAlumni)
-    {
-        $userId = Auth::user()->id;
-        $alumni = Alumni::where('id_user', $userId)->first();
-
-        return response()->json(['success' => true, 'alumni' => $alumni]);
     }
 
     public function updateKuliah(KuliahRequest $request, $idAlumni, $idKuliah)
@@ -198,6 +161,62 @@ class LandingController extends Controller implements HasMiddleware
         }
     }
 
+    public function deleteKuliah($idAlumni, $idKuliah)
+    {
+        $userId = Auth::user()->id;
+        $alumni = Alumni::where('id_user', $userId)->first();
+        $kuliah = Kuliah::find($idKuliah);
+
+        try {
+            $kuliah->delete();
+            LogAktivitas::log('Menghapus data kuliah', request()->url(), null, $kuliah, $userId);
+
+            return response()->json(['success' => true, 'message' => 'Data kuliah berhasil dihapus']);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function storeKerja(KerjaRequest $request)
+    {
+        $userId = Auth::user()->id;
+        $alumni = Alumni::where('id_user', $userId)->first();
+
+        $data = [
+            'alumni_id' => $alumni->id,
+            'posisi_kerja' => $request->posisi_kerja,
+            'tempat_kerja' => $request->tempat_kerja,
+            'alamat_kerja' => $request->alamat_kerja,
+            'tahun_masuk' => $request->tahun_masuk,
+        ];
+
+        try {
+            Kerja::create($data);
+            LogAktivitas::log('Menambah data kerja', $request->url(), $request->all(), null, $userId);
+
+            return response()->json(['success' => true, 'message' => 'Data kerja berhasil ditambahkan']);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function editKerja($idAlumni, $idKerja)
+    {
+        $userId = Auth::user()->id;
+        $alumni = Alumni::where('id_user', $userId)->first();
+        $kerja = Kerja::find($idKerja);
+
+        return response()->json(['success' => true, 'kerja' => $kerja]);
+    }
+
+    public function editSosmed($idAlumni)
+    {
+        $userId = Auth::user()->id;
+        $alumni = Alumni::where('id_user', $userId)->first();
+
+        return response()->json(['success' => true, 'alumni' => $alumni]);
+    }
+
     public function updateKerja(KerjaRequest $request, $idAlumni, $idKerja)
     {
         $userId = Auth::user()->id;
@@ -216,6 +235,22 @@ class LandingController extends Controller implements HasMiddleware
             LogAktivitas::log('Mengubah data kerja', request()->url(), null, $data, $userId);
 
             return response()->json(['success' => true, 'message' => 'Data kerja berhasil diperbarui']);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function deleteKerja($idAlumni, $idKerja)
+    {
+        $userId = Auth::user()->id;
+        $alumni = Alumni::where('id_user', $userId)->first();
+        $kerja = Kerja::find($idKerja);
+
+        try {
+            $kerja->delete();
+            LogAktivitas::log('Menghapus data kerja', request()->url(), null, $kerja, $userId);
+
+            return response()->json(['success' => true, 'message' => 'Data kerja berhasil dihapus']);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
@@ -278,38 +313,6 @@ class LandingController extends Controller implements HasMiddleware
         }
     }
 
-    public function deleteKuliah($idAlumni, $idKuliah)
-    {
-        $userId = Auth::user()->id;
-        $alumni = Alumni::where('id_user', $userId)->first();
-        $kuliah = Kuliah::find($idKuliah);
-
-        try {
-            $kuliah->delete();
-            LogAktivitas::log('Menghapus data kuliah', request()->url(), null, $kuliah, $userId);
-
-            return response()->json(['success' => true, 'message' => 'Data kuliah berhasil dihapus']);
-        } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
-        }
-    }
-
-    public function deleteKerja($idAlumni, $idKerja)
-    {
-        $userId = Auth::user()->id;
-        $alumni = Alumni::where('id_user', $userId)->first();
-        $kerja = Kerja::find($idKerja);
-
-        try {
-            $kerja->delete();
-            LogAktivitas::log('Menghapus data kerja', request()->url(), null, $kerja, $userId);
-
-            return response()->json(['success' => true, 'message' => 'Data kerja berhasil dihapus']);
-        } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
-        }
-    }
-
     public function openTicket()
     {
         return view('frontend.page.open-ticket');
@@ -339,11 +342,39 @@ class LandingController extends Controller implements HasMiddleware
         }
     }
 
+    public function storeTicketImage(Request $request)
+    {
+        try {
+            if ($request->hasFile('upload')) {
+                $file = $request->file('upload');
+                $ext = $file->getClientOriginalExtension();
+                $time = time();
+                $date = date('ymd-His', $time);
+                $filename = $date . '.' . $ext;
+
+                $path = $file->storeAs('ticket', $filename, 'public');
+                $url = asset('storage/' . $path);
+
+                return response()->json(['success' => true, 'url' => $url]);
+            }
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Gagal mengunggah gambar: ' . $e->getMessage()], 500);
+        }
+    }
+
     public function historyTicket()
     {
         $userId = Auth::user()->id;
         $alumni = Alumni::where('id_user', $userId)->first();
         $ticket = Ticket::where('alumni_id', $alumni->id)->get();
+
+        try {
+            foreach ($ticket as $t) {
+                $t->formatted_date = \Carbon\Carbon::parse($t->created_at)->locale('id_ID')->translatedFormat('j F Y, H:i');
+            }
+        } catch (Exception $e) {
+            return redirect()->route('landing.index')->with('error', 'Gagal memformat tanggal tiket: ' . $e->getMessage());
+        }
 
         return view('frontend.page.history-ticket', compact('ticket'));
     }
@@ -417,6 +448,51 @@ class LandingController extends Controller implements HasMiddleware
             LogAktivitas::log('User membuat teks balasan', $request->url(), $request->all(), null, $userId);
 
             return response()->json(['success' => true, 'message' => 'Teks balasan berhasil dibuat']);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function storeTicketReplyImage(Request $request)
+    {
+        try {
+            if ($request->hasFile('upload')) {
+                $file = $request->file('upload');
+                $ext = $file->getClientOriginalExtension();
+                $time = time();
+                $date = date('ymd-His', $time);
+                $filename = $date . '.' . $ext;
+
+                $path = $file->storeAs('ticket_reply', $filename, 'public');
+                $url = asset('storage/' . $path);
+
+                return response()->json(['success' => true, 'url' => $url]);
+            }
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Gagal mengunggah gambar: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function dataPengumuman()
+    {
+        $pengumuman = Pengumuman::orderByDesc('created_at')->get();
+
+        return response()->json(['status' => true, 'pengumuman' => $pengumuman]);
+    }
+
+    public function showPengumumanPage()
+    {
+        return view('frontend.page.pengumuman');
+    }
+
+    public function showPengumumanDetail($idPengumuman)
+    {
+        try {
+            $pengumuman = Pengumuman::findOrFail($idPengumuman);
+            \Carbon\Carbon::setLocale('id');
+            $pengumuman->formatted_date = $pengumuman->created_at->translatedFormat('j F Y, H:i');
+
+            return view('frontend.page.show-pengumuman', compact('pengumuman'));
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }

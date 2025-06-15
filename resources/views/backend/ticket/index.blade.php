@@ -58,22 +58,6 @@
                             <!--end::Search-->
                         </div>
                         <!--end::Card title-->
-                        <!--begin::Card toolbar-->
-                        <div class="card-toolbar">
-                            <!--begin::Toolbar-->
-                            <div class="d-flex justify-content-end" data-kt-ticket-table-toolbar="base">
-                                <!--begin::Add ticket-->
-                                @can('ticket.create')
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#kt_modal_add_ticket">
-                                        <i class="ki-duotone ki-plus fs-2"></i> Tambah Ticket
-                                    </button>
-                                @endcan
-                                <!--end::Add ticket-->
-                            </div>
-                            <!--end::Toolbar-->
-                        </div>
-                        <!--end::Card toolbar-->
                     </div>
                     <!--end::Card header-->
                     <!--begin::Card body-->
@@ -102,7 +86,49 @@
 @endsection
 
 @push('customScripts')
-    <script>
+    <script type="module">
+        import {
+            ClassicEditor,
+            AutoImage,
+            Autosave,
+            BalloonToolbar,
+            BlockQuote,
+            Bold,
+            CloudServices,
+            Essentials,
+            Heading,
+            ImageBlock,
+            ImageCaption,
+            ImageEditing,
+            ImageInline,
+            ImageInsert,
+            ImageInsertViaUrl,
+            ImageResize,
+            ImageStyle,
+            ImageTextAlternative,
+            ImageToolbar,
+            ImageUpload,
+            ImageUtils,
+            Indent,
+            IndentBlock,
+            Italic,
+            Link,
+            LinkImage,
+            List,
+            ListProperties,
+            Paragraph,
+            SimpleUploadAdapter,
+            Table,
+            TableCaption,
+            TableCellProperties,
+            TableColumnResize,
+            TableProperties,
+            TableToolbar,
+            TodoList,
+            Underline
+        } from 'ckeditor5';
+
+        const LICENSE_KEY = 'GPL';
         $(document).ready(function() {
             // ============================ Start DataTable ==============================
             var table = $('#kt_table_tickets').DataTable({
@@ -159,7 +185,7 @@
             // ============================ Start Reset Form ==============================
             function resetForm(form) {
                 $(form)[0].reset();
-                $(form).find('input[name="id_ticket"]').val('');
+                $(form).find('input[name="id_ticket"], input[name="id_ticket_reply"]').val('');
                 $(form).find('select').val('').trigger('change');
                 $('.is-invalid').removeClass('is-invalid');
                 $('.text-danger').remove();
@@ -292,7 +318,7 @@
                         $('#show_kategori').html(response.kategori);
                         $('#show_status_ticket').html(response.status_ticket);
                         $('#show_judul').html(response.judul);
-                        $('#show_deskripsi').html(response.deskripsi.replace(/\n/g, '<br>'));
+                        $('#show_deskripsi').html(response.deskripsi);
                         $('#show_email').html(response.email);
                         $('#show_alumni_id').html(response.nama_alumni);
                         $('#show_created_at').html(moment(response.created_at).locale('id')
@@ -334,7 +360,7 @@
                                 const jam = date.getHours().toString().padStart(2, '0');
                                 const menit = date.getMinutes().toString().padStart(2, '0');
 
-                                const formattedDate = `${tanggal}, ${jam}.${menit}`;
+                                const formattedDate = `${tanggal}, ${jam}:${menit}`;
 
                                 let replyHtml = `
                         <div class="mb-3 border-bottom pb-2">
@@ -342,7 +368,7 @@
                                 <strong>${reply.nama_user}</strong>
                                 <small class="text-muted">${formattedDate}</small>
                             </div>
-                            <p class="mb-0">${reply.reply_text}</p>
+                            <div id="show_reply_text" class="mb-0">${reply.reply_text}</div>
                         </div>
                     `;
                                 repliesContainer.append(replyHtml);
@@ -356,6 +382,229 @@
             }
 
             // ============================ End Show Replies on Modal Show Ticket ==============================
+
+            // ============================ Start CKEditor ==============================
+            const editors = {};
+
+            document.querySelectorAll('.ckeditor').forEach(textarea => {
+                ClassicEditor
+                    .create(textarea, {
+                        plugins: [
+                            AutoImage,
+                            Autosave,
+                            BalloonToolbar,
+                            BlockQuote,
+                            Bold,
+                            CloudServices,
+                            Essentials,
+                            Heading,
+                            ImageBlock,
+                            ImageCaption,
+                            ImageEditing,
+                            ImageInline,
+                            ImageInsert,
+                            ImageInsertViaUrl,
+                            ImageResize,
+                            ImageStyle,
+                            ImageTextAlternative,
+                            ImageToolbar,
+                            ImageUpload,
+                            ImageUtils,
+                            Indent,
+                            IndentBlock,
+                            Italic,
+                            Link,
+                            LinkImage,
+                            List,
+                            ListProperties,
+                            Paragraph,
+                            SimpleUploadAdapter,
+                            Table,
+                            TableCaption,
+                            TableCellProperties,
+                            TableColumnResize,
+                            TableProperties,
+                            TableToolbar,
+                            TodoList,
+                            Underline
+                        ],
+                        toolbar: {
+                            items: [
+                                'undo',
+                                'redo',
+                                '|',
+                                'heading',
+                                '|',
+                                'bold',
+                                'italic',
+                                'underline',
+                                '|',
+                                'link',
+                                'insertImage',
+                                'insertTable',
+                                'blockQuote',
+                                '|',
+                                'bulletedList',
+                                'numberedList',
+                                'todoList',
+                                'outdent',
+                                'indent'
+                            ]
+                        },
+                        balloonToolbar: ['bold', 'italic', '|', 'link', 'insertImage', '|',
+                            'bulletedList',
+                            'numberedList'
+                        ],
+                        heading: {
+                            options: [{
+                                    model: 'paragraph',
+                                    title: 'Paragraph',
+                                    class: 'ck-heading_paragraph'
+                                },
+                                {
+                                    model: 'heading1',
+                                    view: 'h1',
+                                    title: 'Heading 1',
+                                    class: 'ck-heading_heading1'
+                                },
+                                {
+                                    model: 'heading2',
+                                    view: 'h2',
+                                    title: 'Heading 2',
+                                    class: 'ck-heading_heading2'
+                                },
+                                {
+                                    model: 'heading3',
+                                    view: 'h3',
+                                    title: 'Heading 3',
+                                    class: 'ck-heading_heading3'
+                                },
+                                {
+                                    model: 'heading4',
+                                    view: 'h4',
+                                    title: 'Heading 4',
+                                    class: 'ck-heading_heading4'
+                                },
+                                {
+                                    model: 'heading5',
+                                    view: 'h5',
+                                    title: 'Heading 5',
+                                    class: 'ck-heading_heading5'
+                                },
+                                {
+                                    model: 'heading6',
+                                    view: 'h6',
+                                    title: 'Heading 6',
+                                    class: 'ck-heading_heading6'
+                                }
+                            ]
+                        },
+                        image: {
+                            toolbar: [
+                                'toggleImageCaption',
+                                'imageTextAlternative',
+                                '|',
+                                'imageStyle:inline',
+                                'imageStyle:wrapText',
+                                'imageStyle:breakText',
+                                '|',
+                                'resizeImage'
+                            ],
+                            styles: [
+                                'full',
+                                'side',
+                                'responsive'
+                            ],
+                            upload: {
+                                types: ['jpeg', 'jpg', 'png', 'gif']
+                            },
+                        },
+                        simpleUpload: {
+                            uploadUrl: `{{ route('ticket-reply.store-image') }}`,
+                            headers: {
+                                'X-CSRF-TOKEN': `{{ csrf_token() }}`
+                            },
+                        },
+                        link: {
+                            addTargetToExternalLinks: true,
+                            defaultProtocol: 'https://',
+                            decorators: {
+                                toggleDownloadable: {
+                                    mode: 'manual',
+                                    label: 'Downloadable',
+                                    attributes: {
+                                        download: 'file'
+                                    }
+                                }
+                            }
+                        },
+                        list: {
+                            properties: {
+                                styles: true,
+                                startIndex: true,
+                                reversed: true
+                            }
+                        },
+                        placeholder: 'Buat teks balasan',
+                        table: {
+                            contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells',
+                                'tableProperties',
+                                'tableCellProperties'
+                            ]
+                        },
+                        htmlSupport: {
+                            allow: [{
+                                    name: 'div',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                },
+                                {
+                                    name: 'i',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                },
+                                {
+                                    name: 'p',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                },
+                                {
+                                    name: 'ul',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                },
+                                {
+                                    name: 'li',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                },
+                                {
+                                    name: 'h6',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                }
+                            ]
+                        },
+                        htmlEmbed: {
+                            showPreviews: true
+                        },
+                        allowedContent: true,
+                        licenseKey: LICENSE_KEY,
+                    })
+                    .then(editor => {
+                        editors[textarea.id] = editor;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            });
+            // ============================ End CKEditor ==============================
 
             // ============================ Start Tambah Reply Ticket ==============================
             $('#kt_modal_add_ticket_reply_form').on('submit', function(e) {
@@ -509,4 +758,14 @@
             // ============================ End Delete Ticket ==============================
         });
     </script>
+@endpush
+
+@push('customStyles')
+    <style>
+        #show_deskripsi img,
+        #show_reply_text img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
 @endpush

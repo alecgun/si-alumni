@@ -41,7 +41,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h2 id="show_judul"></h2>
-                                        <p class="card-text" id="show_deskripsi"></p>
+                                        <div class="card-text" id="show_deskripsi"></div>
                                     </div>
                                 </div>
                             </div>
@@ -55,9 +55,9 @@
                                             <h5>Balas Tiket</h5>
                                             <form id="kt_modal_add_ticket_reply_form" action="" method="POST">
                                                 @csrf
-                                                <textarea class="form-control mb-3" id="reply_text" name="reply_text" rows="1"
+                                                <textarea class="form-control mb-3 ckeditor" id="reply_text" name="reply_text" rows="4"
                                                     placeholder="Masukkan teks balasan"></textarea>
-                                                <div class="text-end">
+                                                <div class="text-end mt-3">
                                                     <button type="submit" class="btn btn-primary">Kirim
                                                         Balasan</button>
                                                 </div>

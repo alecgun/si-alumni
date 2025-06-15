@@ -23,6 +23,26 @@ class TicketReplyService
         }
     }
 
+    public function createTicketReplyImage($data)
+    {
+        try {
+            if ($data->hasFile('upload')) {
+                $file = $data->file('upload');
+                $ext = $file->getClientOriginalExtension();
+                $time = time();
+                $date = date('ymd-His', $time);
+                $filename = $date . '.' . $ext;
+
+                $path = $file->storeAs('ticket_reply', $filename, 'public');
+                $url = asset('storage/' . $path);
+
+                return ['status' => true, 'url' => $url];
+            }
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => 'Gagal mengunggah gambar: ' . $e->getMessage()];
+        }
+    }
+
     public function showTicketReply(TicketReply $ticket_reply)
     {
         try {

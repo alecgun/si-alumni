@@ -37,7 +37,7 @@
                                 <tr>
                                     <td>{{ $t->id }}</td>
                                     <td>{{ $t->judul }}</td>
-                                    <td>{{ $t->created_at->format('d-m-Y H:i') }}</td>
+                                    <td>{{ $t->formatted_date }}</td>
                                     <td>{{ $t->status_ticket }}</td>
                                     <td>
                                         <a href="{{ route('landing.ticket.show', $t->id) }}"

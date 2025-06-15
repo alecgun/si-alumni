@@ -52,8 +52,8 @@
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>
-                                <input type="text" id="ticket_search" data-kt-ticket-table-filter="search"
-                                    class="form-control form-control-solid w-250px ps-13" placeholder="Cari ticket" />
+                                <input type="text" id="pengumuman_search" data-kt-pengumuman-table-filter="search"
+                                    class="form-control form-control-solid w-250px ps-13" placeholder="Cari pengumuman" />
                             </div>
                             <!--end::Search-->
                         </div>
@@ -61,15 +61,15 @@
                         <!--begin::Card toolbar-->
                         <div class="card-toolbar">
                             <!--begin::Toolbar-->
-                            <div class="d-flex justify-content-end" data-kt-ticket-table-toolbar="base">
-                                <!--begin::Add ticket-->
-                                @can('ticket.create')
+                            <div class="d-flex justify-content-end" data-kt-pengumuman-table-toolbar="base">
+                                <!--begin::Add pengumuman-->
+                                @can('pengumuman.create')
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#kt_modal_add_ticket">
-                                        <i class="ki-duotone ki-plus fs-2"></i> Tambah Ticket
+                                        data-bs-target="#kt_modal_add_pengumuman">
+                                        <i class="ki-duotone ki-plus fs-2"></i> Tambah Pengumuman
                                     </button>
                                 @endcan
-                                <!--end::Add ticket-->
+                                <!--end::Add pengumuman-->
                             </div>
                             <!--end::Toolbar-->
                         </div>
@@ -96,14 +96,64 @@
     @can('pengumuman.create')
         @include('backend.pengumuman.create')
     @endcan
+    @can('pengumuman.edit')
+        @include('backend.pengumuman.edit')
+    @endcan
     @can('pengumuman.show')
         @include('backend.pengumuman.show')
     @endcan
 @endsection
 
 @push('customScripts')
-    <script>
+    <script type="module">
+        import {
+            ClassicEditor,
+            AutoImage,
+            Autosave,
+            BalloonToolbar,
+            BlockQuote,
+            Bold,
+            CloudServices,
+            Essentials,
+            Heading,
+            ImageBlock,
+            ImageCaption,
+            ImageEditing,
+            ImageInline,
+            ImageInsert,
+            ImageInsertViaUrl,
+            ImageResize,
+            ImageStyle,
+            ImageTextAlternative,
+            ImageToolbar,
+            ImageUpload,
+            ImageUtils,
+            Indent,
+            IndentBlock,
+            Italic,
+            Link,
+            LinkImage,
+            List,
+            ListProperties,
+            Paragraph,
+            SimpleUploadAdapter,
+            Table,
+            TableCaption,
+            TableCellProperties,
+            TableColumnResize,
+            TableProperties,
+            TableToolbar,
+            TodoList,
+            Underline
+        } from 'ckeditor5';
+
+        const LICENSE_KEY = 'GPL';
         $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             // ============================ Start DataTable ==============================
             var table = $('#kt_table_pengumumans').DataTable({
                 processing: true,
@@ -171,12 +221,266 @@
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#kt_modal_add_ticket').modal('hide');
-                        resetForm('#kt_modal_add_ticket_form');
+                        $('#kt_modal_add_pengumuman').modal('hide');
+                        resetForm('#kt_modal_add_pengumuman_form');
+                        myDropzone.removeAllFiles(true);
+                        myDropzone.destroy();
                     }
                 });
             });
             // ============================ End Action Cancel Add ==============================
+
+            // ============================ Start Dropzone Create ==============================
+            var myDropzone = new Dropzone("#foto", {
+                url: "{{ route('pengumuman.store') }}",
+                paramName: "foto",
+                maxFiles: 1,
+                maxFilesize: 10,
+                acceptedFiles: ".png,.jpg,.jpeg",
+                addRemoveLinks: true,
+                dictDefaultMessage: "Geser file foto atau klik disini untuk upload foto.",
+                init: function() {
+                    var dropzoneInstance = this;
+
+                    $('#kt_modal_add_pengumuman_form').on('reset', function() {
+                        dropzoneInstance.removeAllFiles(true);
+                    });
+
+                    this.on("addedfile", function(file) {
+                        if (this.files[1] != null) {
+                            this.removeFile(this.files[0]);
+                        }
+                    });
+                },
+            });
+
+            $('#kt_modal_add_pengumuman').on('show.bs.modal', function() {
+                Dropzone.autoDiscover = false;
+            });
+            // ============================ End Dropzone Create ==============================
+
+            // ============================ Start CKEditor ==============================
+            const editors = {};
+
+            document.querySelectorAll('.ckeditor').forEach(textarea => {
+                ClassicEditor
+                    .create(textarea, {
+                        plugins: [
+                            AutoImage,
+                            Autosave,
+                            BalloonToolbar,
+                            BlockQuote,
+                            Bold,
+                            CloudServices,
+                            Essentials,
+                            Heading,
+                            ImageBlock,
+                            ImageCaption,
+                            ImageEditing,
+                            ImageInline,
+                            ImageInsert,
+                            ImageInsertViaUrl,
+                            ImageResize,
+                            ImageStyle,
+                            ImageTextAlternative,
+                            ImageToolbar,
+                            ImageUpload,
+                            ImageUtils,
+                            Indent,
+                            IndentBlock,
+                            Italic,
+                            Link,
+                            LinkImage,
+                            List,
+                            ListProperties,
+                            Paragraph,
+                            SimpleUploadAdapter,
+                            Table,
+                            TableCaption,
+                            TableCellProperties,
+                            TableColumnResize,
+                            TableProperties,
+                            TableToolbar,
+                            TodoList,
+                            Underline
+                        ],
+                        toolbar: {
+                            items: [
+                                'undo',
+                                'redo',
+                                '|',
+                                'heading',
+                                '|',
+                                'bold',
+                                'italic',
+                                'underline',
+                                '|',
+                                'link',
+                                'insertImage',
+                                'insertTable',
+                                'blockQuote',
+                                '|',
+                                'bulletedList',
+                                'numberedList',
+                                'todoList',
+                                'outdent',
+                                'indent'
+                            ]
+                        },
+                        balloonToolbar: ['bold', 'italic', '|', 'link', 'insertImage', '|',
+                            'bulletedList',
+                            'numberedList'
+                        ],
+                        heading: {
+                            options: [{
+                                    model: 'paragraph',
+                                    title: 'Paragraph',
+                                    class: 'ck-heading_paragraph'
+                                },
+                                {
+                                    model: 'heading1',
+                                    view: 'h1',
+                                    title: 'Heading 1',
+                                    class: 'ck-heading_heading1'
+                                },
+                                {
+                                    model: 'heading2',
+                                    view: 'h2',
+                                    title: 'Heading 2',
+                                    class: 'ck-heading_heading2'
+                                },
+                                {
+                                    model: 'heading3',
+                                    view: 'h3',
+                                    title: 'Heading 3',
+                                    class: 'ck-heading_heading3'
+                                },
+                                {
+                                    model: 'heading4',
+                                    view: 'h4',
+                                    title: 'Heading 4',
+                                    class: 'ck-heading_heading4'
+                                },
+                                {
+                                    model: 'heading5',
+                                    view: 'h5',
+                                    title: 'Heading 5',
+                                    class: 'ck-heading_heading5'
+                                },
+                                {
+                                    model: 'heading6',
+                                    view: 'h6',
+                                    title: 'Heading 6',
+                                    class: 'ck-heading_heading6'
+                                }
+                            ]
+                        },
+                        image: {
+                            toolbar: [
+                                'toggleImageCaption',
+                                'imageTextAlternative',
+                                '|',
+                                'imageStyle:inline',
+                                'imageStyle:wrapText',
+                                'imageStyle:breakText',
+                                '|',
+                                'resizeImage'
+                            ],
+                            styles: [
+                                'full',
+                                'side',
+                                'responsive'
+                            ],
+                            upload: {
+                                types: ['jpeg', 'jpg', 'png', 'gif']
+                            },
+                        },
+                        simpleUpload: {
+                            uploadUrl: `{{ route('pengumuman.store-image') }}`,
+                            headers: {
+                                'X-CSRF-TOKEN': `{{ csrf_token() }}`
+                            },
+                        },
+                        link: {
+                            addTargetToExternalLinks: true,
+                            defaultProtocol: 'https://',
+                            decorators: {
+                                toggleDownloadable: {
+                                    mode: 'manual',
+                                    label: 'Downloadable',
+                                    attributes: {
+                                        download: 'file'
+                                    }
+                                }
+                            }
+                        },
+                        list: {
+                            properties: {
+                                styles: true,
+                                startIndex: true,
+                                reversed: true
+                            }
+                        },
+                        placeholder: 'Buat isi pengumuman',
+                        table: {
+                            contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells',
+                                'tableProperties',
+                                'tableCellProperties'
+                            ]
+                        },
+                        htmlSupport: {
+                            allow: [{
+                                    name: 'div',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                },
+                                {
+                                    name: 'i',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                },
+                                {
+                                    name: 'p',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                },
+                                {
+                                    name: 'ul',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                },
+                                {
+                                    name: 'li',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                },
+                                {
+                                    name: 'h6',
+                                    styles: true,
+                                    classes: true,
+                                    attributes: true
+                                }
+                            ]
+                        },
+                        htmlEmbed: {
+                            showPreviews: true
+                        },
+                        allowedContent: true,
+                        licenseKey: LICENSE_KEY,
+                    })
+                    .then(editor => {
+                        editors[textarea.id] = editor;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            });
+            // ============================ End CKEditor ==============================
 
             // ============================ Start Tambah Pengumuman ==============================
             $('#kt_modal_add_pengumuman_form').on('submit', function(e) {
@@ -200,6 +504,11 @@
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        if (myDropzone.getAcceptedFiles().length > 0) {
+                            var file = myDropzone.getAcceptedFiles()[0];
+                            formData.append('foto', file, file.name);
+                        }
+
                         $.ajax({
                             type: 'POST',
                             url: url,
@@ -214,6 +523,7 @@
                                 });
                                 $('#kt_modal_add_pengumuman').modal('hide');
                                 table.ajax.reload();
+                                myDropzone.removeAllFiles(true);
                                 resetForm('#kt_modal_add_pengumuman_form');
                             },
                             error: function(xhr) {
@@ -270,7 +580,7 @@
                     url: showUrl,
                     success: function(response) {
                         $('#show_judul').html(response.judul);
-                        $('#show_isi').html(response.isi.replace(/\n/g, '<br>'));
+                        $('#show_isi').html(response.isi);
                         // Set the creation date
                         $('#show_created_at').text('Diposting pada: ' + moment(response
                             .created_at).locale('id').format('D MMMM YYYY, HH:mm'));
@@ -278,8 +588,8 @@
                         // Handle the photo
                         if (response.foto) {
                             // Assuming foto contains the image path
-                            $('#show_foto').attr('src', '{{ asset('') }}/' + response
-                                .foto);
+                            $('#show_foto').attr('src', '{{ asset('storage') }}/' +
+                                response.foto);
                             $('#show_foto_container').show();
                         } else {
                             $('#show_foto_container').hide();
@@ -297,90 +607,6 @@
             });
             // ============================ End Show Modal Show ==============================
 
-            // ============================ Start Tambah Reply Ticket ==============================
-            $('#kt_modal_add_ticket_reply_form').on('submit', function(e) {
-                e.preventDefault();
-                var url = '{{ route('ticket-reply.store') }}';
-                let form = $(this);
-                var formData = new FormData(this);
-
-                formData.append('id_user', '{{ auth()->user()->id }}');
-                formData.append('id_ticket', $('#show_id_ticket').text());
-
-                clearValidationErrors(form);
-
-                Swal.fire({
-                    title: 'Apakah kamu yakin?',
-                    text: "Data akan disimpan!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, simpan!',
-                    cancelButtonText: 'Tidak, batalkan!',
-                    customClass: {
-                        confirmButton: "btn btn-primary",
-                        cancelButton: 'btn btn-danger'
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'POST',
-                            url: url,
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-                            success: function(response) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil!',
-                                    text: response.message
-                                });
-                                loadTicketReplies($('#show_id_ticket').text());
-                                resetForm('#kt_modal_add_ticket_reply_form');
-                            },
-                            error: function(xhr) {
-                                if (xhr.status === 422) {
-                                    var errors = xhr.responseJSON.errors;
-                                    $('.text-danger').remove();
-
-                                    $.each(errors, function(key, value) {
-                                        var element = form.find('[name="' +
-                                            key + '"]');
-                                        element.addClass('is-invalid');
-
-                                        if (element.is('select')) {
-                                            element.next().after(
-                                                '<div class="text-danger">' +
-                                                value[0] + '</div>');
-                                        } else {
-                                            element.after(
-                                                '<div class="text-danger">' +
-                                                value[0] + '</div>');
-                                        }
-                                    });
-
-                                    var errorMessage = '';
-                                    $.each(errors, function(key, value) {
-                                        errorMessage += value[0] + '<br>';
-                                    });
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Validation Error!',
-                                        html: errorMessage
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Error!',
-                                        text: 'Eror saat menyimpan data.'
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
-            });
-            // ============================ End Tambah Ticket ==============================
-
             // ============================ Start Cancel Show ==============================
             $('#cancel_show_button, #close_modal_show_button').on('click', function(e) {
                 e.preventDefault();
@@ -388,7 +614,7 @@
             });
             // ============================ End Cancel Show ==============================
 
-            // ============================ Start Delete Ticket ==============================
+            // ============================ Start Delete Pengumuman ==============================
             $(document).on('click', '.delete-button', function() {
                 var id = $(this).data('id');
 
@@ -407,7 +633,8 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             type: 'DELETE',
-                            url: '{{ route('ticket.destroy', ':id') }}'.replace(':id', id),
+                            url: '{{ route('pengumuman.destroy', ':id') }}'.replace(':id',
+                                id),
                             data: {
                                 _token: '{{ csrf_token() }}'
                             },
@@ -430,7 +657,16 @@
                     }
                 });
             });
-            // ============================ End Delete Ticket ==============================
+            // ============================ End Delete Pengumuman ==============================
         });
     </script>
+@endpush
+
+@push('customStyles')
+    <style>
+        #show_isi img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
 @endpush

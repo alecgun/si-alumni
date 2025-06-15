@@ -58,90 +58,14 @@
             <div class="row justify-content-center">
                 <div class="col-lg-6">
                     <div class="text-center mb-4">
-                        <h3>Our Blog</h3>
-                        <p class="text-muted mt-2 mb-0">It is a long established fact that a reader will be of a page
-                            when
-                            established fact looking at its layout.</p>
+                        <h3 class="fw-bold">Pengumuman</h3>
+                        <p class="text-muted mt-2 mb-0">Informasi terbaru terkait alumni SMAN 1 Blitar akan ditampilkan
+                            disini.</p>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="card blog-box border-0 mt-4">
-                        <div class="blog-img position-relative">
-                            <img src="images/blog/blog-01.jpg" alt="Blog" class="img-fluid rounded">
-                            <div class="bg-overlay rounded"></div>
-                            <div class="author">
-                                <h6 class="fs-16 mb-0"><i class="mdi mdi-account-outline fs-17 align-middle me-1"></i>
-                                    Calvin Carlo</h6>
-                                <small><i class="mdi mdi-clock-outline fs-17 align-middle me-1"></i> 20th March
-                                    2021</small>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <a href="#" class="primary-link">
-                                <h6 class="fs-20">Doing a cross country road trip</h6>
-                            </a>
-                            <p class="text-muted">We craft digital, graphic and dimensional thinking, to create
-                                category
-                                leading brand.</p>
-                            <div class="mt-3">
-                                <a href="#" class="text-primary">Read More <i
-                                        class="mdi mdi-arrow-right align-middle"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="card blog-box border-0 mt-4">
-                        <div class="blog-img position-relative">
-                            <img src="images/blog/blog-02.jpg" alt="Blog" class="img-fluid rounded">
-                            <div class="bg-overlay rounded"></div>
-                            <div class="author">
-                                <h6 class="fs-16 mb-0"><i class="mdi mdi-account-outline fs-17 align-middle me-1"></i>
-                                    Theresa Sinclair</h6>
-                                <small><i class="mdi mdi-clock-outline fs-17 align-middle me-1"></i> 01th July
-                                    2021</small>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <a href="#" class="primary-link">
-                                <h6 class="fs-20">New exhibition at our Museum</h6>
-                            </a>
-                            <p class="text-muted">Even the all-powerful Pointing has no control about the blind almost
-                                unorthographic.</p>
-                            <div class="mt-3">
-                                <a href="#" class="text-primary">Read More <i
-                                        class="mdi mdi-arrow-right align-middle"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="card blog-box border-0 mt-4">
-                        <div class="blog-img position-relative">
-                            <img src="images/blog/blog-03.jpg" alt="Blog" class="img-fluid rounded">
-                            <div class="bg-overlay rounded"></div>
-                            <div class="author">
-                                <h6 class="fs-16 mb-0"><i class="mdi mdi-account-outline fs-17 align-middle me-1"></i>
-                                    Ruben Reed</h6>
-                                <small><i class="mdi mdi-clock-outline fs-17 align-middle me-1"></i> 25th July
-                                    2021</small>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <a href="#" class="primary-link">
-                                <h6 class="fs-20">Design your apps in your own way</h6>
-                            </a>
-                            <p class="text-muted">Pityful a rethoric question ran over her cheek, then she continued
-                                her
-                                way.</p>
-                            <div class="mt-3">
-                                <a href="#" class="text-primary">Read More <i
-                                        class="mdi mdi-arrow-right align-middle"></i></a>
-                            </div>
-                        </div>
-                    </div>
+                <div id="pengumuman">
                 </div>
             </div>
         </div>
@@ -164,16 +88,17 @@
                 <div class="col-lg-5">
                     <div class="contact-details mb-4 mb-lg-0">
                         <p class="mb-3"><i class="mdi mdi-email-outline align-middle text-muted fs-20 me-2"></i>
-                            <span class="fw-medium">support@website.com</span>
+                            <span class="fw-medium">info@sman1blitar.sch.id</span>
                         </p>
                         <p class="mb-3"><i class="mdi mdi-web align-middle text-muted fs-20 me-2"></i> <span
-                                class="fw-medium">www.website.com</span></p>
+                                class="fw-medium"><a href="https://sman1blitar.sch.id/"
+                                    target="_blank">sman1blitar.sch.id</a></span></p>
                         <p class="mb-3"><i class="mdi mdi-phone align-middle text-muted fs-20 me-2"></i> <span
-                                class="fw-medium">+245 1234 5678</span></p>
+                                class="fw-medium">0342-801414</span></p>
                         <p class="mb-3"><i class="mdi mdi-hospital-building text-muted fs-20 me-2"></i> <span
                                 class="fw-medium">9:00 AM - 6:00 PM</span></p>
                         <p class="mb-3"><i class="mdi mdi-map-marker-outline text-muted fs-20 me-2"></i> <span
-                                class="fw-medium">412, Plantation Rd, Morehead City, NC, 28557.</span></p>
+                                class="fw-medium">Jl. A. Yani 112, Blitar, Jawa Timur 66131</span></p>
                     </div>
                     <!--end contact-details-->
                 </div>
@@ -277,7 +202,72 @@
 
         const mainChart = new Chart(
             document.getElementById('main-chart'),
-            config // We'll add the configuration details later.
+            config
         );
+
+        getPengumuman();
+
+        function getPengumuman() {
+            $.ajax({
+                url: '{{ route('landing.pengumuman.data') }}',
+                method: 'GET',
+                success: function(response) {
+                    let pengumumanHTML = '';
+                    if (response.pengumuman.length > 0) {
+                        response.pengumuman.slice(0, 3).forEach(function(pengumuman) {
+                            let pengumumanId = pengumuman.id;
+                            let pengumumanUrl = '{{ route('landing.pengumuman.show', ':id') }}'.replace(
+                                ':id',
+                                pengumumanId);
+                            let pengumumanFoto = pengumuman.foto;
+                            let pengumumanFotoSrc = '{{ asset('storage') }}/' + pengumumanFoto;
+                            pengumumanHTML += `
+                                <div class="col-lg-4 col-md-6 pengumuman-item">
+                                    <div class="card blog-box border-0 mt-4">
+                                        <div class="blog-img position-relative">
+                                            <img src="${pengumumanFotoSrc}" alt="Blog" class="img-fluid rounded" style="object-fit: cover; width: 350px; height: 250px;">
+                                            <div class="bg-overlay rounded"></div>
+                                            <div class="author">
+                                                <small>
+                                                    <i class="mdi mdi-clock-outline fs-17 align-middle me-1"></i>
+                                                    ${moment(pengumuman.created_at).locale('id').format('D MMMM YYYY, HH:mm')}
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <a href="${pengumumanUrl}" class="primary-link">
+                                                <h6 class="fs-20">${pengumuman.judul}</h6>
+                                            </a>
+                                            <div class="text-muted">${pengumuman.isi.includes('.') ? pengumuman.isi.split('.')[0] + '.' : pengumuman.isi}</div>
+                                            <div class="mt-3">
+                                                <a href="${pengumumanUrl}" class="text-primary">Read More <i class="mdi mdi-arrow-right align-middle"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        });
+                    } else {
+                        pengumumanHTML +=
+                            `<p class="text-muted">Data pengumuman tidak ditemukan.</p>`;
+                    }
+                    $('#pengumuman').html(pengumumanHTML);
+                }
+            });
+        }
     </script>
+@endpush
+
+@push('customStyles')
+    <style>
+        #pengumuman {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .pengumuman-item {
+            flex-basis: calc(33.33% - 20px);
+            margin: 10px;
+        }
+    </style>
 @endpush
