@@ -10,6 +10,7 @@ use App\Services\PengumumanService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 
@@ -55,6 +56,8 @@ class PengumumanController extends Controller implements HasMiddleware
         if ($request->hasFile('foto')) {
             $data['foto'] = $request->file('foto');
         }
+
+        $data['slug'] = Str::slug($request->judul) . '-' . time();
 
         $result = $this->pengumumanService->createPengumuman($data);
         if ($result['status']) {

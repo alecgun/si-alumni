@@ -21,5 +21,6 @@ class Pengumuman extends Model
         'foto',
         'judul',
         'isi',
+        'slug',
     ];
 }

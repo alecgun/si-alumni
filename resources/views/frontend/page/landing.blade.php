@@ -27,9 +27,9 @@
         <!-- END HOME -->
     @endguest
 
-    <!-- START FEATURES -->
+    <!-- START CHART -->
     <section class="section" id="features">
-        <div class="container">
+        <div class="container mt-5">
             <div class="row justify-content-center">
                 <div class="col-lg-6">
                     <div class="text-center mb-5">
@@ -42,7 +42,7 @@
             <!--end row-->
             <!--start row-->
             <div class="row">
-                <div class="col-lg-12">
+                <div id="landing-chart" class="col-lg-12">
                     <canvas id="main-chart"></canvas>
                 </div>
             </div>
@@ -50,7 +50,7 @@
         </div>
         <!--end container-->
     </section>
-    <!-- END FEATURES -->
+    <!-- END CHART -->
 
     <!-- START BLOG -->
     <section class="section" id="blog">
@@ -64,9 +64,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div id="pengumuman">
-                </div>
+            <div class="row" id="pengumuman">
             </div>
         </div>
     </section>
@@ -196,7 +194,8 @@
                         min: 0,
                         max: 10,
                     }
-                }
+                },
+                maintainAspectRatio: false,
             }
         };
 
@@ -214,18 +213,22 @@
                 success: function(response) {
                     let pengumumanHTML = '';
                     if (response.pengumuman.length > 0) {
-                        response.pengumuman.slice(0, 3).forEach(function(pengumuman) {
-                            let pengumumanId = pengumuman.id;
-                            let pengumumanUrl = '{{ route('landing.pengumuman.show', ':id') }}'.replace(
-                                ':id',
-                                pengumumanId);
+                        let itemsDisplayed = 0;
+
+                        response.pengumuman.forEach(function(pengumuman) {
+                            if (itemsDisplayed >= 3) return;
+                            let pengumumanSlug = pengumuman.slug;
+                            let pengumumanUrl = '{{ route('landing.pengumuman.show', ':slug') }}'
+                                .replace(
+                                    ':slug',
+                                    pengumumanSlug);
                             let pengumumanFoto = pengumuman.foto;
                             let pengumumanFotoSrc = '{{ asset('storage') }}/' + pengumumanFoto;
                             pengumumanHTML += `
                                 <div class="col-lg-4 col-md-6 pengumuman-item">
                                     <div class="card blog-box border-0 mt-4">
-                                        <div class="blog-img position-relative">
-                                            <img src="${pengumumanFotoSrc}" alt="Blog" class="img-fluid rounded" style="object-fit: cover; width: 350px; height: 250px;">
+                                        <div class="blog-img position-relative ratio ratio-4x3">
+                                            <img src="${pengumumanFotoSrc}" alt="Blog" class="img-fluid rounded" style="object-fit: cover;">
                                             <div class="bg-overlay rounded"></div>
                                             <div class="author">
                                                 <small>
@@ -233,19 +236,21 @@
                                                     ${moment(pengumuman.created_at).locale('id').format('D MMMM YYYY, HH:mm')}
                                                 </small>
                                             </div>
+                                            <a href="${pengumumanUrl}" class="text-primary"></a>
                                         </div>
                                         <div class="mt-3">
+                                            <p class="text-muted mb-0">${moment(pengumuman.created_at).locale('id').fromNow()}</p>
                                             <a href="${pengumumanUrl}" class="primary-link">
                                                 <h6 class="fs-20">${pengumuman.judul}</h6>
                                             </a>
-                                            <div class="text-muted">${pengumuman.isi.includes('.') ? pengumuman.isi.split('.')[0] + '.' : pengumuman.isi}</div>
                                             <div class="mt-3">
                                                 <a href="${pengumumanUrl}" class="text-primary">Read More <i class="mdi mdi-arrow-right align-middle"></i></a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            `
+                            `;
+                            itemsDisplayed++;
                         });
                     } else {
                         pengumumanHTML +=
@@ -265,9 +270,12 @@
             flex-wrap: wrap;
         }
 
-        .pengumuman-item {
-            flex-basis: calc(33.33% - 20px);
-            margin: 10px;
+        .ratio-4x3 {
+            aspect-ratio: 4/3;
+        }
+
+        #landing-chart {
+            min-height: 500px;
         }
     </style>
 @endpush

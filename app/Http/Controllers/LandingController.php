@@ -485,10 +485,10 @@ class LandingController extends Controller implements HasMiddleware
         return view('frontend.page.pengumuman');
     }
 
-    public function showPengumumanDetail($idPengumuman)
+    public function showPengumumanDetail($slug)
     {
         try {
-            $pengumuman = Pengumuman::findOrFail($idPengumuman);
+            $pengumuman = Pengumuman::where('slug', $slug)->firstOrFail();
             \Carbon\Carbon::setLocale('id');
             $pengumuman->formatted_date = $pengumuman->created_at->translatedFormat('j F Y, H:i');
 

@@ -24,7 +24,6 @@ class PengumumanService
                 $path = $file->storeAs('pengumuman', $filename, 'public');
                 $data['foto'] = $path;
             }
-
             $pengumuman = Pengumuman::create($data);
             DB::commit();
             return ['status' => true, 'pengumuman' => $pengumuman];

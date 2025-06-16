@@ -489,6 +489,7 @@
                 let form = $(this);
                 var formData = new FormData(this);
 
+
                 clearValidationErrors(form);
 
                 Swal.fire({
