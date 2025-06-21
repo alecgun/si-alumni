@@ -7,6 +7,7 @@ use App\Http\Requests\KerjaRequest;
 use App\Http\Requests\KuliahRequest;
 use App\Http\Requests\TicketReplyRequest;
 use App\Http\Requests\TicketRequest;
+use App\Models\User;
 use App\Models\Alumni;
 use App\Models\Kerja;
 use App\Models\Kuliah;
@@ -23,6 +24,9 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OpenTicketConfirmed;
+use App\Mail\OpenTicketUser;
 
 class LandingController extends Controller implements HasMiddleware
 {
@@ -320,21 +324,23 @@ class LandingController extends Controller implements HasMiddleware
 
     public function storeTicket(TicketRequest $request)
     {
+        $user = Auth::user();
         $userId = Auth::user()->id;
-        $alumni = Alumni::where('id_user', $userId)->first();
 
         $data = [
             'email' => $request->email,
             'kategori' => $request->kategori,
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
-            'alumni_id' => $alumni->id,
+            'id_user' => $userId,
             'status_ticket' => 'Open',
         ];
 
         try {
-            Ticket::create($data);
+            $ticket = Ticket::create($data);
             LogAktivitas::log('User membuat tiket', $request->url(), $request->all(), null, $userId);
+            Mail::to('tubagusibe.25@gmail.com')->send(new OpenTicketConfirmed($ticket, $user));
+            Mail::to($ticket->email)->send(new OpenTicketUser($ticket, $user));
 
             return response()->json(['success' => true, 'message' => 'Tiket berhasil dibuat']);
         } catch (Exception $e) {
@@ -365,8 +371,7 @@ class LandingController extends Controller implements HasMiddleware
     public function historyTicket()
     {
         $userId = Auth::user()->id;
-        $alumni = Alumni::where('id_user', $userId)->first();
-        $ticket = Ticket::where('alumni_id', $alumni->id)->get();
+        $ticket = Ticket::where('id_user', $userId)->get();
 
         try {
             foreach ($ticket as $t) {
@@ -390,10 +395,10 @@ class LandingController extends Controller implements HasMiddleware
             'ticket.deskripsi',
             'ticket.status_ticket',
             'ticket.created_at',
-            'ticket.alumni_id',
-            'alumni.nama as nama_alumni',
+            'ticket.id_user',
+            'users.name as nama_user',
             )
-            ->join('alumni', 'ticket.alumni_id', '=', 'alumni.id')
+            ->join('users', 'ticket.id_user', '=', 'users.id')
             ->where('ticket.id', $idTicket)
             ->first();
 

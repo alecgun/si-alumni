@@ -32,12 +32,12 @@ class TicketService
                 'ticket.judul',
                 'ticket.status_ticket',
                 'ticket.deskripsi',
-                'ticket.alumni_id',
-                'alumni.nama as nama_alumni',
+                'ticket.id_user',
+                'users.name as nama_user',
                 'ticket.email',
                 'ticket.created_at'
             )
-            ->join('alumni', 'ticket.alumni_id', '=', 'alumni.id')
+            ->join('users', 'ticket.id_user', '=', 'users.id')
             ->where('ticket.id', $ticket->id)
             ->first();
             return ['status' => true, 'ticket' => $ticket];
@@ -97,11 +97,11 @@ class TicketService
                 'ticket.judul',
                 'ticket.status_ticket',
                 'ticket.kategori',
-                'ticket.alumni_id',
-                'alumni.nama as nama_alumni',
+                'ticket.id_user',
+                'users.name as nama_user',
                 'ticket.email',
                 'ticket.created_at'
-            )->join('alumni', 'ticket.alumni_id', '=', 'alumni.id');
+            )->join('users', 'ticket.id_user', '=', 'users.id');
         } catch (Exception $e) {
             return ['status' => false, 'message' => 'Gagal mengambil data ticket: ' . $e->getMessage()];
         }
@@ -111,10 +111,9 @@ class TicketService
     {
         try {
             return $query->where(function ($q) use ($search) {
-                $q->where('ticket.jenjang', 'like', "%{$search}%")
-                    ->orWhere('ticket.jalur_masuk', 'like', "%{$search}%")
-                    ->orWhere('ticket.tahun_masuk', 'like', "%{$search}%")
-                    ->orWhere('ticket.tahun_lulus', 'like', "%{$search}%");
+                $q->where('ticket.judul', 'like', "%{$search}%")
+                    ->orWhere('ticket.nama_user', 'like', "%{$search}%")
+                    ->orWhere('ticket.email', 'like', "%{$search}%");
             });
         } catch (Exception $e) {
             return ['status' => false, 'message' => 'Gagal mencari data ticket: ' . $e->getMessage()];

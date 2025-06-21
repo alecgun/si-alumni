@@ -23,6 +23,6 @@ class Ticket extends Model
         'kategori',
         'deskripsi',
         'email',
-        'alumni_id',
+        'id_user',
     ];
 }

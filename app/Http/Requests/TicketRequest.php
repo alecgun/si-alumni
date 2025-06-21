@@ -26,7 +26,7 @@ class TicketRequest extends FormRequest
             'kategori' => 'required|string|max:50',
             'deskripsi' => 'required|string|max:1000',
             'email' => 'nullable|email|max:255',
-            'alumni_id' => 'nullable|exists:alumni,id',
+            'id_user' => 'nullable|exists:users,id',
         ];
     }
 
@@ -49,7 +49,7 @@ class TicketRequest extends FormRequest
             'deskripsi.max' => 'Konten tiket maksimal 1000 karakter.',
             'email.email' => 'Format email tidak valid.',
             'email.max' => 'Email maksimal 255 karakter.',
-            'alumni_id.exists' => 'Alumni yang dipilih tidak valid.',
+            'id_user.exists' => 'Pengguna yang dipilih tidak valid.',
         ];
     }
 }

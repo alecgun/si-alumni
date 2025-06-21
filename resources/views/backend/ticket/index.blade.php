@@ -157,8 +157,8 @@
                         name: 'kategori'
                     },
                     {
-                        data: 'nama_alumni',
-                        name: 'nama_alumni'
+                        data: 'nama_user',
+                        name: 'nama_user'
                     },
                     {
                         data: 'email',
@@ -320,7 +320,7 @@
                         $('#show_judul').html(response.judul);
                         $('#show_deskripsi').html(response.deskripsi);
                         $('#show_email').html(response.email);
-                        $('#show_alumni_id').html(response.nama_alumni);
+                        $('#show_id_user').html(response.nama_user);
                         $('#show_created_at').html(moment(response.created_at).locale('id')
                             .format(
                                 'D MMMM YYYY, HH:mm'));

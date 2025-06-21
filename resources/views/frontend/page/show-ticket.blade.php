@@ -40,7 +40,7 @@
                         </tr>
                         <tr>
                             <th class="fw-bold">Nama</th>
-                            <td id="show_alumni_id"></td>
+                            <td id="show_id_user"></td>
                         </tr>
                         <tr>
                             <th class="fw-bold">Email</th>
@@ -182,7 +182,7 @@
                     $('#show_status_ticket').html(response.ticket.status_ticket);
                     $('#show_created_at').html(moment(response.ticket.created_at).locale('id').format(
                         'D MMMM YYYY, HH:mm'));
-                    $('#show_alumni_id').html(response.ticket.nama_alumni);
+                    $('#show_id_user').html(response.ticket.nama_user);
                     $('#show_email').html(response.ticket.email);
                     $('#show_judul').html(response.ticket.judul);
                     $('#show_deskripsi').html(response.ticket.deskripsi);
