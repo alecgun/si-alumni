@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->longText('reply_text');
             $table->foreignId('id_ticket')->constrained('ticket')->restrictOnDelete();
-            $table->foreignId('id_user')->constrained('users')->restrictOnDelete();
+            $table->foreignUuid('id_user')->constrained('users')->restrictOnDelete();
             $table->timestamps();
         });
     }

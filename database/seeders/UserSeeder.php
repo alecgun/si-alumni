@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -14,103 +15,123 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
+                'id' =>  Str::uuid(),
                 'name' => 'Admin',
-                'email' => 'superadmin@gmail.com',
+                'username' => 'superadmin',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'User',
-                'email' => 'user@gmail.com',
+                'username' => 'user1',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'John Doe',
-                'email' => 'user3@gmail.com',
+                'username' => 'user3',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'Jane Smith',
-                'email' => 'user4@gmail.com',
+                'username' => 'user4',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'Michael Johnson',
-                'email' => 'user5@gmail.com',
+                'username' => 'user5',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'Emily Davis',
-                'email' => 'user6@gmail.com',
+                'username' => 'user6',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'David Brown',
-                'email' => 'user7@gmail.com',
+                'username' => 'user7',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'M. Buriram Jordan',
-                'email' => 'user8@gmail.com',
+                'username' => 'user8',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'Michael Buriram Jordan',
-                'email' => 'user9@gmail.com',
+                'username' => 'user9',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'Michael B. Jordan',
-                'email' => 'user10@gmail.com',
+                'username' => 'user10',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'Sophia Williams',
-                'email' => 'user11@gmail.com',
+                'username' => 'user11',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'Ethan Thomas',
-                'email' => 'user12@gmail.com',
+                'username' => 'user12',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'Olivia Martinez',
-                'email' => 'user13@gmail.com',
+                'username' => 'user13',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'Ava White',
-                'email' => 'user14@gmail.com',
+                'username' => 'user14',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'James Harris',
-                'email' => 'user15@gmail.com',
+                'username' => 'user15',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'Isabella Clark',
-                'email' => 'user16@gmail.com',
+                'username' => 'user16',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'Liam Lewis',
-                'email' => 'user17@gmail.com',
+                'username' => 'user17',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'Mia Walker',
-                'email' => 'user18@gmail.com',
+                'username' => 'user18',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'Noah Hall',
-                'email' => 'user19@gmail.com',
+                'username' => 'user19',
                 'password' => bcrypt('password'),
             ],
             [
+                'id' =>  Str::uuid(),
                 'name' => 'Lucas Young',
-                'email' => 'user20@gmail.com',
+                'username' => 'user20',
                 'password' => bcrypt('password'),
             ],
 
@@ -120,25 +141,46 @@ class UserSeeder extends Seeder
             User::create($user);
         }
 
-        $user = User::find(1);
-        $user->assignRole('admin');
-        $user = User::find(2);
-        $user->assignRole('user');
-        $user = User::find(3);
-        $user->assignRole('user');
-        $user = User::find(4);
-        $user->assignRole('user');
-        $user = User::find(5);
-        $user->assignRole('user');
-        $user = User::find(6);
-        $user->assignRole('user');
-        $user = User::find(7);
-        $user->assignRole('user');
-        $user = User::find(8);
-        $user->assignRole('user');
-        $user = User::find(9);
-        $user->assignRole('user');
-        $user = User::find(10);
-        $user->assignRole('user');
+        $admin = User::where('username', 'superadmin')->first();
+        $user1 = User::where('username', 'user1')->first();
+        $user3 = User::where('username', 'user3')->first();
+        $user4 = User::where('username', 'user4')->first();
+        $user5 = User::where('username', 'user5')->first();
+        $user6 = User::where('username', 'user6')->first();
+        $user7 = User::where('username', 'user7')->first();
+        $user8 = User::where('username', 'user8')->first();
+        $user9 = User::where('username', 'user9')->first();
+        $user10 = User::where('username', 'user10')->first();
+        $user11 = User::where('username', 'user11')->first();
+        $user12 = User::where('username', 'user12')->first();
+        $user13 = User::where('username', 'user13')->first();
+        $user14 = User::where('username', 'user14')->first();
+        $user15 = User::where('username', 'user15')->first();
+        $user16 = User::where('username', 'user16')->first();
+        $user17 = User::where('username', 'user17')->first();
+        $user18 = User::where('username', 'user18')->first();
+        $user19 = User::where('username', 'user19')->first();
+        $user20 = User::where('username', 'user20')->first();
+
+        $admin->assignRole('admin');
+        $user1->assignRole('user');
+        $user3->assignRole('user');
+        $user4->assignRole('user');
+        $user5->assignRole('user');
+        $user6->assignRole('user');
+        $user7->assignRole('user');
+        $user8->assignRole('user');
+        $user9->assignRole('user');
+        $user10->assignRole('user');
+        $user11->assignRole('user');
+        $user12->assignRole('user');
+        $user13->assignRole('user');
+        $user14->assignRole('user');
+        $user15->assignRole('user');
+        $user16->assignRole('user');
+        $user17->assignRole('user');
+        $user18->assignRole('user');
+        $user19->assignRole('user');
+        $user20->assignRole('user');
     }
 }

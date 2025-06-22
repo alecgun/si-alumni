@@ -152,8 +152,8 @@
                         name: 'role'
                     },
                     {
-                        data: 'email',
-                        name: 'email'
+                        data: 'username',
+                        name: 'username'
                     },
                     {
                         data: 'created_at',
@@ -311,7 +311,7 @@
                         console.log(response);
                         $('#edit_id_user').val(response.id);
                         $('#edit_name').val(response.name);
-                        $('#edit_email').val(response.email);
+                        $('#edit_username').val(response.username);
                         $('#kt_modal_edit_user_form').attr('action',
                             '{{ route('user.update', ':id') }}'.replace(':id', response.id));
                         loadRoles('#edit_role', response.role_id);
@@ -480,4 +480,3 @@
         });
     </script>
 @endpush
-

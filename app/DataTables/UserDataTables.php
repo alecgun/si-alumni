@@ -54,7 +54,7 @@ class UserDataTables
                     'iteration' => $start + $index + 1,
                     'name' => $user->name,
                     'role' => $user->roles->pluck('name')->implode(', '),
-                    'email' => $user->email,
+                    'username' => $user->username,
                     'created_at' => Carbon::parse($user->created_at)->translatedFormat('j F Y'),
                     'updated_at' => Carbon::parse($user->updated_at)->translatedFormat('j F Y'),
                     'actions' => $this->getActions($user),

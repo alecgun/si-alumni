@@ -21,10 +21,10 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email"
-                                    placeholder="Masukkan email">
-                                @error('email')
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="username"
+                                    placeholder="Masukkan username">
+                                @error('username')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>

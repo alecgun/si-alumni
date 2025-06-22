@@ -24,7 +24,7 @@ return new class extends Migration
             $table->enum('jenis_kelamin', ['L', 'P']);
             $table->string('instagram')->nullable();
             $table->string('sosmed_lain')->nullable();
-            $table->foreignId('id_user')->constrained('users')->restrictOnDelete();
+            $table->foreignUuid('id_user')->constrained('users')->restrictOnDelete();
             $table->timestamps();
         });
     }

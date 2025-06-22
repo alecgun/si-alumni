@@ -16,6 +16,7 @@ class UserService
         DB::beginTransaction();
         try {
             $data['password'] = Hash::make($data['password']);
+            $data['id'] = Str::uuid();
             $user = User::create($data);
 
             $role = Role::findById($data['role'])->name;

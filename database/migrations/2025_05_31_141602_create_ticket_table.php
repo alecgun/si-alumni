@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('kategori')->default('Umum');
             $table->longText('deskripsi');
             $table->string('email')->nullable();
-            $table->foreignId('id_user')->constrained('users')->restrictOnDelete();
+            $table->foreignUuid('id_user')->constrained('users')->restrictOnDelete();
             $table->timestamps();
         });
     }
