@@ -29,7 +29,7 @@
                                     </tr>
                                     <tr>
                                         <th class="fw-bold">Nama</th>
-                                        <td id="show_alumni_id"></td>
+                                        <td id="show_id_user"></td>
                                     </tr>
                                     <tr>
                                         <th class="fw-bold">Email</th>

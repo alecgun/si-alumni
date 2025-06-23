@@ -23,7 +23,7 @@ class UserRequest extends FormRequest
 
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $userId,
+            'username' => 'required|string|max:255|unique:users,username,' . $userId,
             'password' => $this->isMethod('post') ? 'required|string|min:8' : 'nullable|string|min:8',
             'role' => 'required|exists:roles,id',
         ];
@@ -38,11 +38,10 @@ class UserRequest extends FormRequest
             'name.required' => 'Nama harus diisi',
             'name.string' => 'Nama harus berupa teks',
             'name.max' => 'Nama maksimal 255 karakter',
-            'email.required' => 'Email harus diisi',
-            'email.string' => 'Email harus berupa teks',
-            'email.email' => 'Email harus berupa alamat email yang valid',
-            'email.max' => 'Email maksimal 255 karakter',
-            'email.unique' => 'Email sudah digunakan',
+            'username.required' => 'Username harus diisi',
+            'username.string' => 'Username harus berupa teks',
+            'username.max' => 'Username maksimal 255 karakter',
+            'username.unique' => 'Username sudah digunakan',
             'password.required' => 'Password harus diisi',
             'password.string' => 'Password harus berupa teks',
             'password.min' => 'Password minimal 8 karakter',

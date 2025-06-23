@@ -220,90 +220,6 @@
             });
             // ============================ End Action Cancel Add ==============================
 
-            // ============================ Start Tambah Ticket ==============================
-            $('#kt_modal_add_ticket_form').on('submit', function(e) {
-                e.preventDefault();
-                var url = '{{ route('ticket.store') }}';
-                let form = $(this);
-                var formData = new FormData(this);
-
-                formData.append('status_ticket', 'Open');
-
-                clearValidationErrors(form);
-
-                Swal.fire({
-                    title: 'Apakah kamu yakin?',
-                    text: "Data akan disimpan!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, simpan!',
-                    cancelButtonText: 'Tidak, batalkan!',
-                    customClass: {
-                        confirmButton: "btn btn-primary",
-                        cancelButton: 'btn btn-danger'
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'POST',
-                            url: url,
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-                            success: function(response) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil!',
-                                    text: response.message
-                                });
-                                $('#kt_modal_add_ticket').modal('hide');
-                                table.ajax.reload();
-                                resetForm('#kt_modal_add_ticket_form');
-                            },
-                            error: function(xhr) {
-                                if (xhr.status === 422) {
-                                    var errors = xhr.responseJSON.errors;
-                                    $('.text-danger').remove();
-
-                                    $.each(errors, function(key, value) {
-                                        var element = form.find('[name="' +
-                                            key + '"]');
-                                        element.addClass('is-invalid');
-
-                                        if (element.is('select')) {
-                                            element.next().after(
-                                                '<div class="text-danger">' +
-                                                value[0] + '</div>');
-                                        } else {
-                                            element.after(
-                                                '<div class="text-danger">' +
-                                                value[0] + '</div>');
-                                        }
-                                    });
-
-                                    var errorMessage = '';
-                                    $.each(errors, function(key, value) {
-                                        errorMessage += value[0] + '<br>';
-                                    });
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Validation Error!',
-                                        html: errorMessage
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Error!',
-                                        text: 'Eror saat menyimpan data.'
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
-            });
-            // ============================ End Tambah Ticket ==============================
-
             // ============================ Start Show Modal Show ==============================
             $(document).on('click', '.show-button', function() {
                 var id = $(this).data('id');
@@ -643,6 +559,7 @@
                                     title: 'Berhasil!',
                                     text: response.message
                                 });
+                                editors['reply_text'].setData('');
                                 loadTicketReplies($('#show_id_ticket').text());
                                 resetForm('#kt_modal_add_ticket_reply_form');
                             },

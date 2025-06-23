@@ -42,14 +42,14 @@
                         <!--end::Separator-->
                         <!--begin::Input group=-->
                         <div class="fv-row mb-8">
-                            <!--begin::Email-->
-                            <input type="text" placeholder="Email" name="email" autocomplete="off"
-                                class="form-control bg-transparent @error('email') is-invalid @enderror"
-                                value="{{ old('email') }}" />
-                            @error('email')
+                            <!--begin::Username-->
+                            <input type="text" placeholder="Username" name="username" autocomplete="off"
+                                class="form-control bg-transparent @error('username') is-invalid @enderror"
+                                value="{{ old('username') }}" />
+                            @error('username')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <!--end::Email-->
+                            <!--end::Username-->
                         </div>
                         <!--end::Input group=-->
                         <div class="fv-row mb-10 position-relative">

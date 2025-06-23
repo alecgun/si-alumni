@@ -10,6 +10,8 @@ use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 
 class UserController extends Controller implements HasMiddleware
@@ -52,7 +54,7 @@ class UserController extends Controller implements HasMiddleware
     {
         $result = $this->userService->createUser($request->all());
         if ($result['status']) {
-            LogAktivitas::log('Menambah data pengguna', $request->path(), null, $result['pengguna'], Auth::user()->id);
+            LogAktivitas::log('Menambah data pengguna', $request->path(), null, $result['user'], Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Pengguna berhasil dibuat']);
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);
@@ -71,7 +73,7 @@ class UserController extends Controller implements HasMiddleware
     {
         $result = $this->userService->updateUser($user, $request->all());
         if ($result['status']) {
-            LogAktivitas::log('Mengubah data pengguna', $request->path(), $result['pengguna'], $request->all(), Auth::user()->id);
+            LogAktivitas::log('Mengubah data pengguna', $request->path(), $result['user'], $request->all(), Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Pengguna berhasil diperbarui']);
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);
@@ -81,7 +83,7 @@ class UserController extends Controller implements HasMiddleware
     {
         $result = $this->userService->deleteUser($user);
         if ($result['status']) {
-            LogAktivitas::log('Menghapus data pengguna', request()->path(), $pengguna, null, Auth::user()->id);
+            LogAktivitas::log('Menghapus data pengguna', request()->path(), $user, null, Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Pengguna berhasil dihapus']);
         }
         if (strpos($result['message'], 'Pengguna ini memiliki data terkait yang tidak dapat dihapus.') !== false) {

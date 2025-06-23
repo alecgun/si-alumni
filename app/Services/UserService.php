@@ -102,7 +102,7 @@ class UserService
         try {
             return $query->where(function ($q) use ($search) {
                 $q->where('users.name', 'like', "%{$search}%")
-                    ->orWhere('users.email', 'like', "%{$search}%")
+                    ->orWhere('users.username', 'like', "%{$search}%")
                     ->orWhere('users.created_at', 'like', "%{$search}%")
                     ->orWhere('users.updated_at', 'like', "%{$search}%")
                     ->orWhere('roles.name', 'like', "%{$search}%");

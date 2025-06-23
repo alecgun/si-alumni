@@ -44,15 +44,14 @@ class AuthController extends Controller implements HasMiddleware
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'username' => 'required',
             'password' => 'required',
         ], [
-            'email.required' => 'Alamat email wajib diisi.',
-            'email.email' => 'Alamat email tidak valid.',
+            'username.required' => 'Username wajib diisi.',
             'password.required' => 'Kata sandi wajib diisi.',
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('username', 'password');
         $remember = $request->has('remember');
         try {
             if (Auth::attempt($credentials, $remember)) {
@@ -65,7 +64,7 @@ class AuthController extends Controller implements HasMiddleware
                 return redirect()->intended($this->redirectPath(Auth::user()))->with('success', 'Login berhasil.');
             }
 
-            return back()->withErrors(['error' => 'Email atau kata sandi yang Anda masukkan salah.']);
+            return back()->withErrors(['error' => 'Username atau kata sandi yang Anda masukkan salah.']);
         } catch (Exception $e) {
             return back()->withErrors(['error' => 'Terjadi kesalahan saat mencoba untuk login. Silakan coba lagi nanti.']);
         }
@@ -89,8 +88,6 @@ class AuthController extends Controller implements HasMiddleware
                 return $route;
             }
         }
-
-        return '/';
     }
 
 

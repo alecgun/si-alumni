@@ -371,17 +371,37 @@ class LandingController extends Controller implements HasMiddleware
     public function historyTicket()
     {
         $userId = Auth::user()->id;
-        $ticket = Ticket::where('id_user', $userId)->get();
+
+        // Menggunakan paginate() instead of get()
+        $tickets = Ticket::where('id_user', $userId)
+                    ->latest() // Urutkan dari yang terbaru
+                    ->paginate(10); // 10 item per halaman
 
         try {
-            foreach ($ticket as $t) {
-                $t->formatted_date = \Carbon\Carbon::parse($t->created_at)->locale('id_ID')->translatedFormat('j F Y, H:i');
-            }
+            // Format tanggal untuk setiap item
+            $tickets->transform(function ($t) {
+                $t->formatted_date = \Carbon\Carbon::parse($t->created_at)
+                    ->locale('id_ID')
+                    ->translatedFormat('j F Y, H:i');
+
+                $t->status_badge = $this->getStatusBadge($t->status_ticket);
+
+                return $t;
+            });
         } catch (Exception $e) {
-            return redirect()->route('landing.index')->with('error', 'Gagal memformat tanggal tiket: ' . $e->getMessage());
+            return redirect()->route('landing.index')
+                ->with('error', 'Gagal memformat tanggal tiket: ' . $e->getMessage());
         }
 
-        return view('frontend.page.history-ticket', compact('ticket'));
+        return view('frontend.page.history-ticket', compact('tickets'));
+    }
+
+    private function getStatusBadge($status)
+    {
+        return match($status) {
+            'Open' => 'primary',
+            'Closed' => 'success',
+        };
     }
 
     public function showTicket($idTicket)
@@ -401,6 +421,11 @@ class LandingController extends Controller implements HasMiddleware
             ->join('users', 'ticket.id_user', '=', 'users.id')
             ->where('ticket.id', $idTicket)
             ->first();
+
+            // Format tanggal
+            $ticket->formatted_date = \Carbon\Carbon::parse($ticket->created_at)
+                ->locale('id_ID')
+                ->translatedFormat('j F Y, H:i');
 
             return ['status' => true, 'ticket' => $ticket];
         } catch (Exception $e) {

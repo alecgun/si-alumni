@@ -180,8 +180,7 @@
                     $('#show_id_ticket').html(response.ticket.id);
                     $('#show_kategori').html(response.ticket.kategori);
                     $('#show_status_ticket').html(response.ticket.status_ticket);
-                    $('#show_created_at').html(moment(response.ticket.created_at).locale('id').format(
-                        'D MMMM YYYY, HH:mm'));
+                    $('#show_created_at').html(response.ticket.formatted_date);
                     $('#show_id_user').html(response.ticket.nama_user);
                     $('#show_email').html(response.ticket.email);
                     $('#show_judul').html(response.ticket.judul);
@@ -499,6 +498,7 @@
                                     title: 'Berhasil!',
                                     text: response.message
                                 });
+                                editors['reply_text'].setData('');
                                 loadTicketReplies(ticketId);
                                 resetForm('#add_ticket_reply_form');
                             },

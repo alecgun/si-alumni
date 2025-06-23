@@ -21,32 +21,75 @@
     <section class="section bg-light">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-8 shadow-sm p-4" id="ticket">
-                    <table class="table align-middle table-row-dashed">
-                        <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Judul</th>
-                                <th scope="col">Tanggal Dibuat</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($ticket as $t)
-                                <tr>
-                                    <td>{{ $t->id }}</td>
-                                    <td>{{ $t->judul }}</td>
-                                    <td>{{ $t->formatted_date }}</td>
-                                    <td>{{ $t->status_ticket }}</td>
-                                    <td>
-                                        <a href="{{ route('landing.ticket.show', $t->id) }}"
-                                            class="btn btn-primary btn-sm">Detail</a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="col-lg-10">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="ps-4">Judul</th>
+                                            <th>Tanggal Dibuat</th>
+                                            <th>Status</th>
+                                            <th class="text-end pe-4">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($tickets as $t)
+                                            <tr>
+                                                <td class="ps-4">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="flex-grow-1">
+                                                            <h6 class="mb-0">{{ $t->judul }}</h6>
+                                                            <small class="text-muted">{{ $t->kategori }}</small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex flex-column">
+                                                        <span>{{ $t->formatted_date }}</span>
+                                                        <small
+                                                            class="text-muted">{{ $t->created_at->locale('id_ID')->diffForHumans() }}</small>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="badge rounded-pill bg-{{ $t->status_badge }} bg-opacity-10 px-3 py-2">
+                                                        {{ $t->status_ticket }}
+                                                    </span>
+                                                </td>
+                                                <td class="text-end pe-4">
+                                                    <a href="{{ route('landing.ticket.show', $t->id) }}"
+                                                        class="btn btn-sm btn-outline-primary rounded-pill px-3">Detail
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="5" class="text-center py-4">
+                                                    <div class="d-flex flex-column align-items-center">
+                                                        <img src="{{ asset('images/empty-state.svg') }}" alt="Empty state"
+                                                            style="max-width: 200px;" class="mb-3">
+                                                        <h5 class="text-muted">Belum ada tiket yang dibuat</h5>
+                                                        <a href="{{ route('landing.ticket.create') }}"
+                                                            class="btn btn-primary mt-2">
+                                                            <i class="fas fa-plus me-1"></i> Buat Tiket Baru
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            @if ($tickets->hasPages())
+                                <div class="card-footer bg-transparent border-top">
+                                    {{ $tickets->links() }}
+                                </div>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,7 +98,9 @@
 @endsection
 
 @push('customScripts')
-    <script></script>
+    <script>
+        // Jika diperlukan script tambahan
+    </script>
 @endpush
 
 @push('customStyles')
@@ -69,52 +114,79 @@
             background-position: center;
         }
 
-        #biodata {
-            display: grid;
-            grid-template-rows: auto 1fr auto;
-            grid-template-columns: 100%;
-
-            /* fallback height */
-            min-height: 100vh;
-
-            /* new small viewport height for modern browsers */
-            min-height: 100svh;
+        /* Modern Table Styles */
+        .card {
+            border-radius: 12px;
+            overflow: hidden;
         }
 
-        #ticket {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .table {
+            margin-bottom: 0;
         }
 
-        .modal-body {
-            padding: 15px 30px;
+        .table thead th {
+            border-bottom: none;
+            padding: 16px 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            color: #6c757d;
         }
 
-        .form-select,
-        .form-control {
-            padding: 7px 12px;
-            border-color: rgba(37, 39, 43, 0.2);
-            box-shadow: rgba(149, 157, 165, 0.08) 0px 8px 24px;
-            font-size: 14px;
+        .table tbody tr {
+            transition: all 0.2s ease;
         }
 
-        .form-select:focus {
-            box-shadow: rgba(149, 157, 165, 0.08) 0px 8px 24px;
-            border-color: #3f8efc;
+        .table tbody tr:hover {
+            background-color: rgba(19, 95, 201, 0.03);
+            transform: translateY(-1px);
         }
 
-        .form-select::-moz-placeholder {
-            color: #ced4da;
+        .table tbody td {
+            padding: 16px 12px;
+            vertical-align: middle;
+            border-top: 1px solid rgba(0, 0, 0, 0.03);
         }
 
-        .form-select::placeholder {
-            color: #ced4da;
+        /* Status Badges */
+        .bg-Open {
+            background-color: #0dcaf0 !important;
+            color: #fff !important;
         }
 
-        .form-select option {
-            padding: 10px;
+        .bg-Processing {
+            background-color: #ffc107 !important;
+            color: #212529 !important;
+        }
+
+        .bg-Resolved {
+            background-color: #198754 !important;
+            color: #fff !important;
+        }
+
+        .bg-Closed {
+            background-color: #6c757d !important;
+            color: #fff !important;
+        }
+
+        /* Empty State */
+        .empty-state {
+            padding: 3rem 0;
+        }
+
+        /* Pagination */
+        .pagination {
+            justify-content: center;
+        }
+
+        .page-item.active .page-link {
+            background-color: #135fc9;
+            border-color: #135fc9;
+        }
+
+        .page-link {
+            color: #135fc9;
         }
     </style>
 @endpush

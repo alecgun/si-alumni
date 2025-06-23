@@ -441,7 +441,14 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Lakukan AJAX POST
+                        Swal.fire({
+                            title: 'Memproses...',
+                            html: 'Sedang membuat tiket',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            }
+                        });
                         $.ajax({
                             url: `{{ route('landing.ticket.store') }}`,
                             type: 'POST',
@@ -459,7 +466,8 @@
                                     Swal.fire({
                                         icon: 'success',
                                         title: 'Berhasil',
-                                        text: response.message
+                                        text: response.message,
+                                        confirmButtonText: 'OK'
                                     }).then(function() {
                                         window.location.href =
                                             `{{ route('landing.ticket.history') }}`;
@@ -474,6 +482,7 @@
                                 }
                             },
                             error: function(xhr) {
+                                Swal.close();
                                 // Jika validasi gagal (Laravel -> status 422)
                                 if (xhr.status === 422) {
                                     let errors = xhr.responseJSON.errors;
@@ -491,7 +500,7 @@
                     }
                 });
             });
-            // ============================ End Create Kerja ==============================
+            // ============================ End Create Ticket ==============================
         });
     </script>
 @endpush

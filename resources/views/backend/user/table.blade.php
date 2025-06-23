@@ -4,7 +4,7 @@
             <th class="w-10px pe-2">#</th>
             <th class="min-w-125px">Nama</th>
             <th class="min-w-125px">Role</th>
-            <th class="min-w-125px">Email</th>
+            <th class="min-w-125px">Username</th>
             <th class="min-w-125px">Dibuat Tanggal</th>
             <th class="min-w-125px">Diubah Tanggal</th>
             @canany(['user.edit', 'user.delete'])

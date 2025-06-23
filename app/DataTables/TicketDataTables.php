@@ -53,7 +53,7 @@ class TicketDataTables
                     'judul' => $ticket->judul,
                     'status_ticket' => $ticket->status_ticket,
                     'kategori' => $ticket->kategori,
-                    'nama_alumni' => $ticket->nama_alumni,
+                    'nama_user' => $ticket->nama_user,
                     'email' => $ticket->email,
                     'created_at' => Carbon::parse($ticket->created_at)->translatedFormat('j F Y H:i:s'),
                     'actions' => $this->getActions($ticket),
