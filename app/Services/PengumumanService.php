@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Pengumuman;
 use Exception;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
@@ -24,6 +25,7 @@ class PengumumanService
                 $path = $file->storeAs('pengumuman', $filename, 'public');
                 $data['foto'] = $path;
             }
+            $data['id'] = Str::uuid();
             $pengumuman = Pengumuman::create($data);
             DB::commit();
             return ['status' => true, 'pengumuman' => $pengumuman];

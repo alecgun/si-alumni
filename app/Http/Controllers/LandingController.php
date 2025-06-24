@@ -16,11 +16,13 @@ use App\Models\TicketReply;
 use App\Models\Pengumuman;
 use App\Services\KerjaService;
 use App\Services\KuliahService;
+use App\StoreClass\General;
 use App\StoreClass\LogAktivitas;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -327,16 +329,16 @@ class LandingController extends Controller implements HasMiddleware
         $user = Auth::user();
         $userId = Auth::user()->id;
 
-        $data = [
-            'email' => $request->email,
-            'kategori' => $request->kategori,
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-            'id_user' => $userId,
-            'status_ticket' => 'Open',
-        ];
-
         try {
+            $data = [
+                'email' => $request->email,
+                'kategori' => $request->kategori,
+                'judul' => $request->judul,
+                'deskripsi' => $request->deskripsi,
+                'id_user' => $userId,
+                'status_ticket' => 'Open',
+            ];
+            $data['id'] = 'ST-' . General::generateUniqueId();
             $ticket = Ticket::create($data);
             LogAktivitas::log('User membuat tiket', $request->url(), $request->all(), null, $userId);
             Mail::to('tubagusibe.25@gmail.com')->send(new OpenTicketConfirmed($ticket, $user));
@@ -467,13 +469,13 @@ class LandingController extends Controller implements HasMiddleware
     {
         $userId = Auth::user()->id;
 
-        $data = [
-            'reply_text' => $request->reply_text,
-            'id_ticket' => $request->id_ticket,
-            'id_user' => $userId,
-        ];
-
         try {
+            $data = [
+                'reply_text' => $request->reply_text,
+                'id_ticket' => $request->id_ticket,
+                'id_user' => $userId,
+            ];
+            $data['id'] = Str::uuid();
             TicketReply::create($data);
             LogAktivitas::log('User membuat teks balasan', $request->url(), $request->all(), null, $userId);
 

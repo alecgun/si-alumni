@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Alumni;
 use Exception;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
 class AlumniService
@@ -13,6 +14,7 @@ class AlumniService
     {
         DB::beginTransaction();
         try {
+            $data['id'] = Str::uuid();
             $alumni = Alumni::create($data);
             DB::commit();
 

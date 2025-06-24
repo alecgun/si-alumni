@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class KerjaSeeder extends Seeder
 {
@@ -15,9 +16,12 @@ class KerjaSeeder extends Seeder
      */
     public function run()
     {
+        $alumni1 = DB::table('alumni')->where('nama', 'John Doe')->first();
+        $alumni2 = DB::table('alumni')->where('nama', 'Jane Smith')->first();
         DB::table('kerja')->insert([
             [
-                'alumni_id' => 1,
+                'id' =>  Str::uuid(),
+                'alumni_id' => $alumni1->id,
                 'posisi_kerja' => 'Software Developer',
                 'tempat_kerja' => 'Tech Company A',
                 'alamat_kerja' => 'Jakarta Selatan',
@@ -26,7 +30,8 @@ class KerjaSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
-                'alumni_id' => 2,
+                'id' =>  Str::uuid(),
+                'alumni_id' => $alumni2->id,
                 'posisi_kerja' => 'Marketing Executive',
                 'tempat_kerja' => 'Marketing Firm B',
                 'alamat_kerja' => 'Jakarta Utara',

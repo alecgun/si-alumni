@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('kuliah', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('alumni_id')->constrained('alumni')->restrictOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('alumni_id')->constrained('alumni')->restrictOnDelete();
             $table->string('nama_universitas');
             $table->string('fakultas');
             $table->string('program_studi');

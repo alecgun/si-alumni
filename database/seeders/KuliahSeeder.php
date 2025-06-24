@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class KuliahSeeder extends Seeder
 {
@@ -15,9 +16,12 @@ class KuliahSeeder extends Seeder
      */
     public function run()
     {
+        $alumni1 = DB::table('alumni')->where('nama', 'John Doe')->first();
+        $alumni2 = DB::table('alumni')->where('nama', 'Jane Smith')->first();
         DB::table('kuliah')->insert([
             [
-                'alumni_id' => 1,
+                'id' =>  Str::uuid(),
+                'alumni_id' => $alumni1->id,
                 'nama_universitas' => 'Universitas Indonesia',
                 'fakultas' => 'Fakultas Teknik',
                 'program_studi' => 'Teknik Informatika',
@@ -30,7 +34,8 @@ class KuliahSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
-                'alumni_id' => 1,
+                'id' =>  Str::uuid(),
+                'alumni_id' => $alumni1->id,
                 'nama_universitas' => 'Universitas Brawijaya',
                 'fakultas' => 'Fakultas Kedokteran',
                 'program_studi' => 'Kedokteran Umum',
@@ -43,7 +48,8 @@ class KuliahSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
-                'alumni_id' => 2,
+                'id' =>  Str::uuid(),
+                'alumni_id' => $alumni2->id,
                 'nama_universitas' => 'Universitas Gadjah Mada',
                 'fakultas' => 'Fakultas Pendidikan',
                 'program_studi' => 'Pendidikan Bahasa Inggris',

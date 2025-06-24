@@ -14,6 +14,7 @@ class Alumni extends Model
 
     // Define the primary key
     protected $primaryKey = 'id';
+    protected $keyType = 'string';
 
     // Define the fillable attributes for mass assignment
     protected $fillable = [

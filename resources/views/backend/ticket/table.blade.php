@@ -1,7 +1,7 @@
 <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_tickets">
     <thead>
         <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-            <th class="w-10px pe-2">ID</th>
+            <th class="min-w-175px pe-2">ID</th>
             <th class="min-w-200px">Judul</th>
             <th class="min-w-100px">Status</th>
             <th class="min-w-100px">Kategori</th>

@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('kerja', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('alumni_id')->constrained('alumni')->restrictOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('alumni_id')->constrained('alumni')->restrictOnDelete();
             $table->string('posisi_kerja');
             $table->string('tempat_kerja');
             $table->string('alamat_kerja');

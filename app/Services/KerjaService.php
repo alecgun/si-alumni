@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Kerja;
 use Exception;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
@@ -24,6 +25,7 @@ class KerjaService
         DB::beginTransaction();
         try {
             $kerja = Kerja::create([
+                'id' => Str::uuid(),
                 'alumni_id' => $alumniId,
                 'posisi_kerja' => $data['posisi_kerja'],
                 'tempat_kerja' => $data['tempat_kerja'],
@@ -90,26 +92,6 @@ class KerjaService
             return ['status' => false, 'message' => 'Gagal mengambil data kerja untuk diedit: ' . $e->getMessage()];
         }
     }
-
-    // public function getKerjaQuery()
-    // {
-    //     try {
-    //         return DB::table('kerja')
-    //             ->select(
-    //                 'kerja.id',
-    //                 'kerja.alumni_id',
-    //                 'alumni.id',
-    //                 'kerja.jenjang',
-    //                 'kerja.jalur_masuk',
-    //                 'kerja.tahun_masuk',
-    //                 'kerja.tahun_lulus',
-    //                 'kerja.created_at',
-    //                 'kerja.updated_at'
-    //             );
-    //     } catch (Exception $e) {
-    //         return ['status' => false, 'message' => 'Gagal mengambil data kerja: ' . $e->getMessage()];
-    //     }
-    // }
 
     public function searchKerjas($query, $search)
     {

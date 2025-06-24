@@ -4,25 +4,13 @@ namespace App\Services;
 
 use App\Models\Ticket;
 use Exception;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
 
 class TicketService
 {
-    public function createTicket($data)
-    {
-        DB::beginTransaction();
-        try {
-            $ticket = Ticket::create($data);
-            DB::commit();
-            return ['status' => true, 'ticket' => $ticket];
-        } catch (Exception $e) {
-            DB::rollback();
-            return ['status' => false, 'message' => 'Gagal membuat data ticket: ' . $e->getMessage()];
-        }
-    }
-
     public function showTicket(Ticket $ticket)
     {
         try {
@@ -43,28 +31,6 @@ class TicketService
             return ['status' => true, 'ticket' => $ticket];
         } catch (Exception $e) {
             return response()->json(['status' => false, 'message' => 'Terjadi kesalahan saat mengambil data ticket: ' . $e->getMessage()], 500);
-        }
-    }
-
-    public function editTicket(Ticket $ticket)
-    {
-        try {
-            return ['status' => true, 'ticket' => $ticket];
-        } catch (Exception $e) {
-            return ['status' => false, 'message' => 'Gagal mengambil data ticket untuk diedit: ' . $e->getMessage()];
-        }
-    }
-
-    public function updateTicket(Ticket $ticket, $data)
-    {
-        DB::beginTransaction();
-        try {
-            $ticket->update($data);
-            DB::commit();
-            return ['status' => true, 'ticket' => $ticket];
-        } catch (Exception $e) {
-            DB::rollback();
-            return ['status' => false, 'message' => 'Gagal memperbarui data ticket: ' . $e->getMessage()];
         }
     }
 
@@ -112,7 +78,9 @@ class TicketService
         try {
             return $query->where(function ($q) use ($search) {
                 $q->where('ticket.judul', 'like', "%{$search}%")
+                    ->orWhere('ticket.id', 'like', "%{$search}%")
                     ->orWhere('ticket.nama_user', 'like', "%{$search}%")
+                    ->orWhere('ticket.kategori', 'like', "%{$search}%")
                     ->orWhere('ticket.email', 'like', "%{$search}%");
             });
         } catch (Exception $e) {

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Kuliah;
 use Exception;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
 class KuliahService
@@ -28,6 +29,7 @@ class KuliahService
         DB::beginTransaction();
         try {
             $kuliah = Kuliah::create([
+                'id' => Str::uuid(),
                 'alumni_id' => $alumniId,
                 'nama_universitas' => $data['nama_universitas'],
                 'jenjang' => $data['jenjang'],

@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ticket_reply', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->longText('reply_text');
-            $table->foreignId('id_ticket')->constrained('ticket')->restrictOnDelete();
+            $table->foreignUuid('id_ticket')->constrained('ticket')->restrictOnDelete();
             $table->foreignUuid('id_user')->constrained('users')->restrictOnDelete();
             $table->timestamps();
         });

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\TicketReply;
 use Exception;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
@@ -14,6 +15,7 @@ class TicketReplyService
     {
         DB::beginTransaction();
         try {
+            $data['id'] = Str::uuid();
             $ticket_reply = TicketReply::create($data);
             DB::commit();
             return ['status' => true, 'ticket_reply' => $ticket_reply];

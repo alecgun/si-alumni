@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ticket', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('judul');
             $table->string('status_ticket')->default('Open'); // open, closed
             $table->string('kategori')->default('Umum');

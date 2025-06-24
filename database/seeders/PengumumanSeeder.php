@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class PengumumanSeeder extends Seeder
 {
@@ -17,6 +18,7 @@ class PengumumanSeeder extends Seeder
     {
         DB::table('pengumuman')->insert([
             [
+                'id' =>  Str::uuid(),
                 'foto' => 'pengumuman/blog-01.jpg',
                 'judul' => 'Nantikan Event Job Fair Blitar 2025!',
                 'slug' => \Str::slug('Nantikan Event Job Fair Blitar 2025!'),
@@ -25,6 +27,7 @@ class PengumumanSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
+                'id' =>  Str::uuid(),
                 'foto' => 'pengumuman/blog-02.jpg',
                 'judul' => 'Reuni Akbar Alumni SMAN 1 Blitar Akan Segera Hadir!',
                 'slug' => \Str::slug('Reuni Akbar Alumni SMAN 1 Blitar Akan Segera Hadir!'),

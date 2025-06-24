@@ -6,6 +6,7 @@ use App\Models\Alumni;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class AlumniSeeder extends Seeder
 {
@@ -38,6 +39,7 @@ class AlumniSeeder extends Seeder
 
         $alumnis = [
             [
+                'id' =>  Str::uuid(),
                 'nis' => '123456',
                 'nama' => 'John Doe',
                 'kelas' => 'XII IPA 1',
@@ -52,6 +54,7 @@ class AlumniSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
+                'id' =>  Str::uuid(),
                 'nis' => '789012',
                 'nama' => 'Jane Smith',
                 'kelas' => 'XII IPS 2',
@@ -66,6 +69,7 @@ class AlumniSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
+                'id' =>  Str::uuid(),
                 'nis' => '345678',
                 'nama' => 'Michael Johnson',
                 'kelas' => 'XII IPS 3',
@@ -80,6 +84,7 @@ class AlumniSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
+                'id' =>  Str::uuid(),
                 'nis' => '901234',
                 'nama' => 'Emily Davis',
                 'kelas' => 'XII IPA 4',
@@ -94,6 +99,7 @@ class AlumniSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
+                'id' =>  Str::uuid(),
                 'nis' => '567890',
                 'nama' => 'David Brown',
                 'kelas' => 'XII IPA 5',
@@ -108,6 +114,7 @@ class AlumniSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
+                'id' =>  Str::uuid(),
                 'nis' => '234567',
                 'nama' => 'M. Buriram Jordan',
                 'kelas' => 'XII IPS 6',
@@ -122,6 +129,7 @@ class AlumniSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
+                'id' =>  Str::uuid(),
                 'nis' => '345679',
                 'nama' => 'Michael Buriram Jordan',
                 'kelas' => 'XII IPA 7',
@@ -136,6 +144,7 @@ class AlumniSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
+                'id' =>  Str::uuid(),
                 'nis' => '456789',
                 'nama' => 'Michael B. Jordan',
                 'kelas' => 'XII IPS 8',
@@ -150,6 +159,7 @@ class AlumniSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
+                'id' =>  Str::uuid(),
                 'nis' => '5678901',
                 'nama' => 'Sophia Williams',
                 'kelas' => 'XII IPA 9',
@@ -164,6 +174,7 @@ class AlumniSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
+                'id' =>  Str::uuid(),
                 'nis' => '34353',
                 'nama' => 'Ethan Thomas',
                 'kelas' => 'XII IPA 9',
@@ -178,6 +189,7 @@ class AlumniSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
+                'id' =>  Str::uuid(),
                 'nis' => '34353',
                 'nama' => 'Olivia Martinez',
                 'kelas' => 'XII IPA 6',
