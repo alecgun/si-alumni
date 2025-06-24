@@ -7,12 +7,12 @@ use App\Http\Controllers\KerjaController;
 use App\Http\Controllers\KuliahController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LogAktivitasController;
+use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\PostAcademicDataController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketReplyController;
-use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -99,6 +99,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile/update-password', [ProfileController::class, 'update'])->name('profile.updatePassword');
+    Route::post('/profile/update-image', [ProfileController::class, 'updateImg'])->name('profile.updateImage');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

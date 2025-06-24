@@ -36,6 +36,9 @@ class TicketReplyController extends Controller implements HasMiddleware
     {
         $result = $this->ticketReplyService->createTicketReply($request->all());
         if ($result['status']) {
+            $ticket = \App\Models\Ticket::where('id', $request->id_ticket)->first();
+            $ticket->status_ticket = 'Closed';
+            $ticket->save();
             LogAktivitas::log('Menambah data teks balasan', $request->path(), null, $result['ticket_reply'], Auth::user()->id);
             return response()->json(['success' => true, 'message' => 'Teks balasan berhasil dibuat']);
         }

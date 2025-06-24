@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <h1>Notifikasi Tiket Bantuan #{{ $ticket->id }}</h1>
+    <h1>Notifikasi Tiket Bantuan {{ $ticket->id }}</h1>
     <p>Tiket Bantuan dengan judul "{{ $ticket->judul }}" telah dibuka oleh alumni {{ $user->name }}. Silahkan cek di
         menu Support Ticket.</p>
 </body>

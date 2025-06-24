@@ -55,7 +55,7 @@ class TicketDataTables
                     'kategori' => $ticket->kategori,
                     'nama_user' => $ticket->nama_user,
                     'email' => $ticket->email,
-                    'created_at' => Carbon::parse($ticket->created_at)->translatedFormat('j F Y H:i:s'),
+                    'created_at' => Carbon::parse($ticket->created_at)->translatedFormat('j F Y H:i'),
                     'actions' => $this->getActions($ticket),
                 ];
             }),

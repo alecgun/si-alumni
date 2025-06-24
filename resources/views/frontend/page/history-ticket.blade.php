@@ -25,7 +25,7 @@
                     <div class="card shadow-sm border-0">
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-hover mb-0">
+                                <table class="table mb-0">
                                     <thead class="table-light">
                                         <tr>
                                             <th class="ps-4">Judul</th>
@@ -68,10 +68,8 @@
                                             <tr>
                                                 <td colspan="5" class="text-center py-4">
                                                     <div class="d-flex flex-column align-items-center">
-                                                        <img src="{{ asset('images/empty-state.svg') }}" alt="Empty state"
-                                                            style="max-width: 200px;" class="mb-3">
                                                         <h5 class="text-muted">Belum ada tiket yang dibuat</h5>
-                                                        <a href="{{ route('landing.ticket.create') }}"
+                                                        <a href="{{ route('landing.ticket.open') }}"
                                                             class="btn btn-primary mt-2">
                                                             <i class="fas fa-plus me-1"></i> Buat Tiket Baru
                                                         </a>
@@ -136,11 +134,6 @@
 
         .table tbody tr {
             transition: all 0.2s ease;
-        }
-
-        .table tbody tr:hover {
-            background-color: rgba(19, 95, 201, 0.03);
-            transform: translateY(-1px);
         }
 
         .table tbody td {

@@ -7,13 +7,14 @@ use App\Http\Requests\KerjaRequest;
 use App\Http\Requests\KuliahRequest;
 use App\Http\Requests\TicketReplyRequest;
 use App\Http\Requests\TicketRequest;
-use App\Models\User;
+use App\Mail\OpenTicketConfirmed;
+use App\Mail\OpenTicketUser;
 use App\Models\Alumni;
 use App\Models\Kerja;
 use App\Models\Kuliah;
+use App\Models\Pengumuman;
 use App\Models\Ticket;
 use App\Models\TicketReply;
-use App\Models\Pengumuman;
 use App\Services\KerjaService;
 use App\Services\KuliahService;
 use App\StoreClass\General;
@@ -22,13 +23,11 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\OpenTicketConfirmed;
-use App\Mail\OpenTicketUser;
+use Illuminate\Support\Str;
 
 class LandingController extends Controller implements HasMiddleware
 {
@@ -57,12 +56,15 @@ class LandingController extends Controller implements HasMiddleware
 
     public function index()
     {
-        $data = Alumni::selectRaw('tahun_lulus, SUM(jenis_kelamin = "L") as jumlah_laki, SUM(jenis_kelamin = "P") as jumlah_perempuan')
+        $data = Alumni::query()
+            ->select([
+                'tahun_lulus',
+                DB::raw('COUNT(CASE WHEN jenis_kelamin = "L" THEN 1 END) as jumlah_laki'),
+                DB::raw('COUNT(CASE WHEN jenis_kelamin = "P" THEN 1 END) as jumlah_perempuan'),
+            ])
             ->groupBy('tahun_lulus')
-            ->orderBy('tahun_lulus', 'desc')
+            ->orderByDesc('tahun_lulus')
             ->get();
-
-
 
         return view('frontend.page.landing', compact('data'));
     }
@@ -331,6 +333,7 @@ class LandingController extends Controller implements HasMiddleware
 
         try {
             $data = [
+                'id' =>'ST-'.General::generateUniqueId(),
                 'email' => $request->email,
                 'kategori' => $request->kategori,
                 'judul' => $request->judul,
@@ -338,7 +341,6 @@ class LandingController extends Controller implements HasMiddleware
                 'id_user' => $userId,
                 'status_ticket' => 'Open',
             ];
-            $data['id'] = 'ST-' . General::generateUniqueId();
             $ticket = Ticket::create($data);
             LogAktivitas::log('User membuat tiket', $request->url(), $request->all(), null, $userId);
             Mail::to('tubagusibe.25@gmail.com')->send(new OpenTicketConfirmed($ticket, $user));
@@ -358,15 +360,15 @@ class LandingController extends Controller implements HasMiddleware
                 $ext = $file->getClientOriginalExtension();
                 $time = time();
                 $date = date('ymd-His', $time);
-                $filename = $date . '.' . $ext;
+                $filename = $date.'.'.$ext;
 
                 $path = $file->storeAs('ticket', $filename, 'public');
-                $url = asset('storage/' . $path);
+                $url = asset('storage/'.$path);
 
                 return response()->json(['success' => true, 'url' => $url]);
             }
         } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Gagal mengunggah gambar: ' . $e->getMessage()], 500);
+            return response()->json(['success' => false, 'message' => 'Gagal mengunggah gambar: '.$e->getMessage()], 500);
         }
     }
 
@@ -374,13 +376,11 @@ class LandingController extends Controller implements HasMiddleware
     {
         $userId = Auth::user()->id;
 
-        // Menggunakan paginate() instead of get()
         $tickets = Ticket::where('id_user', $userId)
-                    ->latest() // Urutkan dari yang terbaru
-                    ->paginate(10); // 10 item per halaman
+            ->latest()
+            ->paginate(10);
 
         try {
-            // Format tanggal untuk setiap item
             $tickets->transform(function ($t) {
                 $t->formatted_date = \Carbon\Carbon::parse($t->created_at)
                     ->locale('id_ID')
@@ -392,7 +392,7 @@ class LandingController extends Controller implements HasMiddleware
             });
         } catch (Exception $e) {
             return redirect()->route('landing.index')
-                ->with('error', 'Gagal memformat tanggal tiket: ' . $e->getMessage());
+                ->with('error', 'Gagal memformat tanggal tiket: '.$e->getMessage());
         }
 
         return view('frontend.page.history-ticket', compact('tickets'));
@@ -400,7 +400,7 @@ class LandingController extends Controller implements HasMiddleware
 
     private function getStatusBadge($status)
     {
-        return match($status) {
+        return match ($status) {
             'Open' => 'primary',
             'Closed' => 'success',
         };
@@ -410,19 +410,19 @@ class LandingController extends Controller implements HasMiddleware
     {
         try {
             $ticket = Ticket::select(
-            'ticket.id',
-            'ticket.email',
-            'ticket.kategori',
-            'ticket.judul',
-            'ticket.deskripsi',
-            'ticket.status_ticket',
-            'ticket.created_at',
-            'ticket.id_user',
-            'users.name as nama_user',
+                'ticket.id',
+                'ticket.email',
+                'ticket.kategori',
+                'ticket.judul',
+                'ticket.deskripsi',
+                'ticket.status_ticket',
+                'ticket.created_at',
+                'ticket.id_user',
+                'users.name as nama_user',
             )
-            ->join('users', 'ticket.id_user', '=', 'users.id')
-            ->where('ticket.id', $idTicket)
-            ->first();
+                ->join('users', 'ticket.id_user', '=', 'users.id')
+                ->where('ticket.id', $idTicket)
+                ->first();
 
             // Format tanggal
             $ticket->formatted_date = \Carbon\Carbon::parse($ticket->created_at)
@@ -431,7 +431,7 @@ class LandingController extends Controller implements HasMiddleware
 
             return ['status' => true, 'ticket' => $ticket];
         } catch (Exception $e) {
-            return ['status' => false, 'message' => 'Gagal mengambil data tiket: ' . $e->getMessage()];
+            return ['status' => false, 'message' => 'Gagal mengambil data tiket: '.$e->getMessage()];
         }
     }
 
@@ -439,9 +439,10 @@ class LandingController extends Controller implements HasMiddleware
     {
         try {
             $ticket = Ticket::findOrFail($idTicket);
+
             return view('frontend.page.show-ticket', compact('ticket'));
         } catch (Exception $e) {
-            return redirect()->route('landing.ticket.history')->with('error', 'Gagal mengambil data tiket: ' . $e->getMessage());
+            return redirect()->route('landing.ticket.history')->with('error', 'Gagal mengambil data tiket: '.$e->getMessage());
         }
     }
 
@@ -456,12 +457,14 @@ class LandingController extends Controller implements HasMiddleware
                 'users.name as nama_user',
                 'ticket_reply.created_at'
             )
-            ->join('users', 'ticket_reply.id_user', '=', 'users.id')
-            ->where('ticket_reply.id_ticket', $idTicket)
-            ->get();
+                ->join('users', 'ticket_reply.id_user', '=', 'users.id')
+                ->where('ticket_reply.id_ticket', $idTicket)
+                ->orderBy('ticket_reply.created_at', 'asc')
+                ->get();
+
             return ['status' => true, 'ticket_reply' => $ticket_reply];
         } catch (Exception $e) {
-            return ['status' => false, 'message' => 'Gagal mengambil data balasan: ' . $e->getMessage()];
+            return ['status' => false, 'message' => 'Gagal mengambil data balasan: '.$e->getMessage()];
         }
     }
 
@@ -477,6 +480,9 @@ class LandingController extends Controller implements HasMiddleware
             ];
             $data['id'] = Str::uuid();
             TicketReply::create($data);
+            $ticket = \App\Models\Ticket::where('id', $request->id_ticket)->first();
+            $ticket->status_ticket = 'Open';
+            $ticket->save();
             LogAktivitas::log('User membuat teks balasan', $request->url(), $request->all(), null, $userId);
 
             return response()->json(['success' => true, 'message' => 'Teks balasan berhasil dibuat']);
@@ -493,15 +499,15 @@ class LandingController extends Controller implements HasMiddleware
                 $ext = $file->getClientOriginalExtension();
                 $time = time();
                 $date = date('ymd-His', $time);
-                $filename = $date . '.' . $ext;
+                $filename = $date.'.'.$ext;
 
                 $path = $file->storeAs('ticket_reply', $filename, 'public');
-                $url = asset('storage/' . $path);
+                $url = asset('storage/'.$path);
 
                 return response()->json(['success' => true, 'url' => $url]);
             }
         } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Gagal mengunggah gambar: ' . $e->getMessage()], 500);
+            return response()->json(['success' => false, 'message' => 'Gagal mengunggah gambar: '.$e->getMessage()], 500);
         }
     }
 

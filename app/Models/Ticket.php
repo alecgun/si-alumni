@@ -15,6 +15,7 @@ class Ticket extends Model
     // Define the primary key
     protected $primaryKey = 'id';
     protected $keyType = 'string';
+    public $incrementing = false;
 
     // Define the fillable attributes for mass assignment
     protected $fillable = [

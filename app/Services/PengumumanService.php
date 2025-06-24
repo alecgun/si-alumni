@@ -135,10 +135,8 @@ class PengumumanService
     {
         try {
             return $query->where(function ($q) use ($search) {
-                $q->where('pengumuman.jenjang', 'like', "%{$search}%")
-                    ->orWhere('pengumuman.jalur_masuk', 'like', "%{$search}%")
-                    ->orWhere('pengumuman.tahun_masuk', 'like', "%{$search}%")
-                    ->orWhere('pengumuman.tahun_lulus', 'like', "%{$search}%");
+                $q->where('pengumuman.judul', 'like', "%{$search}%")
+                    ->orWhere('pengumuman.created_at', 'like', "%{$search}%");
             });
         } catch (Exception $e) {
             return ['status' => false, 'message' => 'Gagal mencari data pengumuman: ' . $e->getMessage()];

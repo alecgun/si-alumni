@@ -1,42 +1,35 @@
 @extends('backend.parts.auth.master')
 @section('content')
-    <div class="d-flex flex-column flex-column-fluid flex-lg-row">
-        <!--begin::Aside-->
-        <div class="d-flex flex-center w-lg-50 pt-15 pt-lg-0 px-10">
-            <!--begin::Aside-->
-            <div class="d-flex flex-center flex-lg-start flex-column">
-                <!--begin::Logo-->
-                <a href="index.html" class="mb-7">
-                    <img alt="Logo" src="backend-assets/media/logos/custom-3.svg" />
-                </a>
-                <!--end::Logo-->
-                <!--begin::Title-->
-                <h2 class="text-white fw-normal m-0">Isi Disini :)</h2>
-                <!--end::Title-->
-            </div>
-            <!--begin::Aside-->
-        </div>
-        <!--begin::Aside-->
+    <div class="d-flex flex-row-fluid flex-center flex-lg-row">
         <!--begin::Body-->
-        <div class="d-flex flex-column-fluid flex-lg-row-auto justify-content-center justify-content-lg-end p-12 p-lg-20">
+        <div class="d-flex flex-column-fluid flex-lg-row-auto justify-content-center justify-content-lg-end">
             <!--begin::Card-->
-            <div class="bg-body d-flex flex-column align-items-stretch flex-center rounded-4 w-md-600px p-20">
+            <div class="bg-body d-flex flex-column align-items-stretch flex-center rounded-4 w-md-500px p-10">
                 <!--begin::Wrapper-->
-                <div class="d-flex flex-center flex-column flex-column-fluid px-lg-10 pb-15 pb-lg-20">
+                <div class="d-flex flex-center flex-column flex-column-fluid">
                     <!--begin::Form-->
                     <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" method="POST"
                         action="{{ route('login.post') }}">
                         @csrf
                         <!--begin::Heading-->
-                        <div class="text-center mb-11">
+                        <div class="d-flex flex-center flex-column">
+                            <!--begin::Logo-->
+                            <a href="{{ route('landing.home') }}" class="mb-7">
+                                <img alt="Logo" src="backend-assets/media/logos/sman1blitar.webp" class="h-125px" />
+                            </a>
+                            <!--end::Logo-->
                             <!--begin::Title-->
-                            <h1 class="text-gray-900 fw-bolder mb-3">Masuk</h1>
+                            <h2 class="fw-normal fs-3 mb-5">Sistem Pendataan Alumni SMAN 1 Blitar</h2>
+                            <!--end::Title-->
+                        </div>
+                        <div class="text-center mb-5">
+                            <!--begin::Title-->
+                            <h1 class="text-gray-900 fw-bolder mb-2">Masuk</h1>
                             <!--end::Title-->
                         </div>
                         <!--begin::Heading-->
-
                         <!--begin::Separator-->
-                        <div class="separator separator-content my-14">
+                        <div class="separator separator-content my-10">
                             <span class="w-125px text-gray-500 fw-semibold fs-7">Masuk disini</span>
                         </div>
                         <!--end::Separator-->
@@ -72,7 +65,7 @@
                             <!--begin::Checkbox-->
                             <label class="form-check form-check-custom form-check-solid">
                                 <input class="form-check-input" type="checkbox" name="remember" />
-                                <span class="form-check-label text-gray-700 fw-bold">Remember Me</span>
+                                <span class="form-check-label text-gray-700 fw-bold">Ingat Saya</span>
                             </label>
                             <!--end::Checkbox-->
                         </div>
@@ -82,7 +75,7 @@
                         <div class="d-grid mb-10">
                             <button type="submit" id="kt_sign_in_submit" class="btn btn-primary">
                                 <!--begin::Indicator label-->
-                                <span class="indicator-label">Sign In</span>
+                                <span class="indicator-label">Masuk</span>
                                 <!--end::Indicator label-->
                             </button>
                         </div>

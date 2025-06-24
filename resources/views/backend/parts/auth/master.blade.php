@@ -30,7 +30,7 @@
         <!--begin::Page bg image-->
         <style>
             body {
-                background-image: url('backend-assets/media/auth/bg4.jpg');
+                background-image: url('backend-assets/media/auth/bg-blue.jpg');
             }
 
             [data-bs-theme="dark"] body {

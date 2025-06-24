@@ -7,49 +7,54 @@
                 data-bs-target="#kt_account_profile_details" aria-expanded="true" aria-controls="kt_account_profile_details">
                 <!--begin::Card title-->
                 <div class="card-title m-0">
-                    <h3 class="fw-bold m-0">Profile</h3>
+                    <h3 class="fw-bold m-0">Profil</h3>
                 </div>
                 <!--end::Card title-->
             </div>
             <!--begin::Card header-->
             <!--begin::Content-->
             <div id="kt_account_settings_profile_details" class="collapse show">
-                <!--begin::Form-->
-                <form id="kt_account_profile_details_form" class="form">
-                    <!--begin::Card body-->
+                <form id="kt_account_profile_details_form" class="form" enctype="multipart/form-data">
                     <div class="card-body border-top p-9">
                         <!--begin::Input group-->
                         <div class="row mb-6">
-                            <!--begin::Label-->
+                            <label class="col-lg-4 col-form-label fw-semibold fs-6">Foto Profil</label>
+                            <div class="col-lg-8 d-flex align-items-center">
+                                @if ($user->img_user)
+                                    <div class="me-3">
+                                        <img src="{{ Storage::url(Auth::user()->img_user) }}" alt="Foto Profil"
+                                            class="rounded-circle" style="width: 70px; height: 70px; object-fit: cover;">
+                                    </div>
+                                @else
+                                    <div class="me-3">
+                                        <img src="{{ asset('backend-assets/media/logos/null-data.png') }}" alt="Foto Profil"
+                                            class="rounded-circle" style="width: 70px; height: 70px; object-fit: cover;">
+                                    </div>
+                                @endif
+                                <input type="file" name="img_user" accept="image/*"
+                                    class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                        <div class="row mb-6">
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">Nama</label>
-                            <!--end::Label-->
-                            <!--begin::Col-->
                             <div class="col-lg-8">
-                                <input type="text" name="name"
-                                    class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                                <input type="text" name="name" class="form-control form-control-lg form-control-solid"
                                     value="{{ $user->name }}" readonly />
                             </div>
-                            <!--end::Col-->
                         </div>
-                        <!--end::Input group-->
-                        <!--begin::Input group-->
                         <div class="row mb-6">
-                            <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">Email</label>
-                            <!--end::Label-->
-                            <!--begin::Col-->
+                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">Username</label>
                             <div class="col-lg-8">
-                                <input type="email" name="email"
-                                    class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
-                                    value="{{ $user->email }}" readonly />
+                                <input type="email" name="email" class="form-control form-control-lg form-control-solid"
+                                    value="{{ $user->username }}" readonly />
                             </div>
-                            <!--end::Col-->
                         </div>
-                        <!--end::Input group-->
                     </div>
-                    <!--end::Card body-->
+                    <div class="card-footer d-flex justify-content-end py-6 px-9">
+                        <button type="submit" class="btn btn-primary">Perbarui Profil</button>
+                    </div>
                 </form>
-                <!--end::Form-->
             </div>
             <!--end::Content-->
         </div>
@@ -57,18 +62,18 @@
         <div class="card mb-5 mb-xl-10">
             <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" aria-expanded="true">
                 <div class="card-title m-0">
-                    <h3 class="fw-bold m-0">Ubah Password</h3>
+                    <h3 class="fw-bold m-0">Ganti Password</h3>
                 </div>
             </div>
             <div class="collapse show">
                 <form id="change_password_form" class="form">
                     <div class="card-body border-top p-9">
                         <div class="row mb-6">
-                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">Password Sekarang</label>
+                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">Password Saat Ini</label>
                             <div class="col-lg-8 position-relative">
                                 <input type="password" name="current_password" id="current_password"
                                     class="form-control form-control-lg form-control-solid"
-                                    placeholder="Password Sekarang" />
+                                    placeholder="Password Saat Ini" />
                                 <span class="btn btn-sm btn-icon position-absolute top-50 end-0 translate-middle-y"
                                     style="margin-right: 10px;" onclick="togglePasswordVisibility('current_password')">
                                     <i class="fa fa-eye"></i>
@@ -106,7 +111,7 @@
                     </div>
                     <div class="card-footer d-flex justify-content-end py-6 px-9">
                         <button type="reset" class="btn btn-light btn-active-light-primary me-2">Batal</button>
-                        <button type="submit" class="btn btn-primary" data-kt-indicator="off">Ubah Password</button>
+                        <button type="submit" class="btn btn-primary" data-kt-indicator="off">Ganti Password</button>
                     </div>
                 </form>
             </div>
@@ -135,6 +140,35 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
+            });
+
+            $('#kt_account_profile_details_form').on('submit', function(e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+
+                $.ajax({
+                    url: '{{ route('profile.updateImage') }}',
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: response.message,
+                        });
+                        location.reload();
+                    },
+                    error: function(response) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Kesalahan',
+                            text: response.responseJSON.message,
+                        });
+                    }
+                });
             });
 
             $('#change_password_form').on('submit', function(e) {

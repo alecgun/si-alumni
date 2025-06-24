@@ -84,38 +84,106 @@
                             <div class="col-md-9">
                                 <div id="pad">
                                     <div class="mb-3">
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                                <tr>
-                                                    <th class="fw-bold" width="20%">Nama</th>
-                                                    <td>{{ $alumni->nama }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="fw-bold">NIS</th>
-                                                    <td>{{ $alumni->nis }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="fw-bold">Kelas</th>
-                                                    <td>{{ $alumni->kelas }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="fw-bold">Tahun Masuk</th>
-                                                    <td>{{ $alumni->tahun_masuk }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="fw-bold">Tahun Lulus</th>
-                                                    <td>{{ $alumni->tahun_lulus }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="fw-bold">Tanggal Lahir</th>
-                                                    <td>{{ $alumni->tanggal_lahir }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="fw-bold">Instagram</th>
-                                                    <td>{{ $alumni->instagram }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <div class="card shadow-sm border-0">
+                                            <div class="card-body">
+                                                <h5 class="card-title mb-4">
+                                                    <i class="fas fa-user-graduate me-2 text-primary"></i>Profil Alumni
+                                                </h5>
+                                                <div class="row">
+                                                    <!-- Left Column -->
+                                                    <div class="col-md-6">
+                                                        <div class="d-flex align-items-center mb-3">
+                                                            <div
+                                                                class="flex-shrink-0 bg-light-primary rounded-circle p-2 me-3">
+                                                                <i class="fas fa-user text-primary"></i>
+                                                            </div>
+                                                            <div>
+                                                                <h6 class="mb-0 text-muted small">Nama Lengkap</h6>
+                                                                <p class="mb-0 fw-bold">{{ $alumni->nama }}</p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="d-flex align-items-center mb-3">
+                                                            <div
+                                                                class="flex-shrink-0 bg-light-primary rounded-circle p-2 me-3">
+                                                                <i class="fas fa-id-card text-primary"></i>
+                                                            </div>
+                                                            <div>
+                                                                <h6 class="mb-0 text-muted small">NIS</h6>
+                                                                <p class="mb-0 fw-bold">{{ $alumni->nis }}</p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="d-flex align-items-center mb-3">
+                                                            <div
+                                                                class="flex-shrink-0 bg-light-primary rounded-circle p-2 me-3">
+                                                                <i class="fas fa-school text-primary"></i>
+                                                            </div>
+                                                            <div>
+                                                                <h6 class="mb-0 text-muted small">Kelas</h6>
+                                                                <p class="mb-0 fw-bold">{{ $alumni->kelas }}</p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="d-flex align-items-center mb-3">
+                                                            <div
+                                                                class="flex-shrink-0 bg-light-primary rounded-circle p-2 me-3">
+                                                                <i class="fas fa-calendar text-primary"></i>
+                                                            </div>
+                                                            <div>
+                                                                <h6 class="mb-0 text-muted small">Tahun Masuk</h6>
+                                                                <p class="mb-0 fw-bold">{{ $alumni->tahun_masuk }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Right Column -->
+                                                    <div class="col-md-6">
+                                                        <div class="d-flex align-items-center mb-3">
+                                                            <div
+                                                                class="flex-shrink-0 bg-light-primary rounded-circle p-2 me-3">
+                                                                <i class="fas fa-calendar text-primary"></i>
+                                                            </div>
+                                                            <div>
+                                                                <h6 class="mb-0 text-muted small">Tahun Lulus</h6>
+                                                                <p class="mb-0 fw-bold">{{ $alumni->tahun_lulus }}</p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="d-flex align-items-center mb-3">
+                                                            <div
+                                                                class="flex-shrink-0 bg-light-primary rounded-circle p-2 me-3">
+                                                                <i class="fas fa-birthday-cake text-primary"></i>
+                                                            </div>
+                                                            <div>
+                                                                <h6 class="mb-0 text-muted small">Tanggal Lahir</h6>
+                                                                <p class="mb-0 fw-bold">{{ $alumni->tanggal_lahir }}</p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="d-flex align-items-center mb-3">
+                                                            <div
+                                                                class="flex-shrink-0 bg-light-primary rounded-circle p-2 me-3">
+                                                                <i class="fab fa-instagram text-primary"></i>
+                                                            </div>
+                                                            <div>
+                                                                <h6 class="mb-0 text-muted small">Instagram</h6>
+                                                                <p class="mb-0 fw-bold">
+                                                                    @if ($alumni->instagram)
+                                                                        <a href="https://instagram.com/{{ $alumni->instagram }}"
+                                                                            target="_blank" class="text-decoration-none">
+                                                                            {{ $alumni->instagram }}
+                                                                        </a>
+                                                                    @else
+                                                                        -
+                                                                    @endif
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     </br>
                                     <!-- begin::Data Kuliah -->
@@ -210,7 +278,7 @@
             loadKuliahData();
 
             function loadKuliahData() {
-                var alumniId = {{ $alumni->id }};
+                var alumniId = '{{ $alumni->id }}';
                 $.ajax({
                     url: '{{ route('pad.kuliah', ':id') }}'.replace(':id', alumniId),
                     method: 'GET',
@@ -284,8 +352,7 @@
             // ============================ Start Tambah Kuliah ==============================
             $('#kt_modal_add_kuliah_form').on('submit', function(e) {
                 e.preventDefault();
-                var alumniId = {{ $alumni->id }};
-                console.log(alumniId);
+                var alumniId = '{{ $alumni->id }}';
                 var url = '{{ route('kuliah.store', ':id') }}'.replace(':id', alumniId);
                 let form = $(this);
                 var formData = new FormData(this);
@@ -370,7 +437,7 @@
             // ============================ Start Show Modal Detail ==============================
             $(document).on('click', '.show-button-kuliah', function() {
                 var id = $(this).data('id');
-                var alumniId = {{ $alumni->id }};
+                var alumniId = '{{ $alumni->id }}';
                 var showUrl = '{{ route('kuliah.show', [':alumni_id', ':id']) }}'
                     .replace(':alumni_id', alumniId)
                     .replace(':id', id);
@@ -411,7 +478,7 @@
             // ============================ Start Show Modal Edit ==============================
             $(document).on('click', '.edit-button-kuliah', function() {
                 var id = $(this).data('id');
-                var alumniId = {{ $alumni->id }};
+                var alumniId = '{{ $alumni->id }}';
                 var editUrl = '{{ route('kuliah.edit', [':alumni_id', ':id']) }}'
                     .replace(':alumni_id', alumniId)
                     .replace(':id', id);
@@ -475,7 +542,7 @@
             // ============================ Start Edit Kuliah ==============================
             $('#kt_modal_edit_kuliah_form').on('submit', function(e) {
                 e.preventDefault();
-                var alumniId = {{ $alumni->id }};
+                var alumniId = '{{ $alumni->id }}';
                 var id = $('#edit_id_kuliah').val();
                 var url = '{{ route('kuliah.update', [':alumni_id', ':id']) }}'
                     .replace(':alumni_id', alumniId)
@@ -560,7 +627,7 @@
 
             // ============================ Start Delete Kuliah ==============================
             $(document).on('click', '.delete-button-kuliah', function() {
-                var alumniId = {{ $alumni->id }};
+                var alumniId = '{{ $alumni->id }}';
                 var id = $(this).data('id');
 
                 Swal.fire({
@@ -609,7 +676,7 @@
             loadKerjaData();
 
             function loadKerjaData() {
-                var alumniId = {{ $alumni->id }};
+                var alumniId = '{{ $alumni->id }}';
                 $.ajax({
                     url: '{{ route('pad.kerja', ':id') }}'.replace(':id', alumniId),
                     method: 'GET',
@@ -682,7 +749,7 @@
             // ============================ Start Tambah Kerja ==============================
             $('#kt_modal_add_kerja_form').on('submit', function(e) {
                 e.preventDefault();
-                var alumniId = {{ $alumni->id }};
+                var alumniId = '{{ $alumni->id }}';
                 var url = '{{ route('kerja.store', ':id') }}'.replace(':id', alumniId);
                 let form = $(this);
                 var formData = new FormData(this);
@@ -767,7 +834,7 @@
             // ============================ Start Show Modal Edit ==============================
             $(document).on('click', '.edit-button-kerja', function() {
                 var id = $(this).data('id');
-                var alumniId = {{ $alumni->id }};
+                var alumniId = '{{ $alumni->id }}';
                 var editUrl = '{{ route('kerja.edit', [':alumni_id', ':id']) }}'
                     .replace(':alumni_id', alumniId)
                     .replace(':id', id);
@@ -828,7 +895,7 @@
             // ============================ Start Edit Kerja ==============================
             $('#kt_modal_edit_kerja_form').on('submit', function(e) {
                 e.preventDefault();
-                var alumniId = {{ $alumni->id }};
+                var alumniId = '{{ $alumni->id }}';
                 var id = $('#edit_id_kerja').val();
                 var url = '{{ route('kerja.update', [':alumni_id', ':id']) }}'
                     .replace(':alumni_id', alumniId)
@@ -913,7 +980,7 @@
 
             // ============================ Start Delete Kerja ==============================
             $(document).on('click', '.delete-button-kerja', function() {
-                var alumniId = {{ $alumni->id }};
+                var alumniId = '{{ $alumni->id }}';
                 var id = $(this).data('id');
 
                 Swal.fire({
@@ -959,4 +1026,15 @@
             // ============================ End Delete Kerja ==============================
         });
     </script>
+@endpush
+@push('customStyles')
+    <style>
+        .rounded-circle {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 @endpush

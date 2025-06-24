@@ -79,7 +79,7 @@ class TicketService
             return $query->where(function ($q) use ($search) {
                 $q->where('ticket.judul', 'like', "%{$search}%")
                     ->orWhere('ticket.id', 'like', "%{$search}%")
-                    ->orWhere('ticket.nama_user', 'like', "%{$search}%")
+                    ->orWhere('users.name', 'like', "%{$search}%")
                     ->orWhere('ticket.kategori', 'like', "%{$search}%")
                     ->orWhere('ticket.email', 'like', "%{$search}%");
             });

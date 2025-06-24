@@ -1,10 +1,8 @@
 <head>
+    <title>{{ $title ?? env('APP_NAME') }}</title>
     <meta charset="utf-8" />
-    <title>SMAN 1 Blitar - Sistem Pendataan Alumni</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Premium Bootstrap v5.3.0 Landing Page Template" />
-    <meta name="keywords" content="bootstrap v5.3.0, premium, marketing, multipurpose" />
-    <meta content="Themesdesign" name="author" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- favicon -->
     <link rel="shortcut icon" href="{{ asset('frontend-assets/images/favicon.ico') }}" />
@@ -20,7 +18,8 @@
 
     <!-- Custom Css -->
     <link href="{{ asset('frontend-assets/css/style.min.css') }}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="{{ asset('frontend-assets/plugins/custom/ckeditor5/ckeditor5.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('frontend-assets/plugins/custom/ckeditor5/ckeditor5.css') }}"
+        type="text/css" />
 
 
     <!-- colors -->

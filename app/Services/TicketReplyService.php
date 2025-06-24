@@ -120,6 +120,7 @@ class TicketReplyService
             )
             ->join('users', 'ticket_reply.id_user', '=', 'users.id')
             ->where('ticket_reply.id_ticket', $id_ticket)
+            ->orderBy('ticket_reply.created_at', 'asc')
             ->get();
             return ['status' => true, 'ticket_reply' => $ticket_reply];
         } catch (Exception $e) {

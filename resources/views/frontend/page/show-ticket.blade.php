@@ -21,7 +21,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-12 shadow-sm p-4" id="ticket">
-                    <table class="table table-bordered mb-3">
+                    <table class="table mb-3">
                         <tr>
                             <th class="fw-bold" width="15%">ID Tiket</th>
                             <td id="show_id_ticket"></td>
