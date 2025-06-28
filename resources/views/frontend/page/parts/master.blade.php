@@ -26,7 +26,7 @@
     @yield('content')
 
     <!-- START FOOTER -->
-    <footer class="bg-dark section">
+    <footer class="bg-dark section py-5 px-2">
         @include('frontend.page.parts.footer')
     </footer>
     <!-- END FOOTER -->

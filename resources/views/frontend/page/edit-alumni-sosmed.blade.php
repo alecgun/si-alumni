@@ -15,7 +15,7 @@
                             <div class="mb-3">
                                 <label for="instagram" class="form-label">Instagram</label>
                                 <input type="text" class="form-control" id="edit_instagram" name="instagram"
-                                    placeholder="Masukkan Instagram">
+                                    placeholder="contoh: johndoe">
                                 @error('instagram')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -25,7 +25,7 @@
                             <div class="mb-3">
                                 <label for="sosmed_lain" class="form-label">Sosmed Lain</label>
                                 <input type="text" class="form-control" id="edit_sosmed_lain" name="sosmed_lain"
-                                    placeholder="Masukkan Sosmed yang lain">
+                                    placeholder="contoh: tiktok: johndoe">
                                 @error('sosmed_lain')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

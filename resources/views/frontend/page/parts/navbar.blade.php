@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0" id="navbar-navList">
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('landing.dataAlumni') }}">Data Alumni</a>
+                <a class="nav-link" href="{{ route('landing.alumni') }}">Data Alumni</a>
             </li>
             @guest
                 <li class="nav-item">

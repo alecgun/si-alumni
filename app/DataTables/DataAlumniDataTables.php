@@ -2,6 +2,7 @@
 
 namespace App\DataTables;
 
+use App\Models\Alumni;
 use App\Services\AlumniService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,7 +18,9 @@ class DataAlumniDataTables
 
     public function getData(Request $request)
     {
-        $query = $this->alumniService->getAlumniQuery();
+        $query = Alumni::select('alumni.*', 'users.img_user as user_img')
+            ->leftJoin('users', 'alumni.id_user', '=', 'users.id')
+            ->orderByDesc('alumni.tahun_lulus');
 
         if ($search = $request->input('search.value')) {
             $query = $this->alumniService->searchAlumnis($query, $search);
@@ -50,6 +53,7 @@ class DataAlumniDataTables
                 Carbon::setLocale('id');
 
                 return [
+                    'img_user' => $alumni->user_img,
                     'nama' => $alumni->nama,
                     'kelas' => $alumni->kelas,
                     'tahun_lulus' => $alumni->tahun_lulus,

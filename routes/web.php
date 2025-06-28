@@ -20,7 +20,7 @@ Route::get('/get-data-role', [RoleController::class, 'data'])->name('role.data')
 Route::get('/get-data-user', [UserController::class, 'data'])->name('user.data');
 Route::get('/get-data-alumni', [AlumniController::class, 'data'])->name('alumni.data');
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
-Route::get('/daftar-alumni', [LandingController::class, 'dataAlumni'])->name('landing.dataAlumni');
+Route::get('/data-alumni', [LandingController::class, 'dataAlumni'])->name('landing.alumni');
 Route::get('/pengumuman-alumni/get', [LandingController::class, 'dataPengumuman'])->name('landing.pengumuman.data');
 Route::get('/pengumuman-alumni', [LandingController::class, 'showPengumumanPage'])->name('landing.pengumuman');
 Route::get('/pengumuman-alumni/{pengumuman}', [LandingController::class, 'showPengumumanDetail'])->name('landing.pengumuman.show');
