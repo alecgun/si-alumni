@@ -43,7 +43,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
+                                <label for="tanggal_lahir" class="form-label required">Tanggal Lahir</label>
                                 <input class="form-control" id="tanggal_lahir" name="tanggal_lahir"
                                     placeholder="Pilih Tanggal Lahir">
                                 @error('tanggal_lahir')
@@ -55,13 +55,13 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                                <label for="jenis_kelamin" class="form-label required">Jenis Kelamin</label>
                                 <select class="form-select" data-control="select2"
                                     data-placeholder="Pilih Jenis Kelamin" data-hide-search="true" id="jenis_kelamin"
                                     name="jenis_kelamin">
                                     <option value="" disabled selected>Pilih Jenis Kelamin</option>
-                                    <option value="L">Laki-laki</option>
-                                    <option value="P">Perempuan</option>
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
                                 </select>
                                 @error('jenis_kelamin')
                                     <div class="text-danger">{{ $message }}</div>
@@ -114,7 +114,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="id_user" class="form-label">User</label>
+                                <label for="id_user" class="form-label required">User</label>
                                 <select class="form-select" data-control="select2" data-placeholder="Pilih User"
                                     data-hide-search="true" id="id_user" name="id_user">
                                 </select>

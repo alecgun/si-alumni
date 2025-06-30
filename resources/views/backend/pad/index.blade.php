@@ -78,8 +78,13 @@
                         <!-- begin::Main content -->
                         <div class="row justify-content-center align-items-start">
                             <div class="col-md-3 d-flex flex-column align-items-center pb-5">
-                                <img src="{{ asset('frontend-assets/images/home/messi.png') }}" alt="Alumni Photo"
-                                    class="img-fluid rounded shadow" style="max-height: 150px;">
+                                <img src="{{ $alumni->img_user ? url('storage/' . $alumni->img_user) : asset('frontend-assets/images/users/placeholder.png') }}"
+                                    alt="Alumni Photo" class="img-fluid rounded object-fit-cover ratio-4x5"
+                                    style="height: 150px;">
+                                <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal"
+                                    data-bs-target="#kt_modal_edit_profile_photo">
+                                    Ganti Foto
+                                </button>
                             </div>
                             <div class="col-md-9">
                                 <div id="pad">
@@ -233,6 +238,7 @@
         <!--end::Content-->
     </div>
     <!--end::Content wrapper-->
+    @include('backend.pad.photo')
     @can('kuliah.create')
         @include('backend.kuliah.create')
     @endcan
@@ -273,6 +279,60 @@
                 form.find('.text-danger').remove();
             }
             // ============================ End Reset Form ==============================
+
+            // ============================ Start Action Cancel Profile Photo ==============================
+            $('#cancel_button_photo, #close_modal_button_photo').on('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Apakah kamu yakin?',
+                    text: "Datanya akan hilang!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, batalkan!',
+                    cancelButtonText: 'Tidak, tetap di sini!',
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                        cancelButton: 'btn btn-danger'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#kt_modal_edit_profile_photo').modal('hide');
+                    }
+                });
+            });
+            // ============================ End Action Cancel Profile Photo ==============================
+
+            // ============================ Start Edit Profile Photo ==============================
+            $('#kt_modal_edit_profile_photo_form').on('submit', function(e) {
+                e.preventDefault();
+                var alumniId = '{{ $alumni->id }}';
+
+                let formData = new FormData(this);
+
+                $.ajax({
+                    url: '{{ route('pad.photo.update', ':id') }}'.replace(':id', alumniId),
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: response.message,
+                        });
+                        location.reload();
+                    },
+                    error: function(response) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Kesalahan',
+                            text: response.responseJSON.message,
+                        });
+                    }
+                });
+            });
+            // ============================ End Edit Profile Photo ==============================
 
             // ============================ Start Data Kuliah ==============================
             loadKuliahData();
@@ -487,7 +547,6 @@
                     type: 'GET',
                     url: editUrl,
                     success: function(response) {
-                        console.log(response);
                         $('#edit_id_kuliah').val(response.id);
                         $('#edit_alumni_id').val(alumniId);
                         $('#edit_nama_universitas').val(response.nama_universitas);
@@ -1035,6 +1094,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .ratio-4x5 {
+            aspect-ratio: 4 / 5;
         }
     </style>
 @endpush

@@ -26,8 +26,8 @@ class AlumniResource extends ResourceCollection
             'instagram' => $this->instagram ?? '-',
             'sosmed_lain' => $this->sosmed_lain ?? '-',
             'id_user' => $this->id_user ?? '-',
-            'created_at' => $this->created_at ? $this->created_at->format('Y-m-d H:i') : '-',
-            'updated_at' => $this->updated_at ? $this->updated_at->format('Y-m-d H:i') : '-',
+            'created_at' => $this->created_at ? $this->created_at->locale('id_ID')->isoFormat('d F Y, H:i') : '-',
+            'updated_at' => $this->updated_at ? $this->updated_at->locale('id_ID')->isoFormat('d F Y, H:i') : '-',
         ];
     }
 }

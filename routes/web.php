@@ -22,7 +22,7 @@ Route::get('/get-data-alumni', [AlumniController::class, 'data'])->name('alumni.
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
 Route::get('/data-alumni', [LandingController::class, 'dataAlumni'])->name('landing.alumni');
 Route::get('/pengumuman-alumni/get', [LandingController::class, 'dataPengumuman'])->name('landing.pengumuman.data');
-Route::get('/pengumuman-alumni', [LandingController::class, 'showPengumumanPage'])->name('landing.pengumuman');
+Route::get('/pengumuman-alumni', [LandingController::class, 'landingPengumuman'])->name('landing.pengumuman');
 Route::get('/pengumuman-alumni/{pengumuman}', [LandingController::class, 'showPengumumanDetail'])->name('landing.pengumuman.show');
 
 Route::group(['middleware' => ['guest']], function () {
@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::prefix('alumni')->group(function () {
         Route::resource('alumni', AlumniController::class);
         Route::get('/alumni/{alumnus}/post-academic-data', [PostAcademicDataController::class, 'index'])->name('pad.index');
+        Route::post('/alumni/{alumnus}/post-academic-data/update-profile-photo', [PostAcademicDataController::class, 'updateProfilePhoto'])->name('pad.photo.update');
         Route::get('/alumni/{alumnus}/post-academic-data/kuliah', [PostAcademicDataController::class, 'kuliah'])->name('pad.kuliah');
         Route::get('/alumni/{alumnus}/post-academic-data/kerja', [PostAcademicDataController::class, 'kerja'])->name('pad.kerja');
 

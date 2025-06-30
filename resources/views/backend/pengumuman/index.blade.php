@@ -96,9 +96,6 @@
     @can('pengumuman.create')
         @include('backend.pengumuman.create')
     @endcan
-    @can('pengumuman.edit')
-        @include('backend.pengumuman.edit')
-    @endcan
     @can('pengumuman.show')
         @include('backend.pengumuman.show')
     @endcan

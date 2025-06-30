@@ -201,8 +201,7 @@
                                 month: 'long',
                                 day: 'numeric'
                             }) : '-');
-                            $('#jenis_kelamin').text(response.alumni.jenis_kelamin === 'L' ?
-                                'Laki-laki' : 'Perempuan' || '-');
+                            $('#jenis_kelamin').text(response.alumni.jenis_kelamin || '-');
                             $('#tahun_masuk').text(response.alumni.tahun_masuk || '-');
                             $('#tahun_lulus').text(response.alumni.tahun_lulus || '-');
                             $('#instagram').text(response.alumni.instagram || '-');

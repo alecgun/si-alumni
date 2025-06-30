@@ -21,7 +21,7 @@ return new class extends Migration
             $table->year('tahun_masuk');
             $table->year('tahun_lulus');
             $table->date('tanggal_lahir');
-            $table->enum('jenis_kelamin', ['L', 'P']);
+            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
             $table->string('instagram')->nullable();
             $table->string('sosmed_lain')->nullable();
             $table->foreignUuid('id_user')->constrained('users')->restrictOnDelete();

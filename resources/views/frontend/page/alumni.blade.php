@@ -6,7 +6,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="text-center text-white">
-                        <h2 class="text-white fw-bold">Daftar Alumni</h2>
+                        <h2 class="text-white fw-bold">Data Alumni</h2>
                     </div>
                 </div>
                 <!--end col-->
@@ -20,14 +20,12 @@
     <section class="section bg-light p-0" id="alumni">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="card-body py-4">
-                        <div id="data_alumni_table">
-                            <table id="table_data_alumnis" class="table card" width="100%">
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
+                <div class="col-lg-12 py-4">
+                    <div id="data_alumni_table">
+                        <table id="table_data_alumnis" class="table card" width="100%">
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <!--end col-->

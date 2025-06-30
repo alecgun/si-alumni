@@ -156,7 +156,7 @@
                                             </div>
                                             <a href="${pengumumanUrl}" class="text-primary"></a>
                                         </div>
-                                        <div class="mt-3">
+                                        <div class="mt-3 p-1">
                                             <p class="text-muted mb-0">${moment(pengumuman.created_at).locale('id').fromNow()}</p>
                                             <a href="${pengumumanUrl}" class="primary-link">
                                                 <h6 class="fs-20">${pengumuman.judul}</h6>

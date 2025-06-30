@@ -518,7 +518,7 @@ class LandingController extends Controller implements HasMiddleware
         return response()->json(['status' => true, 'pengumuman' => $pengumuman]);
     }
 
-    public function showPengumumanPage()
+    public function landingPengumuman()
     {
         return view('frontend.page.pengumuman');
     }
