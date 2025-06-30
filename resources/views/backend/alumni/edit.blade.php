@@ -61,8 +61,8 @@
                                 <select class="form-select" data-control="select2"
                                     data-placeholder="Pilih Jenis Kelamin" data-hide-search="true"
                                     id="edit_jenis_kelamin" name="jenis_kelamin">
-                                    <option value="L">Laki-laki</option>
-                                    <option value="P">Perempuan</option>
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
                                 </select>
                                 @error('jenis_kelamin')
                                     <div class="text-danger">{{ $message }}</div>

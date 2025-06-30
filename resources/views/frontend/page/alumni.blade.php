@@ -52,7 +52,7 @@
                         return `
                         <div class="row align-items-center ps-2">
                             <div class="col-auto">
-                                <img src="${row.img_user ? ('{{ asset('storage') }}/' + row.img_user) : ('{{ asset('frontend-assets/images/users/placeholder.png') }}')}" alt="Alumni Photo" class="img-fluid foto ratio-4x5">
+                                <img src="${row.img_user ? ('{{ asset('storage') }}/' + row.img_user) : ('{{ asset('frontend-assets/images/users/placeholder.png') }}')}" alt="Alumni Photo" class="object-fit-cover foto ratio-4x6">
                             </div>
                             <div class="col">
                                 <p class="nama fw-bold">${row.nama}</p>
@@ -155,8 +155,8 @@
             ...
         }
 
-        .ratio-4x5 {
-            aspect-ratio: 4/5;
+        .ratio-4x6 {
+            aspect-ratio: 4/6;
         }
     </style>
 @endpush

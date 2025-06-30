@@ -79,8 +79,7 @@
                         <div class="row justify-content-center align-items-start">
                             <div class="col-md-3 d-flex flex-column align-items-center pb-5">
                                 <img src="{{ $alumni->img_user ? url('storage/' . $alumni->img_user) : asset('frontend-assets/images/users/placeholder.png') }}"
-                                    alt="Alumni Photo" class="img-fluid rounded object-fit-cover ratio-4x5"
-                                    style="height: 150px;">
+                                    alt="Alumni Photo" class="rounded object-fit-cover ratio-4x6" style="height: 200px;">
                                 <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal"
                                     data-bs-target="#kt_modal_edit_profile_photo">
                                     Ganti Foto
@@ -1096,8 +1095,8 @@
             justify-content: center;
         }
 
-        .ratio-4x5 {
-            aspect-ratio: 4 / 5;
+        .ratio-4x6 {
+            aspect-ratio: 4 / 6;
         }
     </style>
 @endpush

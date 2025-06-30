@@ -8,26 +8,24 @@
             <div class="modal-body">
                 <form id="kt_modal_edit_profile_photo_form" method="POST" action="">
                     @csrf
-                    <div class="row">
-                        <div class="col-md-8 d-flex align-items-center">
-                            {{-- @if ($user->img_user)
-                            <div class="me-3">
-                                <img src="{{ Storage::url(Auth::user()->img_user) }}" alt="Foto Profil"
-                                    class="rounded-circle" style="width: 70px; height: 70px; object-fit: cover;">
-                            </div>
-                        @else
-                            <div class="me-3">
-                                <img src="{{ asset('backend-assets/media/logos/null-data.png') }}" alt="Foto Profil"
-                                    class="rounded-circle" style="width: 70px; height: 70px; object-fit: cover;">
-                            </div>
-                        @endif --}}
+                    <div class="row align-items-center">
+                        <div class="col-md-2 justify-content-end d-flex">
                             <div class="me-4">
                                 <img src="{{ $alumni->img_user ? url('storage/' . $alumni->img_user) : asset('frontend-assets/images/users/placeholder.png') }}"
-                                    alt="Alumni Photo" class="img-fluid rounded object-fit-cover"
-                                    style="height: 100px;">
+                                    alt="Alumni Photo" class="rounded object-fit-cover ratio-4x6"
+                                    style="height: 150px;">
                             </div>
-                            <input type="file" name="img_user" accept="image/*"
-                                class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" />
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <input type="file" name="img_user" accept="image/*"
+                                    class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" />
+                            </div>
+                            <div class="row">
+                                <p class="text-muted mt-2">Format: jpg, png, jpeg. Aspect ratio yang
+                                    direkomendasikan:
+                                    4x6</p>
+                            </div>
                         </div>
                     </div>
                     <div class="text-end">

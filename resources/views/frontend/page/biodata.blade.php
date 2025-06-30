@@ -29,8 +29,8 @@
         <div class="container">
             <div class="row justify-content-center align-items-start">
                 <div class="col-md-4 text-center mb-3">
-                    <img src="{{ asset('frontend-assets/images/home/messi.png') }}" alt="Alumni Photo"
-                        class="img-fluid rounded" style="height: 150px;">
+                    <img src="{{ auth()->user()->img_user ? asset('storage/' . auth()->user()->img_user) : asset('frontend-assets/images/users/placeholder.png') }}"
+                        alt="Alumni Photo" class="rounded object-fit-cover" style="height: 150px; aspect-ratio: 4/6;">
                     <h5 class="mt-3">{{ auth()->user()->name }}</h5>
                     <button class="btn btn-primary mt-2 edit-button-password" data-bs-toggle="modal"
                         data-bs-target="#modal_edit_password">Ganti Password</button>

@@ -59,8 +59,8 @@ class LandingController extends Controller implements HasMiddleware
         $data = Alumni::query()
             ->select([
                 'tahun_lulus',
-                DB::raw('COUNT(CASE WHEN jenis_kelamin = "L" THEN 1 END) as jumlah_laki'),
-                DB::raw('COUNT(CASE WHEN jenis_kelamin = "P" THEN 1 END) as jumlah_perempuan'),
+                DB::raw('COUNT(CASE WHEN jenis_kelamin = "Laki-laki" THEN 1 END) as jumlah_laki'),
+                DB::raw('COUNT(CASE WHEN jenis_kelamin = "Perempuan" THEN 1 END) as jumlah_perempuan'),
             ])
             ->groupBy('tahun_lulus')
             ->orderByDesc('tahun_lulus')
