@@ -343,7 +343,7 @@ class LandingController extends Controller implements HasMiddleware
             ];
             $ticket = Ticket::create($data);
             LogAktivitas::log('User membuat tiket', $request->url(), $request->all(), null, $userId);
-            Mail::to('tubagusibe.25@gmail.com')->send(new OpenTicketConfirmed($ticket, $user));
+            // Mail::to('')->send(new OpenTicketConfirmed($ticket, $user));
             Mail::to($ticket->email)->send(new OpenTicketUser($ticket, $user));
 
             return response()->json(['success' => true, 'message' => 'Tiket berhasil dibuat']);
@@ -480,7 +480,7 @@ class LandingController extends Controller implements HasMiddleware
             ];
             $data['id'] = Str::uuid();
             TicketReply::create($data);
-            $ticket = \App\Models\Ticket::where('id', $request->id_ticket)->first();
+            $ticket = Ticket::where('id', $request->id_ticket)->first();
             $ticket->status_ticket = 'Open';
             $ticket->save();
             LogAktivitas::log('User membuat teks balasan', $request->url(), $request->all(), null, $userId);

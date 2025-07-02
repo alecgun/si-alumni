@@ -4,10 +4,11 @@ namespace App\Services;
 
 use App\Models\Pengumuman;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Storage;
 
 class PengumumanService
 {
@@ -86,6 +87,20 @@ class PengumumanService
     {
         DB::beginTransaction();
         try {
+            if (isset($data['foto']) && $data['foto'] instanceof \Illuminate\Http\UploadedFile) {
+                if ($pengumuman->foto) {
+                    Storage::disk('public')->delete($pengumuman->foto);
+                }
+
+                $file = $data['foto'];
+                $ext = $file->getClientOriginalExtension();
+                $time = time();
+                $date = date('ymd-His', $time);
+                $filename = $date . '.' . $ext;
+
+                $path = $file->storeAs('pengumuman', $filename, 'public');
+                $data['foto'] = $path;
+            }
             $pengumuman->update($data);
             DB::commit();
             return ['status' => true, 'pengumuman' => $pengumuman];

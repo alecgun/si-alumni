@@ -62,9 +62,11 @@ class PengumumanDataTables
     {
         $showButton = auth()->user()->can('pengumuman.show', $pengumuman) ? '
             <button class="btn btn-info btn-sm me-2 show-button" data-id="' . $pengumuman->id . '">Lihat</button>' : '';
+        $editButton = auth()->user()->can('pengumuman.edit', $pengumuman) ? '
+            <button class="btn btn-warning btn-sm me-2 edit-button" data-id="' . $pengumuman->id . '">Edit</button>' : '';
         $deleteButton = auth()->user()->can('pengumuman.delete', $pengumuman) ? '
             <button class="btn btn-danger btn-sm me-2 delete-button" data-id="' . $pengumuman->id . '">Hapus</button>' : '';
 
-        return '<div class="text-center">' . $showButton . $deleteButton . '</div>';
+        return '<div class="text-center">' . $showButton . $editButton . $deleteButton . '</div>';
     }
 }

@@ -1,19 +1,21 @@
-<div class="modal fade" id="kt_modal_add_pengumuman" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="kt_modal_edit_pengumuman" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah Pengumuman</h5>
-                <button type="button" class="btn-close" id="close_modal_button" aria-label="Close"></button>
+                <h5 class="modal-title">Edit Pengumuman</h5>
+                <button type="button" class="btn-close" id="close_modal_edit_button" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="kt_modal_add_pengumuman_form" method="POST" action="" enctype="multipart/form-data">
+                <form id="kt_modal_edit_pengumuman_form" method="POST" action="">
                     @csrf
+                    @method('PUT')
+                    <input type="hidden" name="id_pengumuman" id="edit_id_pengumuman">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mb-3">
                                 <label for="foto" class="form-label required">Foto</label>
                                 <div class="fv-row">
-                                    <div class="dropzone" id="foto">
+                                    <div class="dropzone" id="edit_foto">
                                         <div class="dz-message needsclick">
                                             <i class="ki-duotone ki-file-up fs-3x text-primary">
                                                 <span class="path1"></span><span class="path2"></span>
@@ -34,7 +36,7 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 <label for="judul" class="form-label required">Judul</label>
-                                <input type="text" class="form-control" id="judul" name="judul"
+                                <input type="text" class="form-control" id="edit_judul" name="judul"
                                     placeholder="Masukkan Judul">
                                 @error('judul')
                                     <div class="text-danger">{{ $message }}</div>
@@ -46,7 +48,7 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 <label for="isi" class="form-label required">Isi</label>
-                                <textarea type="text" class="form-control ckeditor" id="isi" name="isi" rows="10"
+                                <textarea type="text" class="form-control ckeditor" id="edit_isi" name="isi" rows="10"
                                     placeholder="Masukkan Isi"></textarea>
                                 @error('isi')
                                     <div class="text-danger">{{ $message }}</div>
@@ -58,7 +60,7 @@
                         <button type="submit" class="btn btn-primary mt-3 me-3">
                             Simpan
                         </button>
-                        <button type="button" class="btn btn-secondary mt-3" id="cancel_button">Batal</button>
+                        <button type="button" class="btn btn-secondary mt-3" id="cancel_edit_button">Batal</button>
                     </div>
                 </form>
             </div>

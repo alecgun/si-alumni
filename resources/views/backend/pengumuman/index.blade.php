@@ -99,6 +99,9 @@
     @can('pengumuman.show')
         @include('backend.pengumuman.show')
     @endcan
+    @can('pengumuman.edit')
+        @include('backend.pengumuman.edit')
+    @endcan
 @endsection
 
 @push('customScripts')
@@ -222,6 +225,7 @@
                         resetForm('#kt_modal_add_pengumuman_form');
                         myDropzone.removeAllFiles(true);
                         myDropzone.destroy();
+                        editors['edit_isi'].setData('');
                     }
                 });
             });
@@ -230,12 +234,15 @@
             // ============================ Start Dropzone Create ==============================
             var myDropzone = new Dropzone("#foto", {
                 url: "{{ route('pengumuman.store') }}",
-                paramName: "foto",
+                paramName: 'foto',
                 maxFiles: 1,
                 maxFilesize: 10,
                 acceptedFiles: ".png,.jpg,.jpeg",
                 addRemoveLinks: true,
                 dictDefaultMessage: "Geser file foto atau klik disini untuk upload foto.",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 init: function() {
                     var dropzoneInstance = this;
 
@@ -522,6 +529,7 @@
                                 $('#kt_modal_add_pengumuman').modal('hide');
                                 table.ajax.reload();
                                 myDropzone.removeAllFiles(true);
+                                editors['edit_isi'].setData('');
                                 resetForm('#kt_modal_add_pengumuman_form');
                             },
                             error: function(xhr) {
@@ -612,6 +620,203 @@
             });
             // ============================ End Cancel Show ==============================
 
+            // ============================ Dropzone for Edit ==============================
+            var editDropzone = new Dropzone("#edit_foto", {
+                url: '{{ route('pengumuman.update', ':id') }}'.replace(':id', $('#edit_id_pengumuman')
+                    .val()),
+                paramName: 'foto',
+                maxFiles: 1,
+                maxFilesize: 10,
+                acceptedFiles: ".png,.jpg,.jpeg",
+                addRemoveLinks: true,
+                dictDefaultMessage: "Geser file foto baru atau klik disini untuk mengganti foto.",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                init: function() {
+                    var dropzoneInstance = this;
+
+                    $('#kt_modal_edit_pengumuman_form').on('reset', function() {
+                        dropzoneInstance.removeAllFiles(true);
+                    });
+
+                    this.on("addedfile", function(file) {
+                        if (this.files[1] != null) {
+                            this.removeFile(this.files[0]);
+                        }
+                    });
+                },
+            });
+
+            // Disable auto-discover for both modals
+            $('#kt_modal_edit_pengumuman').on('show.bs.modal', function() {
+                Dropzone.autoDiscover = false;
+            });
+            // ============================ Dropzone for Edit ==============================
+
+            // ============================ Start Cancel Edit ==============================
+            $('#cancel_edit_button, #close_modal_edit_button').on('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Apakah kamu yakin?',
+                    text: "Datanya akan hilang!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, batalkan!',
+                    cancelButtonText: 'Tidak, tetap di sini!',
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                        cancelButton: 'btn btn-danger'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#kt_modal_edit_pengumuman').modal('hide');
+                        resetForm('#kt_modal_edit_pengumuman_form');
+                        editDropzone.removeAllFiles(true);
+                        editors['edit_isi'].setData('');
+                    }
+                });
+            });
+            // ============================ End Cancel Edit ==============================
+
+            // ============================ Start Show Modal Edit ==============================
+            $(document).on('click', '.edit-button', function() {
+                var id = $(this).data('id');
+                var editUrl = '{{ route('pengumuman.edit', ':id') }}'.replace(':id', id);
+
+                $.ajax({
+                    type: 'GET',
+                    url: editUrl,
+                    success: function(response) {
+                        $('#edit_id_pengumuman').val(response.id);
+                        // $('#edit_foto').val(response.foto);
+                        $('#edit_judul').val(response.judul);
+                        editors['edit_isi'].setData(response.isi);
+
+                        editDropzone.removeAllFiles(true);
+                        if (response.foto) {
+                            var mockFile = {
+                                name: response.foto,
+                                size: 12345,
+                                accepted: true,
+                            };
+
+                            editDropzone.emit("addedfile", mockFile);
+
+                            var imageUrl = "{{ asset('storage') }}/" + response.foto;
+                            editDropzone.emit("thumbnail", mockFile, imageUrl);
+
+                            editDropzone.emit("complete", mockFile);
+                            editDropzone.files.push(mockFile);
+                        }
+
+                        $('#kt_modal_edit_pengumuman_form').attr('action',
+                            '{{ route('pengumuman.update', ':id') }}'.replace(':id',
+                                response
+                                .id));
+                        $('#kt_modal_edit_pengumuman').modal('show');
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: xhr.responseJSON.message
+                        });
+                    }
+                });
+            });
+            // ============================ End Show Modal Edit ==============================
+
+            // ============================ Start Edit Pengumuman ==============================
+            $('#kt_modal_edit_pengumuman_form').on('submit', function(e) {
+                e.preventDefault();
+                var id_pengumuman = $('#edit_id_pengumuman').val();
+                var url = '{{ route('pengumuman.update', ':id') }}'.replace(':id', id_pengumuman);
+                let form = $(this);
+                var formData = new FormData(this);
+
+                clearValidationErrors(form);
+
+                Swal.fire({
+                    title: 'Apakah kamu yakin?',
+                    text: "Data akan disimpan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, simpan!',
+                    cancelButtonText: 'Tidak, batalkan!',
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                        cancelButton: 'btn btn-danger'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        if (editDropzone.getAcceptedFiles().length > 0) {
+                            var file = editDropzone.getAcceptedFiles()[0];
+                            formData.append('foto', file, file.name);
+                        }
+
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: response.message
+                                });
+                                $('#kt_modal_edit_pengumuman').modal('hide');
+                                table.ajax.reload();
+                                editors['edit_isi'].setData('');
+                                editDropzone.removeAllFiles(true);
+                                resetForm('#kt_modal_edit_pengumuman_form');
+                            },
+                            error: function(xhr) {
+                                if (xhr.status === 422) {
+                                    var errors = xhr.responseJSON.errors;
+                                    $('.text-danger').remove();
+
+                                    $.each(errors, function(key, value) {
+                                        var element = form.find('[name="' +
+                                            key + '"]');
+                                        element.addClass('is-invalid');
+
+                                        if (element.is('select')) {
+                                            element.next().after(
+                                                '<div class="text-danger">' +
+                                                value[0] + '</div>');
+                                        } else {
+                                            element.after(
+                                                '<div class="text-danger">' +
+                                                value[0] + '</div>');
+                                        }
+                                    });
+
+                                    var errorMessage = '';
+                                    $.each(errors, function(key, value) {
+                                        errorMessage += value[0] + '<br>';
+                                    });
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Validation Error!',
+                                        html: errorMessage
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'Error terjadi saat menyimpan data.'
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+            // ============================ End Edit Pengumuman ==============================
+
             // ============================ Start Delete Pengumuman ==============================
             $(document).on('click', '.delete-button', function() {
                 var id = $(this).data('id');
@@ -665,6 +870,18 @@
         #show_isi img {
             max-width: 100%;
             height: auto;
+        }
+
+        .dropzone {
+            .dz-preview {
+                .dz-image {
+                    img {
+                        height: 120px;
+                        width: 120px;
+                        object-fit: cover;
+                    }
+                }
+            }
         }
     </style>
 @endpush
