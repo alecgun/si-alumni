@@ -115,8 +115,9 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="id_user" class="form-label required">User</label>
-                                <select class="form-select" data-control="select2" data-placeholder="Pilih User"
-                                    data-hide-search="true" id="id_user" name="id_user">
+                                <select class="form-select" data-control="select2"
+                                    data-dropdown-parent="#kt_modal_add_alumni" data-placeholder="Pilih User"
+                                    id="id_user" name="id_user">
                                 </select>
                                 @error('id_user')
                                     <div class="text-danger">{{ $message }}</div>

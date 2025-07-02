@@ -117,7 +117,7 @@
                             <div class="mb-3">
                                 <label for="id_user" class="form-label">User</label>
                                 <select class="form-select" data-control="select2" data-placeholder="Pilih User"
-                                    data-hide-search="true" id="edit_id_user" name="id_user">
+                                    data-dropdown-parent="#kt_modal_edit_alumni" id="edit_id_user" name="id_user">
                                 </select>
                                 @error('id_user')
                                     <div class="text-danger">{{ $message }}</div>
