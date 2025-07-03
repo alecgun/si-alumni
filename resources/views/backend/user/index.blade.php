@@ -308,7 +308,7 @@
                     type: 'GET',
                     url: editUrl,
                     success: function(response) {
-                        console.log(response);
+
                         $('#edit_id_user').val(response.id);
                         $('#edit_name').val(response.name);
                         $('#edit_username').val(response.username);

@@ -1,6 +1,6 @@
 @extends('frontend.page.parts.master')
 @section('content')
-    <section class="section">
+    <section class="section" id="show-blog">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
@@ -85,6 +85,18 @@
         #show_isi img {
             max-width: 100%;
             height: auto;
+        }
+
+        #show-blog {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            grid-template-columns: 100%;
+
+            /* fallback height */
+            min-height: 75vh;
+
+            /* new small viewport height for modern browsers */
+            min-height: 75svh;
         }
     </style>
 @endpush

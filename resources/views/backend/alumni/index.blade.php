@@ -55,6 +55,44 @@
                                     class="form-control form-control-solid w-250px ps-13" placeholder="Cari alumni" />
                             </div>
                             <!--end::Search-->
+                            <!--begin::Export buttons-->
+                            <div id="kt_datatable_alumni_export_buttons" class="d-none"></div>
+                            <!--end::Export buttons-->
+                            <!--begin::Export dropdown-->
+                            <button type="button" class="btn btn-primary ms-3" data-bs-toggle="dropdown"
+                                data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                <i class="ki-duotone ki-exit-down fs-2"><span class="path1"></span><span
+                                        class="path2"></span></i>
+                                Export Report
+                            </button>
+                            <!--begin::Menu-->
+                            <div id="kt_datatable_alumni_export"
+                                class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4"
+                                data-kt-menu="true">
+                                <!--begin::Menu item-->
+                                <div class="menu-item px-3">
+                                    <a href="#" class="menu-link px-3" data-kt-export="excel">
+                                        Export as Excel
+                                    </a>
+                                </div>
+                                <!--end::Menu item-->
+                                <!--begin::Menu item-->
+                                <div class="menu-item px-3">
+                                    <a href="#" class="menu-link px-3" data-kt-export="csv">
+                                        Export as CSV
+                                    </a>
+                                </div>
+                                <!--end::Menu item-->
+                                <!--begin::Menu item-->
+                                <div class="menu-item px-3">
+                                    <a href="#" class="menu-link px-3" data-kt-export="pdf">
+                                        Export as PDF
+                                    </a>
+                                </div>
+                                <!--end::Menu item-->
+                            </div>
+                            <!--end::Menu-->
+                            <!--end::Export dropdown-->
                         </div>
                         <!--end::Card title-->
                         <!--begin::Card toolbar-->
@@ -190,6 +228,42 @@
                     }
                 ]
             });
+
+            // export
+            var exportButtons = () => {
+                const documentTitle = 'Alumni Report';
+                var tableAlumnis = $('#kt_table_alumnis');
+
+                var buttons = new $.fn.dataTable.Buttons(tableAlumnis, {
+                    buttons: [{
+                            extend: 'excelHtml5',
+                            title: documentTitle
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            title: documentTitle
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            title: documentTitle
+                        }
+                    ]
+                }).container().appendTo($('#kt_datatable_alumni_export_buttons'));
+
+                // Hook dropdown menu click event to datatable export buttons
+                $('#kt_datatable_alumni_export [data-kt-export]').on('click', function(e) {
+                    e.preventDefault();
+
+                    // Get clicked export value
+                    const exportValue = $(this).data('kt-export');
+                    const target = $('.dt-buttons .buttons-' + exportValue);
+
+                    // Trigger click event on hidden datatable export buttons
+                    target.trigger('click');
+                });
+            }
+
+            exportButtons();
 
             $('#alumni_search').on('keyup', function() {
                 table.search(this.value).draw();
@@ -350,7 +424,6 @@
                     type: 'GET',
                     url: editUrl,
                     success: function(response) {
-                        console.log(response);
                         $('#edit_id_alumni').val(response.id);
                         $('#edit_nis').val(response.nis);
                         $('#edit_nama').val(response.nama);

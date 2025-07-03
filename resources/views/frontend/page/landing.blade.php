@@ -172,7 +172,7 @@
                         });
                     } else {
                         pengumumanHTML +=
-                            `<p class="text-muted">Data pengumuman tidak ditemukan.</p>`;
+                            `<p class="text-muted text-center">Data pengumuman tidak ditemukan.</p>`;
                     }
                     $('#pengumuman').html(pengumumanHTML);
                 }

@@ -903,7 +903,7 @@
                     type: 'GET',
                     url: editUrl,
                     success: function(response) {
-                        console.log(response);
+
                         $('#edit_id_kerja').val(response.id);
                         $('#edit_alumni_id').val(alumniId);
                         $('#edit_posisi_kerja').val(response.posisi_kerja);

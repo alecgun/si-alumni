@@ -7,7 +7,8 @@
                 <div class="col-lg-8">
                     <div class="text-center text-white">
                         <h2 class="text-white fw-bold">Pengumuman</h2>
-                        <p class="text-white-50  mb-0">Informasi terbaru terkait alumni SMAN 1 Blitar akan ditampilkan disini.
+                        <p class="text-white-50  mb-0">Informasi terbaru terkait alumni SMAN 1 Blitar akan ditampilkan
+                            disini.
                         </p>
                     </div>
                 </div>
@@ -82,7 +83,7 @@
                             });
                         } else {
                             pengumumanHTML +=
-                                `<p class="text-muted">Data pengumuman tidak ditemukan.</p>`;
+                                `<p class="text-muted text-center">Data pengumuman tidak ditemukan.</p>`;
                         }
                         $('#pengumuman').html(pengumumanHTML);
                     }
@@ -95,6 +96,18 @@
 @push('customStyles')
     <style>
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
+
+        #blog {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            grid-template-columns: 100%;
+
+            /* fallback height */
+            min-height: 50vh;
+
+            /* new small viewport height for modern browsers */
+            min-height: 50svh;
+        }
 
         .bg-blue {
             padding: 150px 0 80px 0;

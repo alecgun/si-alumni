@@ -434,7 +434,7 @@
                     type: 'GET',
                     url: editUrl,
                     success: function(response) {
-                        console.log(response);
+
                         $('#edit_id_kuliah').val(response.kuliah.id);
                         $('#edit_alumni_id').val(alumniId);
                         $('#edit_nama_universitas').val(response.kuliah.nama_universitas);
@@ -721,7 +721,7 @@
                     type: 'GET',
                     url: editUrl,
                     success: function(response) {
-                        console.log(response);
+
                         $('#edit_id_kerja').val(response.kerja.id);
                         $('#edit_alumni_id').val(alumniId);
                         $('#edit_posisi_kerja').val(response.kerja.posisi_kerja);
@@ -908,7 +908,7 @@
                     type: 'GET',
                     url: editUrl,
                     success: function(response) {
-                        console.log(response);
+
                         $('#edit_id_alumni').val(response.alumni.id);
                         $('#edit_instagram').val(response.alumni.instagram);
                         $('#edit_sosmed_lain').val(response.alumni.sosmed_lain);

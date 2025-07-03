@@ -261,7 +261,7 @@
                     type: 'GET',
                     url: editUrl,
                     success: function(response) {
-                        console.log(response);
+
                         if (response) {
                             $('#edit_id_role').val(response.id);
                             $('#edit_name').val(response.name);
