@@ -6,7 +6,9 @@ use App\StoreClass\LogAktivitas;
 use App\DataTables\TicketDataTables;
 use App\Http\Requests\TicketRequest;
 use App\Models\Ticket;
+use App\Models\TicketReply;
 use App\Services\TicketService;
+use App\Services\TicketReplyService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -16,6 +18,7 @@ use Spatie\Permission\Middleware\PermissionMiddleware;
 class TicketController extends Controller implements HasMiddleware
 {
     protected $ticketService;
+    protected $ticketReplyService;
     protected $ticketDataTable;
 
     public static function middleware(): array
@@ -29,9 +32,10 @@ class TicketController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __construct(TicketService $ticketService, TicketDataTables $ticketDataTable)
+    public function __construct(TicketService $ticketService, TicketReplyService $ticketReplyService, TicketDataTables $ticketDataTable)
     {
         $this->ticketService = $ticketService;
+        $this->ticketReplyService = $ticketReplyService;
         $this->ticketDataTable = $ticketDataTable;
     }
 
@@ -89,6 +93,10 @@ class TicketController extends Controller implements HasMiddleware
 
     public function destroy(Ticket $ticket)
     {
+        $ticket_replies = TicketReply::where('id_ticket', $ticket->id)->get();
+        foreach ($ticket_replies as $ticket_reply) {
+            $this->ticketReplyService->deleteTicketReply($ticket_reply);
+        }
         $result = $this->ticketService->deleteTicket($ticket);
         if ($result['status']) {
             LogAktivitas::log('Menghapus data ticket', request()->path(), $result, null, Auth::user()->id);

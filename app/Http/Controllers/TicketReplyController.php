@@ -62,4 +62,13 @@ class TicketReplyController extends Controller implements HasMiddleware
         }
         return response()->json(['success' => false, 'message' => $result['message']], 500);
     }
+
+    public function destroy($id)
+    {
+        $result = $this->ticketReplyService->deleteTicketReply($id);
+        if ($result['status']) {
+            return response()->json(['success' => true, 'message' => 'Teks balasan berhasil dihapus']);
+        }
+        return response()->json(['success' => false, 'message' => $result['message']], 500);
+    }
 }

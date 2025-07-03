@@ -560,7 +560,6 @@
                                     text: response.message
                                 });
                                 editors['reply_text'].setData('');
-                                location.reload();
                                 loadTicketReplies($('#show_id_ticket').text());
                                 resetForm('#kt_modal_add_ticket_reply_form');
                             },
