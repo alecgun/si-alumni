@@ -656,6 +656,8 @@
                                         text: response.message
                                     });
                                     getData();
+                                    $('#modal_add_kerja').modal('hide');
+                                    resetFormKerja('#modal_add_kerja_form');
                                 } else {
                                     Swal.fire({
                                         icon: 'error',

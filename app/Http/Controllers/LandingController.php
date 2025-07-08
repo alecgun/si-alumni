@@ -112,6 +112,7 @@ class LandingController extends Controller implements HasMiddleware
         $alumni = Alumni::where('id_user', $userId)->first();
 
         $data = [
+            'id' => Str::uuid(),
             'alumni_id' => $alumni->id,
             'nama_universitas' => $request->nama_universitas,
             'fakultas' => $request->fakultas,
@@ -191,6 +192,7 @@ class LandingController extends Controller implements HasMiddleware
         $alumni = Alumni::where('id_user', $userId)->first();
 
         $data = [
+            'id' => Str::uuid(),
             'alumni_id' => $alumni->id,
             'posisi_kerja' => $request->posisi_kerja,
             'tempat_kerja' => $request->tempat_kerja,

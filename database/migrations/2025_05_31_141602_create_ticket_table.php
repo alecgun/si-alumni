@@ -15,9 +15,9 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('judul');
             $table->string('status_ticket')->default('Open'); // open, closed
-            $table->string('kategori')->default('Umum');
+            $table->enum('kategori', ['Pengumuman', 'Tambah Data User/Alumni', 'Lain-lain']);
             $table->longText('deskripsi');
-            $table->string('email')->nullable();
+            $table->string('email');
             $table->foreignUuid('id_user')->constrained('users')->restrictOnDelete();
             $table->timestamps();
         });

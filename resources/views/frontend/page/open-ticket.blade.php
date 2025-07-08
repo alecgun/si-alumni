@@ -47,8 +47,9 @@
                             <select class="form-select" data-control="select2" data-placeholder="Pilih Kategori"
                                 data-hide-search="true" id="kategori" name="kategori">
                                 <option value="" disabled selected>Pilih Kategori</option>
-                                <option value="Umum">Umum</option>
-                                <option value="Ora Umum">Ora Umum</option>
+                                <option value="Pengumuman">Pengumuman</option>
+                                <option value="Tambah Data User/Alumni">Tambah Data User/Alumni</option>
+                                <option value="Lain-lain">Lain-lain</option>
                             </select>
                             @error('kategori')
                                 <div class="text-danger">{{ $message }}</div>

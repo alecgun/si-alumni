@@ -21,7 +21,9 @@ class UserService
             $user = User::create($data);
 
             $role = Role::findById($data['role'])->name;
-            $user->assignRole($role);
+
+            $userRole = User::where('id', $data['id'])->first();
+            $userRole->assignRole($role);
 
             DB::commit();
             return ['status' => true, 'user' => $user];

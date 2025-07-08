@@ -23,7 +23,7 @@ class TicketRequest extends FormRequest
         return [
             'judul' => 'required|string|max:255',
             'status_ticket' => 'required|in:Open,Closed',
-            'kategori' => 'required|string|max:50',
+            'kategori' => 'required|string|in:Pengumuman,Tambah Data User/Alumni,Lain-lain',
             'deskripsi' => 'required|string|max:1000',
             'email' => 'nullable|email|max:255',
             'id_user' => 'nullable|exists:users,id',
