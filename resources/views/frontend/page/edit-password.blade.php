@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title">Ubah User</h6>
+                <h6 class="modal-title">Ubah Password</h6>
                 <button type="button" class="btn-close" id="close_modal_edit_button_password"
                     aria-label="Close"></button>
             </div>
@@ -12,7 +12,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="password" class="form-label">Password Baru</label>
+                                <label for="password" class="form-label">Password Baru</label><span style="color: red">
+                                    *</span>
                                 <input type="password" class="form-control" id="password" name="password"
                                     placeholder="Masukkan Password Baru">
                                 @error('password')
@@ -22,7 +23,9 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="password_confirmation" class="form-label">Konfirmasi Password Baru</label>
+                                <label for="password_confirmation" class="form-label">Konfirmasi Password
+                                    Baru</label><span style="color: red">
+                                    *</span>
                                 <input type="password" class="form-control" id="password_confirmation"
                                     name="password_confirmation" placeholder="Masukkan Konfirmasi Password">
                                 @error('password_confirmation')

@@ -11,7 +11,9 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="posisi_kerja" class="form-label">Posisi Kerja</label>
+                                <label for="posisi_kerja" class="form-label">Posisi Kerja</label><span
+                                    style="color: red">
+                                    *</span>
                                 <input type="text" class="form-control" id="posisi_kerja" name="posisi_kerja"
                                     placeholder="Masukkan posisi kerja">
                                 @error('posisi_kerja')
@@ -21,7 +23,9 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="tempat_kerja" class="form-label">Tempat Kerja</label>
+                                <label for="tempat_kerja" class="form-label">Tempat Kerja</label><span
+                                    style="color: red">
+                                    *</span>
                                 <input type="text" class="form-control" id="tempat_kerja" name="tempat_kerja"
                                     placeholder="Masukkan tempat kerja">
                                 @error('tempat_kerja')
@@ -33,7 +37,9 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="alamat_kerja" class="form-label">Alamat Tempat Kerja</label>
+                                <label for="alamat_kerja" class="form-label">Alamat Tempat Kerja</label><span
+                                    style="color: red">
+                                    *</span>
                                 <input type="text" class="form-control" id="alamat_kerja" name="alamat_kerja"
                                     placeholder="Masukkan alamat tempat kerja">
                                 @error('alamat_kerja')
@@ -43,7 +49,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="tahun_masuk" class="form-label">Tahun Masuk</label>
+                                <label for="tahun_masuk" class="form-label">Tahun Masuk</label><span style="color: red">
+                                    *</span>
                                 <input type="text" class="form-control" id="tahun_masuk_kerja" name="tahun_masuk"
                                     placeholder="Masukkan tahun masuk">
                                 @error('tahun_masuk')

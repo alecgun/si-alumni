@@ -11,7 +11,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="name" class="form-label">Nama</label>
+                                <label for="name" class="form-label required">Nama</label>
                                 <input type="text" class="form-control" id="name" name="name"
                                     placeholder="Masukkan nama lengkap">
                                 @error('name')
@@ -21,7 +21,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="username" class="form-label">Username</label>
+                                <label for="username" class="form-label required">Username</label>
                                 <input type="text" class="form-control" id="username" name="username"
                                     placeholder="Masukkan username">
                                 @error('username')
@@ -33,7 +33,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
+                                <label for="password" class="form-label required">Password</label>
                                 <input type="password" class="form-control" id="password" name="password"
                                     placeholder="Masukkan password">
                                 @error('password')
@@ -43,7 +43,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="role" class="form-label">Role</label>
+                                <label for="role" class="form-label required">Role</label>
                                 <select class="form-select" data-control="select2" data-placeholder="Pilih Role"
                                     data-hide-search="true" id="role" name="role">
                                 </select>

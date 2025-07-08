@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title">Ubah Sosmed</h6>
+                <h6 class="modal-title">Ubah Data Sosmed</h6>
                 <button type="button" class="btn-close" id="close_modal_edit_button_sosmed" aria-label="Close"></button>
             </div>
             <div class="modal-body">
